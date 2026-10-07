@@ -38,7 +38,10 @@ try {
     $output = $process.StandardOutput.ReadToEnd()
     $errorText = $process.StandardError.ReadToEnd()
     if ($process.ExitCode -ne 0) { throw "Session inspection failed: $errorText" }
-    $sessions = @($output | ConvertFrom-Json)
+    $sessions = @()
+    if (-not [string]::IsNullOrWhiteSpace($output)) {
+        $sessions = @($output | ConvertFrom-Json)
+    }
     if ($sessionId -gt 0 -and -not ($sessions | Where-Object { $_.Id -eq $sessionId -and $_.Owner -eq $identity.Name })) {
         throw 'Read-only session discovery did not find the current user session.'
     }
