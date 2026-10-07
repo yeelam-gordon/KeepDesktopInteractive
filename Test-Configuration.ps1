@@ -1,9 +1,31 @@
+param([switch]$SyntaxOnly)
+
 $ErrorActionPreference = 'Stop'
 foreach ($file in Get-ChildItem -LiteralPath $PSScriptRoot -Filter '*.ps1') {
     $tokens = $null
     $errors = $null
-    [Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$tokens, [ref]$errors) | Out-Null
+    $ast = [Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$tokens, [ref]$errors)
     if ($errors.Count) { throw "Invalid script $($file.Name): $($errors | Out-String)" }
+    if ($file.FullName -eq $PSCommandPath) { continue }
+    foreach ($command in $ast.FindAll({
+        param($node)
+        $node -is [Management.Automation.Language.CommandAst] -and $node.GetCommandName() -eq 'Add-Type'
+    }, $true)) {
+        for ($index = 0; $index -lt $command.CommandElements.Count - 1; $index++) {
+            $element = $command.CommandElements[$index]
+            if ($element -is [Management.Automation.Language.CommandParameterAst] -and $element.ParameterName -eq 'TypeDefinition') {
+                $source = $command.CommandElements[$index + 1]
+                if ($source -isnot [Management.Automation.Language.StringConstantExpressionAst]) {
+                    throw "Embedded C# in $($file.Name) must be a literal for static checking."
+                }
+                Add-Type -TypeDefinition $source.Value -ErrorAction Stop
+            }
+        }
+    }
+}
+if ($SyntaxOnly) {
+    Write-Output 'PASS: all PowerShell scripts parsed and embedded C# compiled; no project script or native session operation was executed.'
+    return
 }
 $launchers = @{
     'launch-desktop-session-setup.vbs' = 'Launch-DesktopSessionSetup.ps1'

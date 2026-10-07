@@ -1,8 +1,12 @@
 param([switch]$Restore)
 
 $ErrorActionPreference = 'Stop'
-$backupPath = Join-Path $PSScriptRoot 'local-rdp-minimize-backup.json'
-$resultPath = Join-Path $PSScriptRoot 'local-rdp-minimize-result.json'
+. (Join-Path $PSScriptRoot 'DesktopSessionSecurity.ps1')
+$identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+Assert-TrustedSource -Directory $PSScriptRoot -UserSid $identity.User.Value
+$dataDirectory = Get-PrivateDesktopDataDirectory
+$backupPath = Join-Path $dataDirectory 'local-rdp-minimize-backup.json'
+$resultPath = Join-Path $dataDirectory 'local-rdp-minimize-result.json'
 $registryPath = 'Software\Microsoft\Terminal Server Client'
 $valueName = 'RemoteDesktop_SuppressWhenMinimized'
 $views = @([Microsoft.Win32.RegistryView]::Registry32)

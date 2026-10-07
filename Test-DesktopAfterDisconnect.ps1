@@ -1,15 +1,18 @@
 param(
     [switch]$ConnectedSmokeTest,
-    [switch]$MinimizedTest
+    [switch]$MinimizedTest,
+    [switch]$RequireInstalledSetup
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'DesktopSessionSecurity.ps1')
+$dataDirectory = Get-PrivateDesktopDataDirectory
 $started = [DateTime]::UtcNow
-$runDirectory = Join-Path $PSScriptRoot ("Diagnostics\" + $started.ToString('yyyyMMdd-HHmmss-fff') + "-$PID")
+$runDirectory = Join-Path $dataDirectory ("Diagnostics\" + $started.ToString('yyyyMMdd-HHmmss-fff') + "-$PID")
 New-Item -ItemType Directory -Path $runDirectory -Force | Out-Null
 $resultPath = Join-Path $runDirectory 'result.json'
 $screenshotPath = Join-Path $runDirectory 'desktop-proof.png'
-$latestPath = Join-Path $PSScriptRoot 'desktop-proof.json'
+$latestPath = Join-Path $dataDirectory 'desktop-proof.json'
 $logPath = Join-Path $runDirectory 'diagnostic.log'
 $sessionId = (Get-Process -Id $PID).SessionId
 $requireConsole = -not ($ConnectedSmokeTest -or $MinimizedTest)
@@ -46,6 +49,12 @@ trap {
 }
 Write-ProofResult @{}
 Write-DiagnosticLog "Started as $($script:report.User), PID=$PID, session=$sessionId, mode=$($script:report.Mode)."
+if ($RequireInstalledSetup) {
+    $installed = Get-Content -LiteralPath (Join-Path $env:ProgramData 'DevboxDesktopSession\setup-result.json') -Raw | ConvertFrom-Json
+    if (-not $installed.Installed -or $installed.Status -ne 'Ready') {
+        throw 'Setup is incomplete or inactive; diagnostics will not send input.'
+    }
+}
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
 Add-Type -TypeDefinition @'
 using System;

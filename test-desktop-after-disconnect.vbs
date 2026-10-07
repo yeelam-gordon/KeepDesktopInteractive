@@ -8,6 +8,8 @@ If WScript.Arguments.Count > 0 Then
             command = command & " -ConnectedSmokeTest"
         Case "--minimized-test"
             command = command & " -MinimizedTest"
+        Case "--installed"
+            command = command & " -RequireInstalledSetup"
         Case Else
             WScript.Quit 2
     End Select

@@ -2,11 +2,12 @@
 
 ## Quick setup
 
-Clone or download this private repository on both computers. Put it in a permanent,
-user-writable folder such as `C:\s\KeepDesktopInteractive`.
+Create a fresh clone from this trusted GitHub repository on both computers.
+Use a private folder under the existing user's profile, not a shared location
+such as `C:\s`. No new Windows account or profile is required.
 
 ```powershell
-git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git C:\s\KeepDesktopInteractive
+git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
 ```
 
 The repository is currently private, so cloning or downloading requires access.
@@ -27,19 +28,46 @@ approval remains visible. VBScript and Windows PowerShell 5.1 must be available.
 
 Check setup results:
 
-- Remote: `elevation-result.json` beside the scripts, then
-  `%ProgramData%\DevboxDesktopSession\setup-result.json` with `Installed: true`.
-- Local: `local-rdp-minimize-result.json` with `Succeeded: true`.
+- Remote: `%LOCALAPPDATA%\KeepDesktopInteractive\elevation-result.json`, then
+  `%ProgramData%\DevboxDesktopSession\setup-result.json` with `Installed: true`
+  and `Status: Ready`.
+- Local: `%LOCALAPPDATA%\KeepDesktopInteractive\local-rdp-minimize-result.json`
+  with `Succeeded: true`.
 
-The remote setup does not disconnect you unless you explicitly request
-`--verify-disconnect`. Do not move the remote project folder after installation:
-the diagnostic task references its location. Rerun setup if you move it.
+Setup never forces a disconnect or sends UI input. The installed diagnostic task
+uses protected copies in `%ProgramData%\DevboxDesktopSession`, not the checkout.
+Moving or editing the checkout does not change installed behavior; reinstall to update.
+
+## Security boundaries
+
+| Location | Who may modify it | Purpose |
+| --- | --- | --- |
+| Private source checkout | Your current user and administrators | Trusted setup input; never clone into a folder writable by other users |
+| `%ProgramData%\DevboxDesktopSession` | Administrators and SYSTEM only | Installed executable scripts, activation record, and SYSTEM handoff log |
+| `%LOCALAPPDATA%\KeepDesktopInteractive` | Your current user and administrators | Diagnostic results, screenshots, client registry backup, and setup result |
+
+Installers reject untrusted owners, other-user write/replace permissions, hard-linked
+files, and reparse points. Pre-created untrusted installation directories are rejected,
+not adopted. Directory protection also checks ancestor replacement permissions.
+
+Source is not Authenticode-signed. Obtain a fresh trusted checkout; copying a
+potentially tampered shared checkout to a private folder does not authenticate it.
+Setup checks the source before elevation and again before importing it.
+
+Persistent tasks are registered disabled with restrictive task permissions. They are
+activated only after protected code and task checks finish. Until the final atomic
+`Status: Ready` activation record exists, both task actions refuse to operate.
+Failed setup disables touched tasks and reports failure; interrupted setup may leave
+new staged tasks registered, but the activation guard prevents their handoff or input.
+During migration, legacy tasks are disabled before installed files or activation
+state are changed, with the shared-checkout diagnostic disabled first.
+Rerun setup to recover. Do not assume a failed update preserved the previous installation.
 
 ## Verify on each new machine
 
 **Disconnect:** disconnect normally, wait 30 seconds, then reconnect.
 The automatic diagnostic should report `Passed: true` and `Mode: AfterDisconnect`
-in `desktop-proof.json`.
+in `%LOCALAPPDATA%\KeepDesktopInteractive\desktop-proof.json`.
 
 **Minimize:** run this on the remote machine:
 
@@ -49,12 +77,13 @@ wscript.exe .\test-desktop-after-disconnect.vbs --minimized-test
 
 Immediately minimize the remote client and leave it minimized for 90 seconds.
 The probe waits 60 seconds before attempting real mouse input, typing, and screen
-capture. Restore the client and check `desktop-proof.json` for `Passed: true`
+capture. Restore the client and check the private `desktop-proof.json` for `Passed: true`
 and `Mode: WhileClientMinimized`.
 
 Detailed results, logs, and cropped test-window screenshots are saved under
-`Diagnostics\<timestamp>-<pid>`. Screenshots can include nearby desktop content;
-keep them private. These files and local registry backups are excluded from Git.
+`%LOCALAPPDATA%\KeepDesktopInteractive\Diagnostics\<timestamp>-<pid>`.
+Screenshots can include nearby desktop content; keep them private. These files
+and local registry backups are outside the checkout.
 
 The remote machine cannot observe whether the client window is minimized. A passing
 minimize test proves this case only if you kept the client minimized during input
@@ -95,7 +124,8 @@ Remote Desktop Connection. Windows App behavior depends on the version; run the
 minimize test rather than assuming support.
 
 Both capabilities passed live tests on the original Windows App / Windows host
-pair. Post-reboot behavior and different machines must be verified separately.
+pair before security hardening. The hardened installation still requires live
+acceptance testing. Post-reboot behavior and different machines must be verified separately.
 
 Only one automation user is configured per remote machine. Reinstalling for a
 different user is refused until the existing installation is removed. SYSTEM
@@ -116,18 +146,48 @@ Restore the original client registry values on the same client PC and user:
 wscript.exe .\set-local-rdp-minimize-rendering.vbs --restore
 ```
 
-Keep `local-rdp-minimize-backup.json` until restoration is no longer needed.
+Keep `%LOCALAPPDATA%\KeepDesktopInteractive\local-rdp-minimize-backup.json`
+until restoration is no longer needed.
 Neither operation deletes diagnostic evidence. Host removal does not change
 client settings, and client restoration does not remove host tasks.
 
 ## Configuration checks
 
+Static syntax check, including compilation of embedded C# declarations. It does not
+run setup, discovery, filesystem tests, or UI input:
+
+```powershell
+powershell.exe -NoProfile -File .\Test-Configuration.ps1 -SyntaxOnly
+```
+
+When you are ready for non-UI configuration and filesystem safeguards:
+
 ```powershell
 powershell.exe -NoProfile -File .\Test-Configuration.ps1
+powershell.exe -NoProfile -File .\Test-SecurityConfiguration.ps1
 ```
 
 This checks script syntax, launcher wiring, and read-only session discovery.
-It does not disconnect you or change registry values.
+The security check uses a temporary private test directory to verify rejection of
+unsafe ownership, permissions, hard links, and reparse points. It does not disconnect
+you or change registry values or scheduled tasks.
+
+After installing, run `Test-SecurityConfiguration.ps1 -Installed` as the normal,
+non-elevated automation user. It also verifies the installed code cannot be opened
+for writing and checks installed task permissions. Run live disconnect/minimize
+checks separately when no other UI automation is using the desktop.
+
+## Updating the first prototype
+
+Do not run setup from the old shared checkout. Clone the updated repository into
+your private profile, then run setup there with administrator approval. Runtime
+diagnostics will move to your private data directory after deployment; old evidence
+is retained. No host tasks are changed merely by updating the development checkout.
+
+If the old client setup saved its original registry backup beside the old scripts,
+restore with that original client version first, then apply the updated setup.
+Otherwise a fresh backup could capture the already-modified value rather than
+the pre-setup setting. Do not discard the original backup.
 
 ## References
 

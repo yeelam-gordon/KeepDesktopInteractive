@@ -66,6 +66,13 @@ function Write-SessionLog([string]$Message) {
 }
 
 try {
+    if (-not $InspectOnly) {
+        $installed = Get-Content -LiteralPath (Join-Path $env:ProgramData 'DevboxDesktopSession\setup-result.json') -Raw | ConvertFrom-Json
+        if (-not $installed.Installed -or $installed.Status -ne 'Ready') {
+            Write-SessionLog 'Setup is incomplete or inactive; refusing console handoff.'
+            exit 1
+        }
+    }
     $sessions = @(
         foreach ($session in [DesktopSessions]::List()) {
             if ($session.Id -gt 0 -and $session.State -in @(0, 4)) {

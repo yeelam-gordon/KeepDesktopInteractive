@@ -10,11 +10,11 @@ screenshots even while your apps keep running. This project addresses both:
 
 ## Two computers. Two launchers.
 
-Clone or download this repo on both computers, into a permanent folder.
+Use a **fresh trusted clone** on both computers, inside your existing user's private folder.
 The repo is **private** for now; access is required.
 
 ```powershell
-git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git C:\s\KeepDesktopInteractive
+git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
 ```
 
 | Where | Double-click | Then |
@@ -24,6 +24,11 @@ git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git C:\s\KeepD
 
 No stored passwords, no autologon, no background agent server. Automation stays
 in your logged-in user session. Requires Windows PowerShell 5.1 and VBScript.
+
+Installed scripts live in `%ProgramData%\DevboxDesktopSession`: **Administrators
+and SYSTEM can modify them; your normal user can only read and execute them.**
+Do not install from a shared writable checkout. Updating installed code requires
+administrator approval.
 
 ## Prove it works
 
@@ -35,8 +40,9 @@ in your logged-in user session. Requires Windows PowerShell 5.1 and VBScript.
 wscript.exe .\test-desktop-after-disconnect.vbs --minimized-test
 ```
 
-Check `desktop-proof.json` for **`Passed: true`** and the matching mode.
-Logs and screenshots stay in `Diagnostics\`, excluded from Git.
+Check `%LOCALAPPDATA%\KeepDesktopInteractive\desktop-proof.json` for
+**`Passed: true`** and the matching mode. Private logs and screenshots stay
+beside that result, outside the installed scripts and Git checkout.
 
 ## Know before using
 

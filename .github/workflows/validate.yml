@@ -16,3 +16,6 @@ jobs:
       - name: Check scripts and read-only session discovery
         shell: powershell
         run: .\Test-Configuration.ps1
+      - name: Check filesystem security safeguards
+        shell: powershell
+        run: .\Test-SecurityConfiguration.ps1

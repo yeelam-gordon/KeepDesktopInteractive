@@ -1,21 +1,19 @@
 param(
-    [switch]$VerifyDisconnect,
     [switch]$Uninstall
 )
 
 $ErrorActionPreference = 'Stop'
-$resultPath = Join-Path $PSScriptRoot 'elevation-result.json'
+$resultPath = $null
 try {
+    . (Join-Path $PSScriptRoot 'DesktopSessionSecurity.ps1')
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $resultPath = Join-Path (Get-PrivateDesktopDataDirectory) 'elevation-result.json'
+    Assert-TrustedSource -Directory $PSScriptRoot -UserSid $identity.User.Value
     $installer = Join-Path $PSScriptRoot 'Install-DesktopSessionTask.ps1'
     if ($Uninstall) {
-        if ($VerifyDisconnect) { throw 'Uninstall cannot be combined with VerifyDisconnect.' }
         $installer = Join-Path $PSScriptRoot 'Uninstall-DesktopSessionTasks.ps1'
     }
-    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
     $arguments = "-NoProfile -NonInteractive -ExecutionPolicy Bypass -File `"$installer`" -TargetUser `"$($identity.Name)`" -TargetSid `"$($identity.User.Value)`""
-    if ($VerifyDisconnect) {
-        $arguments += " -TestSessionId $((Get-Process -Id $PID).SessionId)"
-    }
     $process = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -ArgumentList $arguments -Verb RunAs -WindowStyle Hidden -PassThru
     try {
         if (-not $process.WaitForExit(60000)) {
@@ -32,7 +30,10 @@ try {
     finally { $process.Dispose() }
 }
 catch {
-    @{ Error = $_.Exception.Message; Time = (Get-Date -Format o) } |
-        ConvertTo-Json | Set-Content -LiteralPath $resultPath -Encoding UTF8
+    if ($resultPath) {
+        @{ Error = $_.Exception.Message; Time = (Get-Date -Format o) } |
+            ConvertTo-Json | Set-Content -LiteralPath $resultPath -Encoding UTF8
+    }
+    Write-Error -ErrorRecord $_ -ErrorAction Continue
     exit 1
 }
