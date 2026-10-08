@@ -166,7 +166,7 @@ function Write-AtomicJson([string]$Path, [object]$Value) {
     }
     finally { $stream.Dispose() }
     try {
-        if (Test-Path -LiteralPath $Path) { [IO.File]::Replace($temporary, $Path, $null) }
+        if (Test-Path -LiteralPath $Path) { [IO.File]::Replace($temporary, $Path, [NullString]::Value) }
         else { [IO.File]::Move($temporary, $Path) }
     }
     finally {

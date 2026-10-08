@@ -157,14 +157,14 @@ Static syntax check, including compilation of embedded C# declarations. It does 
 run setup, discovery, filesystem tests, or UI input:
 
 ```powershell
-powershell.exe -NoProfile -File .\Test-Configuration.ps1 -SyntaxOnly
+powershell.exe -NoProfile -File .\Test-DesktopSessionConfiguration.ps1 -SyntaxOnly
 ```
 
 When you are ready for non-UI configuration and filesystem safeguards:
 
 ```powershell
-powershell.exe -NoProfile -File .\Test-Configuration.ps1
-powershell.exe -NoProfile -File .\Test-SecurityConfiguration.ps1
+powershell.exe -NoProfile -File .\Test-DesktopSessionConfiguration.ps1
+powershell.exe -NoProfile -File .\Test-DesktopSessionSecurity.ps1
 ```
 
 This checks script syntax, launcher wiring, and read-only session discovery.
@@ -172,7 +172,7 @@ The security check uses a temporary private test directory to verify rejection o
 unsafe ownership, permissions, hard links, and reparse points. It does not disconnect
 you or change registry values or scheduled tasks.
 
-After installing, run `Test-SecurityConfiguration.ps1 -Installed` as the normal,
+After installing, run `Test-DesktopSessionSecurity.ps1 -Installed` as the normal,
 non-elevated automation user. It also verifies the installed code cannot be opened
 for writing and checks installed task permissions. Run live disconnect/minimize
 checks separately when no other UI automation is using the desktop.
@@ -183,6 +183,16 @@ Do not run setup from the old shared checkout. Clone the updated repository into
 your private profile, then run setup there with administrator approval. Runtime
 diagnostics will move to your private data directory after deployment; old evidence
 is retained. No host tasks are changed merely by updating the development checkout.
+
+To explicitly uninstall the previous tasks before installing the replacement,
+use one administrator approval:
+
+```powershell
+wscript.exe .\launch-desktop-session-setup.vbs --replace
+```
+
+The replacement checks that both old tasks were removed before creating new ones.
+It retains logs and does not disconnect you or send UI input.
 
 If the old client setup saved its original registry backup beside the old scripts,
 restore with that original client version first, then apply the updated setup.

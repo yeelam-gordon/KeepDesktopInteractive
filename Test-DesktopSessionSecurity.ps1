@@ -1,7 +1,7 @@
 param([switch]$Installed)
 
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'DesktopSessionSecurity.ps1')
+. (Join-Path $PSScriptRoot 'Initialize-DesktopSessionSecurity.ps1')
 $sid = [Security.Principal.WindowsIdentity]::GetCurrent().User.Value
 $directory = Join-Path $env:LOCALAPPDATA ('KeepDesktopSecurityTest-' + [Guid]::NewGuid().ToString('N'))
 $file = Join-Path $directory 'example.ps1'
@@ -42,7 +42,7 @@ try {
     if ($Installed) {
         $root = Join-Path $env:ProgramData 'DevboxDesktopSession'
         Assert-TrustedPath -Path $root -WriterSids @()
-        foreach ($name in @('DesktopSessionSecurity.ps1', 'Test-DesktopAfterDisconnect.ps1', 'test-desktop-after-disconnect.vbs')) {
+        foreach ($name in @('Initialize-DesktopSessionSecurity.ps1', 'Test-InteractiveDesktopAutomation.ps1', 'test-desktop-after-disconnect.vbs')) {
             $path = Join-Path $root $name
             Assert-TrustedPath -Path $path -WriterSids @()
             $stream = $null

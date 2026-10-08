@@ -5,7 +5,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'DesktopSessionSecurity.ps1')
+. (Join-Path $PSScriptRoot 'Initialize-DesktopSessionSecurity.ps1')
 $dataDirectory = Get-PrivateDesktopDataDirectory
 $started = [DateTime]::UtcNow
 $runDirectory = Join-Path $dataDirectory ("Diagnostics\" + $started.ToString('yyyyMMdd-HHmmss-fff') + "-$PID")

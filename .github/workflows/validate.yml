@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Check scripts and read-only session discovery
         shell: powershell
-        run: .\Test-Configuration.ps1
+        run: .\Test-DesktopSessionConfiguration.ps1
       - name: Check filesystem security safeguards
         shell: powershell
-        run: .\Test-SecurityConfiguration.ps1
+        run: .\Test-DesktopSessionSecurity.ps1

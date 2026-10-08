@@ -1,7 +1,7 @@
 param([switch]$Restore)
 
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'DesktopSessionSecurity.ps1')
+. (Join-Path $PSScriptRoot 'Initialize-DesktopSessionSecurity.ps1')
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
 Assert-TrustedSource -Directory $PSScriptRoot -UserSid $identity.User.Value
 $dataDirectory = Get-PrivateDesktopDataDirectory

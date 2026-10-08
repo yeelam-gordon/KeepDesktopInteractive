@@ -1,11 +1,12 @@
 param(
     [Parameter(Mandatory = $true)][string]$TargetUser,
     [Parameter(Mandatory = $true)][string]$TargetSid,
-    [int]$TestSessionId = -1
+    [int]$TestSessionId = -1,
+    [switch]$RemovePreviousFirst
 )
 
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'DesktopSessionSecurity.ps1')
+. (Join-Path $PSScriptRoot 'Initialize-DesktopSessionSecurity.ps1')
 $root = Join-Path $env:ProgramData 'DevboxDesktopSession'
 $statePath = Join-Path $root 'setup-result.json'
 $taskName = 'KeepDesktopInteractiveOnDisconnect'
@@ -22,14 +23,14 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
 if ((Resolve-AccountSid $TargetUser) -ne $TargetSid) { throw 'TargetUser and TargetSid do not identify the same account.' }
 Assert-TrustedSource -Directory $PSScriptRoot -UserSid $TargetSid
 if ($TestSessionId -ge 0) { throw 'Use a normal manual disconnect for verification; setup never forces a disconnect.' }
-$files = @('DesktopSessionSecurity.ps1', 'Test-DesktopAfterDisconnect.ps1', 'test-desktop-after-disconnect.vbs')
+$files = @('Initialize-DesktopSessionSecurity.ps1', 'Test-InteractiveDesktopAutomation.ps1', 'test-desktop-after-disconnect.vbs')
 $sourceBytes = @{}
 foreach ($name in $files) {
     $path = Join-Path $PSScriptRoot $name
     Assert-TrustedPath -Path $path -WriterSids @($TargetSid)
     $sourceBytes[$name] = [IO.File]::ReadAllBytes($path)
 }
-$workerPath = Join-Path $PSScriptRoot 'Keep-DesktopInteractive.ps1'
+$workerPath = Join-Path $PSScriptRoot 'Move-DisconnectedSessionToConsole.ps1'
 Assert-TrustedPath -Path $workerPath -WriterSids @($TargetSid)
 $worker = [IO.File]::ReadAllText($workerPath)
 $existingTasks = @(Get-ScheduledTask -ErrorAction Stop | Where-Object {
@@ -62,6 +63,14 @@ else {
     if ($existingTasks.Count) { throw 'Managed tasks exist without a protected installation. Remove them as an administrator before setup.' }
     New-SecuredDirectory -Path $root -OwnerSid 'S-1-5-32-544' -ReaderSid $TargetSid
 }
+if ($RemovePreviousFirst -and $existingTasks.Count) {
+    & (Join-Path $PSScriptRoot 'Uninstall-DesktopSessionTasks.ps1') -TargetUser $TargetUser -TargetSid $TargetSid
+    $remaining = @(Get-ScheduledTask -ErrorAction Stop | Where-Object {
+        $_.TaskPath -eq '\' -and $_.TaskName -in @($descriptions.Keys)
+    })
+    if ($remaining.Count) { throw 'Previous tasks were not completely removed; replacement installation was not started.' }
+    $existingTasks = @()
+}
 
 $state = @{
     Installed = $false
@@ -92,7 +101,7 @@ try {
         try { $stream.Write($sourceBytes[$name], 0, $sourceBytes[$name].Length); $stream.Flush($true) }
         finally { $stream.Dispose() }
         $destination = Join-Path $root $name
-        if (Test-Path -LiteralPath $destination) { [IO.File]::Replace($temporary, $destination, $null) }
+        if (Test-Path -LiteralPath $destination) { [IO.File]::Replace($temporary, $destination, [NullString]::Value) }
         else { [IO.File]::Move($temporary, $destination) }
         Assert-TrustedPath -Path $destination -WriterSids @()
         if ([Convert]::ToBase64String([IO.File]::ReadAllBytes($destination)) -ne [Convert]::ToBase64String($sourceBytes[$name])) {

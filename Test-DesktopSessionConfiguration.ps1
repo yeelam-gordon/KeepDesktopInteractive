@@ -28,9 +28,9 @@ if ($SyntaxOnly) {
     return
 }
 $launchers = @{
-    'launch-desktop-session-setup.vbs' = 'Launch-DesktopSessionSetup.ps1'
+    'launch-desktop-session-setup.vbs' = 'Start-DesktopSessionSetup.ps1'
     'set-local-rdp-minimize-rendering.vbs' = 'Set-LocalRdpMinimizeRendering.ps1'
-    'test-desktop-after-disconnect.vbs' = 'Test-DesktopAfterDisconnect.ps1'
+    'test-desktop-after-disconnect.vbs' = 'Test-InteractiveDesktopAutomation.ps1'
 }
 foreach ($name in $launchers.Keys) {
     $text = Get-Content -LiteralPath (Join-Path $PSScriptRoot $name) -Raw
@@ -41,7 +41,7 @@ foreach ($name in $launchers.Keys) {
 }
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
 $sessionId = (Get-Process -Id $PID).SessionId
-$script = Join-Path $PSScriptRoot 'Keep-DesktopInteractive.ps1'
+$script = Join-Path $PSScriptRoot 'Move-DisconnectedSessionToConsole.ps1'
 $command = "& '$($script.Replace("'", "''"))' -TargetUser '$($identity.Name.Replace("'", "''"))' -InspectOnly"
 $encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($command))
 $info = [Diagnostics.ProcessStartInfo]::new()
