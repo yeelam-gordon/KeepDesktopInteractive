@@ -3,7 +3,12 @@
 > [!WARNING]
 > **After disconnect, this project's console handoff intentionally leaves your Windows desktop unlocked.**
 > Anyone with physical keyboard/mouse access or interactive VM-console access can use your Windows session without signing in to Windows.
-> Use only on a dedicated machine with tightly controlled console access, where your organization's policies permit it. This is **not automation behind a locked screen**.
+>
+> **Lower-risk examples:** a cloud Dev Box/VM where untrusted people cannot reach a physical screen or open its console; or a dedicated pipeline test machine/account with the same access restrictions. A test account may still have access to credentials, test data, and other systems.
+>
+> **Hyper-V:** people allowed to open VMConnect can use the unlocked desktop. Only enable this if you trust the host administrators and everyone granted VM-console access.
+>
+> **Do not use:** a shared office PC others can walk up to, or a VM whose console is accessible to people you do not trust. Follow your organization's policies. This is **not automation behind a locked screen**.
 
 ![KeepDesktopInteractive: remote desktop disconnects or minimizes can interrupt UI automation; configure the remote host and local client so the same user session keeps working.](assets/keep-desktop-interactive.png)
 

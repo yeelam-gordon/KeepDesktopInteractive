@@ -3,7 +3,12 @@
 > [!WARNING]
 > **Console handoff intentionally leaves the configured user's Windows desktop unlocked after remote disconnect.**
 > Anyone with physical keyboard/mouse access or interactive VM-console access can use that session without signing in to Windows.
-> Use only where console access is tightly controlled and your organization's policies permit an unlocked desktop.
+>
+> **Lower-risk examples:** a cloud Dev Box/VM with no physical or interactive console access for untrusted people; or a dedicated pipeline test machine/account with those same restrictions. A test account is not automatically safe: it may have credentials, test data, or access to other systems.
+>
+> **Hyper-V:** trust the host administrators and everyone allowed to open VMConnect, because they can use the unlocked desktop.
+>
+> **Do not use:** a shared PC others can walk up to, or a VM with console access for people you do not trust. Follow your organization's policies.
 
 ## Scope
 
