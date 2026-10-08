@@ -1,5 +1,10 @@
 # KeepDesktopInteractive
 
+> [!WARNING]
+> **After disconnect, this project's console handoff intentionally leaves your Windows desktop unlocked.**
+> Anyone with physical keyboard/mouse access or interactive VM-console access can use your Windows session without signing in to Windows.
+> Use only on a dedicated machine with tightly controlled console access, where your organization's policies permit it. This is **not automation behind a locked screen**.
+
 ![KeepDesktopInteractive: remote desktop disconnects or minimizes can interrupt UI automation; configure the remote host and local client so the same user session keeps working.](assets/keep-desktop-interactive.png)
 
 **Close the remote desktop window, not your automation.**
@@ -48,7 +53,6 @@ beside that result, outside the installed scripts and Git checkout.
 
 ## Know before using
 
-- **Security:** disconnect handoff intentionally leaves the desktop unlocked. Use only where permitted.
 - **Minimize:** client support varies, especially Windows App versions. Verify your own setup.
 - **Reboot:** settings persist; log in and unlock once, then restart your apps and automation.
 - **Limits:** sleep, shutdown, lock policies, and sign-out can still stop automation.

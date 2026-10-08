@@ -1,5 +1,10 @@
 # Configuration guide
 
+> [!WARNING]
+> **Console handoff intentionally leaves the configured user's Windows desktop unlocked after remote disconnect.**
+> Anyone with physical keyboard/mouse access or interactive VM-console access can use that session without signing in to Windows.
+> Use only where console access is tightly controlled and your organization's policies permit an unlocked desktop.
+
 ## Scope
 
 The host can be a physical Windows PC or a Windows VM. It needs a logged-in,
@@ -47,6 +52,10 @@ uses protected copies in `%ProgramData%\KeepDesktopInteractive`, not the checkou
 Moving or editing the checkout does not change installed behavior; reinstall to update.
 
 ## Security boundaries
+
+The safeguards below protect installed code and task definitions from tampering.
+They do **not** protect an unlocked desktop from someone with console access.
+Console handoff does not change RDP authentication or allow unauthenticated RDP connections.
 
 | Location | Who may modify it | Purpose |
 | --- | --- | --- |
