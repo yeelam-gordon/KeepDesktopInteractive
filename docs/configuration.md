@@ -111,6 +111,20 @@ The remote machine cannot observe whether the client window is minimized. A pass
 minimize test proves this case only if you kept the client minimized during input
 and screenshot capture.
 
+### Locking the local notebook
+
+On 2026-10-08, real mouse input, typing, and screenshot capture passed while the
+local notebook was locked and kept awake, with the RDP client left open. The
+probe ran in the remote user's non-console session, so this result did not rely
+on console handoff. The user confirmed the local lock interval; the remote host
+cannot observe the notebook's lock screen.
+
+This verifies the tested client/host setup, not every RDP client or a separate
+lock-screen protection feature. Locking the local notebook is different from
+locking the remote desktop: this project does not unlock a locked remote desktop.
+Local sleep or client policies can also disconnect RDP; a disconnect then invokes
+the normal host handoff, subject to the same safeguards and unlocked-console warning.
+
 ## What persists
 
 - After disconnect, a SYSTEM task transfers only the selected user's disconnected

@@ -58,9 +58,10 @@ beside that result, outside the installed scripts and Git checkout.
 
 ## Know before using
 
+- **Lock your local notebook:** remote mouse input, typing, and screenshots passed on our tested setup. Keep the notebook awake and the remote desktop unlocked; verify with your own RDP client.
 - **Minimize:** client support varies, especially Windows App versions. Verify your own setup.
 - **Reboot:** settings persist; log in and unlock once, then restart your apps and automation.
-- **Limits:** sleep, shutdown, lock policies, and sign-out can still stop automation.
+- **Limits:** remote desktop locking, sleep, shutdown, and sign-out can still stop automation. Locking your local notebook is not the same as locking the remote desktop.
 
 [Setup results, troubleshooting, undo, and implementation details](docs/configuration.md)
 
