@@ -35,7 +35,8 @@ $launchers = @{
 foreach ($name in $launchers.Keys) {
     $text = Get-Content -LiteralPath (Join-Path $PSScriptRoot $name) -Raw
     if ($text -notmatch [regex]::Escape($launchers[$name]) -or
-        $text -notmatch 'shell\.Run\(command, 0, True\)') {
+        $text -notmatch 'shell\.Run\(command, 0, True\)' -or
+        $text -notmatch [regex]::Escape('%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe')) {
         throw "Launcher $name is not wired to its expected script in hidden, synchronous mode."
     }
 }

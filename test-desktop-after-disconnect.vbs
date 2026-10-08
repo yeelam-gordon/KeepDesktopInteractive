@@ -1,7 +1,7 @@
 Dim shell, folder, command
 Set shell = CreateObject("WScript.Shell")
 folder = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName)
-command = "powershell.exe -STA -NoProfile -NonInteractive -ExecutionPolicy Bypass -File """ & folder & "\Test-InteractiveDesktopAutomation.ps1"""
+command = """" & shell.ExpandEnvironmentStrings("%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe") & """ -STA -NoProfile -NonInteractive -ExecutionPolicy Bypass -File """ & folder & "\Test-InteractiveDesktopAutomation.ps1"""
 If WScript.Arguments.Count > 0 Then
     Select Case WScript.Arguments(0)
         Case "--connected-smoke-test"
