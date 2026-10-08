@@ -1,4 +1,9 @@
 $ErrorActionPreference = 'Stop'
+if ($PSVersionTable.PSEdition -eq 'Desktop') {
+    # A VBScript intermediary can inherit PowerShell 7's incompatible module path.
+    $systemModules = Join-Path $PSHOME 'Modules'
+    $env:PSModulePath = $systemModules + [IO.Path]::PathSeparator + $env:PSModulePath
+}
 $script:AdministrativeSids = @('S-1-5-18', 'S-1-5-32-544')
 $script:TrustedInstallerSid = 'S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464'
 if (-not ('DesktopFileSecurity' -as [type])) {
