@@ -50,7 +50,7 @@ trap {
 Write-ProofResult @{}
 Write-DiagnosticLog "Started as $($script:report.User), PID=$PID, session=$sessionId, mode=$($script:report.Mode)."
 if ($RequireInstalledSetup) {
-    $installed = Get-Content -LiteralPath (Join-Path $env:ProgramData 'DevboxDesktopSession\setup-result.json') -Raw | ConvertFrom-Json
+    $installed = Get-Content -LiteralPath (Join-Path $env:ProgramData 'KeepDesktopInteractive\setup-result.json') -Raw | ConvertFrom-Json
     if (-not $installed.Installed -or $installed.Status -ne 'Ready') {
         throw 'Setup is incomplete or inactive; diagnostics will not send input.'
     }

@@ -58,7 +58,7 @@ function Get-SessionOwner([int]$SessionId) {
 function Write-SessionLog([string]$Message) {
     $line = "$(Get-Date -Format o) $Message"
     if ($InspectOnly) { Write-Output $line; return }
-    $log = Join-Path $env:ProgramData 'DevboxDesktopSession\session-handoff.log'
+    $log = Join-Path $env:ProgramData 'KeepDesktopInteractive\session-handoff.log'
     if ((Test-Path $log) -and (Get-Item $log).Length -gt 1MB) {
         Move-Item $log "$log.previous" -Force
     }
@@ -67,7 +67,7 @@ function Write-SessionLog([string]$Message) {
 
 try {
     if (-not $InspectOnly) {
-        $installed = Get-Content -LiteralPath (Join-Path $env:ProgramData 'DevboxDesktopSession\setup-result.json') -Raw | ConvertFrom-Json
+        $installed = Get-Content -LiteralPath (Join-Path $env:ProgramData 'KeepDesktopInteractive\setup-result.json') -Raw | ConvertFrom-Json
         if (-not $installed.Installed -or $installed.Status -ne 'Ready') {
             Write-SessionLog 'Setup is incomplete or inactive; refusing console handoff.'
             exit 1

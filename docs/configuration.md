@@ -1,5 +1,15 @@
 # Configuration guide
 
+## Scope
+
+The host can be a physical Windows PC or a Windows VM. It needs a logged-in,
+unlocked interactive user session and working Windows RDP/console support.
+The client-side registry setup is for a local Windows RDP client.
+Linux/macOS hosts, headless desktops, and clients that ignore this registry setting
+are not covered. Multi-user Remote Desktop Services deployments are not validated;
+the project configures one automation user per host and will not displace another
+console user. Managed policies may prohibit the required unlocked desktop.
+
 ## Quick setup
 
 Create a fresh clone from this trusted GitHub repository on both computers.
@@ -14,7 +24,7 @@ The repository is currently private, so cloning or downloading requires access.
 
 | Where | Run | What it does |
 | --- | --- | --- |
-| Remote Windows machine, logged in as the automation user | Double-click `launch-desktop-session-setup.vbs` and approve administrator elevation | Install persistent disconnect-handoff and diagnostic tasks for that user |
+| Remote Windows PC or VM, logged in as the automation user | Double-click `start-desktop-session-setup.vbs` and approve administrator elevation | Install persistent disconnect-handoff and diagnostic tasks for that user |
 | Local PC running Windows App or Remote Desktop Connection | Double-click `set-local-rdp-minimize-rendering.vbs` | Set the current user's minimized-rendering registry value in the 32-bit and 64-bit registry views |
 
 Fully close and reopen the remote client after client setup, then reconnect.
@@ -29,13 +39,13 @@ approval remains visible. VBScript and Windows PowerShell 5.1 must be available.
 Check setup results:
 
 - Remote: `%LOCALAPPDATA%\KeepDesktopInteractive\elevation-result.json`, then
-  `%ProgramData%\DevboxDesktopSession\setup-result.json` with `Installed: true`
+  `%ProgramData%\KeepDesktopInteractive\setup-result.json` with `Installed: true`
   and `Status: Ready`.
 - Local: `%LOCALAPPDATA%\KeepDesktopInteractive\local-rdp-minimize-result.json`
   with `Succeeded: true`.
 
 Setup never forces a disconnect or sends UI input. The installed diagnostic task
-uses protected copies in `%ProgramData%\DevboxDesktopSession`, not the checkout.
+uses protected copies in `%ProgramData%\KeepDesktopInteractive`, not the checkout.
 Moving or editing the checkout does not change installed behavior; reinstall to update.
 
 ## Security boundaries
@@ -43,7 +53,7 @@ Moving or editing the checkout does not change installed behavior; reinstall to 
 | Location | Who may modify it | Purpose |
 | --- | --- | --- |
 | Private source checkout | Your current user and administrators | Trusted setup input; never clone into a folder writable by other users |
-| `%ProgramData%\DevboxDesktopSession` | Administrators and SYSTEM only | Installed executable scripts, activation record, and SYSTEM handoff log |
+| `%ProgramData%\KeepDesktopInteractive` | Administrators and SYSTEM only | Installed executable scripts, activation record, and SYSTEM handoff log |
 | `%LOCALAPPDATA%\KeepDesktopInteractive` | Your current user and administrators | Diagnostic results, screenshots, client registry backup, and setup result |
 
 Installers reject untrusted owners, other-user write/replace permissions, hard-linked
@@ -72,7 +82,7 @@ in `%LOCALAPPDATA%\KeepDesktopInteractive\desktop-proof.json`.
 **Minimize:** run this on the remote machine:
 
 ```powershell
-wscript.exe .\test-desktop-after-disconnect.vbs --minimized-test
+wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
 ```
 
 Immediately minimize the remote client and leave it minimized for 90 seconds.
@@ -92,12 +102,12 @@ and screenshot capture.
 ## What persists
 
 - After disconnect, a SYSTEM task transfers only the selected user's disconnected
-  session to the console with `tscon`. Copilot, applications, and UI automation
+  session to the console with `tscon`. Applications and UI automation
   continue as that user, not SYSTEM.
 - A separate interactive-user task runs diagnostics 10 seconds after disconnect.
   It completes within a bounded run; there is no polling while connected.
 - Tasks and client registry settings survive reboot. After a remote reboot, log
-  in and unlock once. Restart Copilot, your applications, and automation runners
+  in and unlock once. Restart your applications and automation runners
   unless you separately configured them to start at logon. This project does not
   enable autologon or restart your applications.
 - You can reconnect normally. No RDP authentication, networking, or firewall
@@ -137,7 +147,7 @@ script file. Reinstall after changing that script.
 Remove remote scheduled tasks from the remote machine:
 
 ```powershell
-wscript.exe .\launch-desktop-session-setup.vbs --uninstall
+wscript.exe .\start-desktop-session-setup.vbs --uninstall
 ```
 
 Restore the original client registry values on the same client PC and user:
@@ -188,11 +198,17 @@ To explicitly uninstall the previous tasks before installing the replacement,
 use one administrator approval:
 
 ```powershell
-wscript.exe .\launch-desktop-session-setup.vbs --replace
+wscript.exe .\start-desktop-session-setup.vbs --replace
 ```
 
 The replacement checks that both old tasks were removed before creating new ones.
 It retains logs and does not disconnect you or send UI input.
+
+For the first prototype's old installation location, setup removes its managed
+tasks before installing into `%ProgramData%\KeepDesktopInteractive`. Old logs and
+files remain at their original location as evidence; no task references them
+after successful migration. Uninstall also recognizes the old location when
+the current installation directory does not exist.
 
 If the old client setup saved its original registry backup beside the old scripts,
 restore with that original client version first, then apply the updated setup.

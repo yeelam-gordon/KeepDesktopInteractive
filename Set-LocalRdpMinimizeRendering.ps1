@@ -17,7 +17,7 @@ if ([Environment]::Is64BitOperatingSystem) {
 try {
     Add-Type -AssemblyName System.Windows.Forms
     if ([Windows.Forms.SystemInformation]::TerminalServerSession) {
-        throw 'Run this script on the local PC running Windows App, not inside the Devbox or another remote desktop.'
+        throw 'Run this script on the local Windows PC running the remote desktop client, not inside a remote session.'
     }
     if (-not $Restore -and -not (Test-Path -LiteralPath $backupPath)) {
         $originalValues = foreach ($view in $views) {
@@ -97,9 +97,9 @@ try {
         Restored = [bool]$Restore
         Computer = $env:COMPUTERNAME
         TimeUtc = [DateTime]::UtcNow.ToString('o')
-        WindowsAppMinimizedAutomationVerified = $false
+        MinimizedAutomationVerified = $false
     } | ConvertTo-Json | Set-Content -LiteralPath $resultPath -Encoding UTF8
-    Write-Output 'Registry settings verified. Close and reopen Windows App. Minimized UI automation still needs a live test.'
+    Write-Output 'Registry settings verified. Close and reopen the remote desktop client. Minimized UI automation still needs a live test.'
 }
 catch {
     @{ Succeeded = $false; Error = $_.Exception.Message; TimeUtc = [DateTime]::UtcNow.ToString('o') } |

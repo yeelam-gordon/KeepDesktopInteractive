@@ -7,14 +7,12 @@ param(
 
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'Initialize-DesktopSessionSecurity.ps1')
-$root = Join-Path $env:ProgramData 'DevboxDesktopSession'
+$root = Join-Path $env:ProgramData 'KeepDesktopInteractive'
+$legacyRoot = Join-Path $env:ProgramData 'DevboxDesktopSession'
 $statePath = Join-Path $root 'setup-result.json'
 $taskName = 'KeepDesktopInteractiveOnDisconnect'
 $diagnosticTaskName = 'DiagnoseUIAutomationOnDisconnect'
-$descriptions = @{
-    KeepDesktopInteractiveOnDisconnect = "Keep the selected user's desktop interactive after remote disconnect by transferring their disconnected session to the console. No autologon or stored credentials."
-    DiagnoseUIAutomationOnDisconnect = 'Run bounded desktop input diagnostics as the logged-in user after remote disconnect; save results without requiring Copilot to remain connected.'
-}
+$descriptions = $script:DesktopSessionTaskDescriptions
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
 $principal = [Security.Principal.WindowsPrincipal]::new($identity)
 if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
@@ -23,7 +21,7 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
 if ((Resolve-AccountSid $TargetUser) -ne $TargetSid) { throw 'TargetUser and TargetSid do not identify the same account.' }
 Assert-TrustedSource -Directory $PSScriptRoot -UserSid $TargetSid
 if ($TestSessionId -ge 0) { throw 'Use a normal manual disconnect for verification; setup never forces a disconnect.' }
-$files = @('Initialize-DesktopSessionSecurity.ps1', 'Test-InteractiveDesktopAutomation.ps1', 'test-desktop-after-disconnect.vbs')
+$files = @('Initialize-DesktopSessionSecurity.ps1', 'Test-InteractiveDesktopAutomation.ps1', 'test-interactive-desktop-automation.vbs')
 $sourceBytes = @{}
 foreach ($name in $files) {
     $path = Join-Path $PSScriptRoot $name
@@ -37,13 +35,24 @@ $existingTasks = @(Get-ScheduledTask -ErrorAction Stop | Where-Object {
     $_.TaskPath -eq '\' -and $_.TaskName -in @($descriptions.Keys)
 })
 foreach ($task in $existingTasks) {
-    if ($task.Description -ne $descriptions[$task.TaskName]) { throw "An unrelated task already exists: $($task.TaskName)" }
+    if ($task.Description -ne $descriptions[$task.TaskName] -and
+        -not ($task.TaskName -eq $diagnosticTaskName -and $task.Description -eq $script:LegacyDesktopDiagnosticDescription)) {
+        throw "An unrelated task already exists: $($task.TaskName)"
+    }
     $expectedSid = $TargetSid
     if ($task.TaskName -eq $taskName) { $expectedSid = 'S-1-5-18' }
     if ((Resolve-AccountSid $task.Principal.UserId) -ne $expectedSid) {
         throw "Unexpected principal on existing task: $($task.TaskName)"
     }
     if ($task.State -eq 'Running') { throw "Wait for task $($task.TaskName) to finish before reinstalling." }
+}
+if (-not (Test-Path -LiteralPath $root) -and (Test-Path -LiteralPath $legacyRoot) -and $existingTasks.Count) {
+    & (Join-Path $PSScriptRoot 'Uninstall-DesktopSessionTasks.ps1') -TargetUser $TargetUser -TargetSid $TargetSid -LegacyInstallation
+    $remaining = @(Get-ScheduledTask -ErrorAction Stop | Where-Object {
+        $_.TaskPath -eq '\' -and $_.TaskName -in @($descriptions.Keys)
+    })
+    if ($remaining.Count) { throw 'Legacy tasks were not completely removed; migration was not started.' }
+    $existingTasks = @()
 }
 if (Test-Path -LiteralPath $root) {
     Assert-TrustedPath -Path $root -WriterSids @()
@@ -114,7 +123,7 @@ try {
     $powershell = [Security.SecurityElement]::Escape("$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe")
     $wscript = [Security.SecurityElement]::Escape("$env:SystemRoot\System32\wscript.exe")
     $sid = [Security.SecurityElement]::Escape($TargetSid)
-    $diagnosticArguments = [Security.SecurityElement]::Escape('"' + (Join-Path $root 'test-desktop-after-disconnect.vbs') + '" --installed')
+    $diagnosticArguments = [Security.SecurityElement]::Escape('"' + (Join-Path $root 'test-interactive-desktop-automation.vbs') + '" --installed')
     $xml = @{}
     $xml[$taskName] = @"
 <Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">

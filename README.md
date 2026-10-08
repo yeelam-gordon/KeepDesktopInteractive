@@ -4,6 +4,9 @@
 
 **Close the remote desktop window, not your automation.**
 
+For **Windows PCs and VMs accessed over RDP**, including Windows App and
+Remote Desktop Connection.
+
 Disconnecting or minimizing a remote desktop can break mouse input, typing, and
 screenshots even while your apps keep running. This project addresses both:
 **console handoff on the host, minimized rendering on the client.**
@@ -19,13 +22,13 @@ git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCA
 
 | Where | Double-click | Then |
 | --- | --- | --- |
-| **Remote machine** (Devbox / Windows VM) | `launch-desktop-session-setup.vbs` | Approve administrator setup |
-| **Your local PC** running Windows App / RDP | `set-local-rdp-minimize-rendering.vbs` | Fully close and reopen the remote client |
+| **Remote Windows PC or VM** | `start-desktop-session-setup.vbs` | Approve administrator setup |
+| **Your local Windows PC** running Windows App / RDP | `set-local-rdp-minimize-rendering.vbs` | Fully close and reopen the remote client |
 
 No stored passwords, no autologon, no background agent server. Automation stays
 in your logged-in user session. Requires Windows PowerShell 5.1 and VBScript.
 
-Installed scripts live in `%ProgramData%\DevboxDesktopSession`: **Administrators
+Installed scripts live in `%ProgramData%\KeepDesktopInteractive`: **Administrators
 and SYSTEM can modify them; your normal user can only read and execute them.**
 Do not install from a shared writable checkout. Updating installed code requires
 administrator approval.
@@ -37,7 +40,7 @@ administrator approval.
 **Minimize:** run this on the remote machine, then minimize the client for 90 seconds:
 
 ```powershell
-wscript.exe .\test-desktop-after-disconnect.vbs --minimized-test
+wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
 ```
 
 Check `%LOCALAPPDATA%\KeepDesktopInteractive\desktop-proof.json` for

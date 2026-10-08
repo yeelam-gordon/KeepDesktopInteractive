@@ -28,9 +28,9 @@ if ($SyntaxOnly) {
     return
 }
 $launchers = @{
-    'launch-desktop-session-setup.vbs' = 'Start-DesktopSessionSetup.ps1'
+    'start-desktop-session-setup.vbs' = 'Start-DesktopSessionSetup.ps1'
     'set-local-rdp-minimize-rendering.vbs' = 'Set-LocalRdpMinimizeRendering.ps1'
-    'test-desktop-after-disconnect.vbs' = 'Test-InteractiveDesktopAutomation.ps1'
+    'test-interactive-desktop-automation.vbs' = 'Test-InteractiveDesktopAutomation.ps1'
 }
 foreach ($name in $launchers.Keys) {
     $text = Get-Content -LiteralPath (Join-Path $PSScriptRoot $name) -Raw

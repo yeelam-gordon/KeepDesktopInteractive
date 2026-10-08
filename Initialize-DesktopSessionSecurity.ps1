@@ -6,6 +6,11 @@ if ($PSVersionTable.PSEdition -eq 'Desktop') {
 }
 $script:AdministrativeSids = @('S-1-5-18', 'S-1-5-32-544')
 $script:TrustedInstallerSid = 'S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464'
+$script:DesktopSessionTaskDescriptions = @{
+    KeepDesktopInteractiveOnDisconnect = "Keep the selected user's desktop interactive after remote disconnect by transferring their disconnected session to the console. No autologon or stored credentials."
+    DiagnoseUIAutomationOnDisconnect = 'Run bounded desktop input diagnostics as the logged-in user after remote disconnect; save results without requiring the remote desktop client to remain connected.'
+}
+$script:LegacyDesktopDiagnosticDescription = 'Run bounded desktop input diagnostics as the logged-in user after remote disconnect; save results without requiring Copilot to remain connected.'
 if (-not ('DesktopFileSecurity' -as [type])) {
     Add-Type -TypeDefinition @'
 using System;

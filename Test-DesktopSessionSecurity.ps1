@@ -40,9 +40,9 @@ try {
     $state = Get-Content -LiteralPath $json -Raw | ConvertFrom-Json
     if (-not $state.Installed -or $state.Status -ne 'Ready') { throw 'Atomic setup state update failed.' }
     if ($Installed) {
-        $root = Join-Path $env:ProgramData 'DevboxDesktopSession'
+        $root = Join-Path $env:ProgramData 'KeepDesktopInteractive'
         Assert-TrustedPath -Path $root -WriterSids @()
-        foreach ($name in @('Initialize-DesktopSessionSecurity.ps1', 'Test-InteractiveDesktopAutomation.ps1', 'test-desktop-after-disconnect.vbs')) {
+        foreach ($name in @('Initialize-DesktopSessionSecurity.ps1', 'Test-InteractiveDesktopAutomation.ps1', 'test-interactive-desktop-automation.vbs')) {
             $path = Join-Path $root $name
             Assert-TrustedPath -Path $path -WriterSids @()
             $stream = $null
@@ -57,13 +57,20 @@ try {
             throw 'Protected installation is not ready for this user.'
         }
         $diagnostic = Get-ScheduledTask -TaskName 'DiagnoseUIAutomationOnDisconnect' -ErrorAction Stop
-        $expected = '"' + (Join-Path $root 'test-desktop-after-disconnect.vbs') + '" --installed'
+        $expected = '"' + (Join-Path $root 'test-interactive-desktop-automation.vbs') + '" --installed'
         if ($diagnostic.Actions.Arguments -ne $expected -or $diagnostic.State -eq 'Disabled') {
             throw 'Diagnostic task is not wired to enabled, protected installed code.'
         }
         $folder = New-Object -ComObject 'Schedule.Service'
         $folder.Connect()
         foreach ($name in @('KeepDesktopInteractiveOnDisconnect', 'DiagnoseUIAutomationOnDisconnect')) {
+            $task = Get-ScheduledTask -TaskName $name -TaskPath '\' -ErrorAction Stop
+            $expectedSid = $sid
+            if ($name -eq 'KeepDesktopInteractiveOnDisconnect') { $expectedSid = 'S-1-5-18' }
+            if ($task.Description -ne $script:DesktopSessionTaskDescriptions[$name] -or
+                $task.State -eq 'Disabled' -or (Resolve-AccountSid $task.Principal.UserId) -ne $expectedSid) {
+                throw "Installed task has unexpected wording, activation, or principal: $name"
+            }
             $security = [Security.AccessControl.RawSecurityDescriptor]::new($folder.GetFolder('\').GetTask($name).GetSecurityDescriptor(5))
             if ($security.Owner.Value -ne 'S-1-5-32-544') { throw "Task owner is not Administrators: $name" }
             foreach ($ace in $security.DiscretionaryAcl) {
