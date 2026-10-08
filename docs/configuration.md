@@ -20,8 +20,6 @@ such as `C:\s`. No new Windows account or profile is required.
 git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
 ```
 
-The repository is currently private, so cloning or downloading requires access.
-
 | Where | Run | What it does |
 | --- | --- | --- |
 | Remote Windows PC or VM, logged in as the automation user | Double-click `start-desktop-session-setup.vbs` and approve administrator elevation | Install persistent disconnect-handoff and diagnostic tasks for that user |
@@ -133,9 +131,11 @@ The client setting is `RemoteDesktop_SuppressWhenMinimized = 2` under
 Remote Desktop Connection. Windows App behavior depends on the version; run the
 minimize test rather than assuming support.
 
-Both capabilities passed live tests on the original Windows App / Windows host
-pair before security hardening. The hardened installation still requires live
-acceptance testing. Post-reboot behavior and different machines must be verified separately.
+The protected installation passed a fresh after-disconnect test with real mouse
+input, typing, and screenshot capture. Minimized-client behavior passed on the
+original Windows App / Windows host pair before hardening; it has not been
+rechecked after deployment. Post-reboot behavior and other machines need separate
+verification.
 
 Only one automation user is configured per remote machine. Reinstalling for a
 different user is refused until the existing installation is removed. SYSTEM
@@ -221,11 +221,25 @@ the pre-setup setting. Do not discard the original backup.
 - [Microsoft: tscon](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tscon)
 - [SmartBear: minimized Remote Desktop client settings](https://support.smartbear.com/testleft/docs/using/running-tests/remote-computers/rdp/running-tests-in-minimized-remote-desktop-window.html)
 
+## Related projects
+
+Console handoff is established prior art, not a new Windows capability.
+
+| Project | Relationship |
+| --- | --- |
+| [Batzendev.RemoteDesktopLockPrevent](https://github.com/batzen/Batzendev.RemoteDesktopLockPrevent) | Closest equivalent: a LocalSystem service reacts to remote disconnect and calls `tscon`; its relevant implementation is old |
+| [Microsoft customer-scripts](https://github.com/microsoft/customer-scripts) | Small manual console-handoff script; the repository is archived |
+| [WinAppDriver](https://github.com/microsoft/WinAppDriver) | Broader Windows UI testing framework with an interactive-desktop and `tscon` deployment guide |
+| [OpenRPA](https://github.com/open-rpa/openrpa) | Broader unattended robot orchestration with credential-backed RDP sessions and robot startup |
+
+KeepDesktopInteractive stays focused on preserving one already logged-in user's
+desktop, client minimized rendering, and real-input verification. It does not
+provision robot sessions or add credential storage, autologon, or lock-policy
+workarounds.
+
 ## License
 
 [MIT](../LICENSE). You may use, modify, and redistribute the code under that license.
-Keeping the GitHub repository private limits who can access it; it does not change
-the license terms.
 
 The README illustration is original project artwork, not a test screenshot.
 Its editable source is `assets\keep-desktop-interactive.svg`; the PNG is rendered

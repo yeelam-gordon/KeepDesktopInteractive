@@ -14,7 +14,6 @@ screenshots even while your apps keep running. This project addresses both:
 ## Two computers. Two launchers.
 
 Use a **fresh trusted clone** on both computers, inside your existing user's private folder.
-The repo is **private** for now; access is required.
 
 ```powershell
 git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
