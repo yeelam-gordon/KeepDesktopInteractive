@@ -1,56 +1,92 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" role="img" aria-labelledby="title description">
-  <title id="title">KeepDesktopInteractive: close the window, not your automation</title>
-  <desc id="description">Concept illustration. Before setup, disconnecting or minimizing remote desktop can interrupt UI automation. With host console handoff and a compatible client's minimized-rendering setting, the same user's automation can continue. Verify client support on each setup.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title description">
+  <title id="title">Step away from RDP. Keep your remote agent working.</title>
+  <desc id="description">Concept illustration, not a test screenshot. Closing or locking a local notebook, losing the network, or minimizing RDP can leave remote apps running while UI automation gets stuck. Host disconnect handoff and compatible client rendering settings help preserve mouse input, typing, and screenshots. Local-lock behavior was verified on one setup; closing the lid relies on Windows detecting an RDP disconnect. The remote desktop must remain awake and unlocked. Console handoff exposes the unlocked session to physical or interactive VM-console access.</desc>
   <defs>
-    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#111a30"/>
-      <stop offset="1" stop-color="#090e1a"/>
+    <linearGradient id="background" x2="1" y2="1">
+      <stop stop-color="#111c32"/>
+      <stop offset="1" stop-color="#080e19"/>
     </linearGradient>
-    <linearGradient id="active" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1b3842"/>
-      <stop offset="1" stop-color="#142231"/>
+    <linearGradient id="after" x2="1" y2="1">
+      <stop stop-color="#14353b"/>
+      <stop offset="1" stop-color="#12232e"/>
     </linearGradient>
+    <g id="agent" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+      <rect x="0" y="8" width="62" height="42" rx="12"/>
+      <path d="M31 8V0M-7 23V36M69 23V36"/>
+      <circle cx="20" cy="26" r="3" fill="currentColor" stroke="none"/>
+      <circle cx="42" cy="26" r="3" fill="currentColor" stroke="none"/>
+      <path d="M21 39H41"/>
+    </g>
+    <g id="cross" fill="none" stroke="#ff9ca6" stroke-width="3" stroke-linecap="round">
+      <circle r="12" stroke-opacity=".35"/>
+      <path d="M-4-4L4 4M4-4L-4 4"/>
+    </g>
+    <g id="check" fill="none" stroke="#79e7cd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <circle r="12" stroke-opacity=".35"/>
+      <path d="M-6 0L-2 4L6-5"/>
+    </g>
   </defs>
-  <rect width="1200" height="600" rx="24" fill="url(#background)"/>
+  <rect width="1200" height="820" rx="24" fill="url(#background)"/>
   <g font-family="Segoe UI, Arial, sans-serif">
-    <rect x="48" y="38" width="8" height="26" rx="4" fill="#69e4ca"/>
-    <text x="70" y="61" fill="#e3eaf5" font-size="24" font-weight="600">KeepDesktopInteractive</text>
-    <text x="48" y="128" fill="#f4f7fc" font-size="48" font-weight="700">Close the window.</text>
-    <text x="48" y="185" fill="#69e4ca" font-size="48" font-weight="700">Not your automation.</text>
-    <text x="48" y="224" fill="#b2bfd3" font-size="22">Disconnect or minimize without losing the desktop your tests need.</text>
+    <text x="48" y="54" fill="#b6c8de" font-size="22" font-weight="600">KeepDesktopInteractive</text>
+    <text x="48" y="117" fill="#f4f8ff" font-size="44" font-weight="700">Step away from RDP.</text>
+    <text x="48" y="169" fill="#79e7cd" font-size="44" font-weight="700">Keep your remote agent working.</text>
 
-    <rect x="48" y="258" width="496" height="192" rx="18" fill="#151e30" stroke="#344055"/>
-    <text x="72" y="293" fill="#e7a3a7" font-size="17" font-weight="700" letter-spacing="2">BEFORE SETUP</text>
-    <rect x="76" y="320" width="116" height="78" rx="8" fill="#101725" stroke="#7e525d" stroke-width="2"/>
-    <path d="M76 340 H192" stroke="#7e525d" stroke-width="2"/>
-    <circle cx="87" cy="330" r="3" fill="#e7a3a7"/>
-    <path d="M124 356 L145 377 M145 356 L124 377" stroke="#f08a95" stroke-width="4" stroke-linecap="round"/>
-    <path d="M134 399 V414 M111 414 H157" stroke="#7e525d" stroke-width="3" stroke-linecap="round"/>
-    <text x="217" y="347" fill="#f1e6e9" font-size="24" font-weight="600">Apps still running.</text>
-    <text x="217" y="382" fill="#f08a95" font-size="24" font-weight="600">Automation stuck.</text>
-    <text x="217" y="414" fill="#afbbce" font-size="18">No usable input or screenshots</text>
+    <g fill="#152237" stroke="#32435c">
+      <rect x="48" y="198" width="352" height="92" rx="14"/>
+      <rect x="424" y="198" width="352" height="92" rx="14"/>
+      <rect x="800" y="198" width="352" height="92" rx="14"/>
+    </g>
+    <g fill="none" stroke="#bbcee4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M69 251H111L104 242H77ZM80 232L107 223"/>
+      <rect x="96" y="246" width="12" height="11" rx="2" fill="#152237"/>
+      <path d="M99 245V242a3 3 0 016 0V245"/>
+      <path d="M449 235Q467 219 485 235M454 242Q467 231 480 242M462 250H472M449 255L485 219"/>
+      <rect x="823" y="221" width="41" height="32" rx="4"/>
+      <path d="M823 231H864M838 246H850"/>
+    </g>
+    <g fill="#edf3fc" font-size="21" font-weight="600">
+      <text x="128" y="235">Close or lock</text>
+      <text x="128" y="263">your notebook</text>
+      <text x="499" y="250">Lose the network</text>
+      <text x="879" y="235">Minimize the</text>
+      <text x="879" y="263">remote window</text>
+    </g>
 
-    <path d="M568 355 H619 M605 341 L619 355 L605 369" fill="none" stroke="#8795b0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="600" y="329" text-anchor="middle" fill="#b6c8de" font-size="21">Your remote Windows VM / Dev Box: same apps, different outcome.</text>
 
-    <rect x="644" y="258" width="508" height="192" rx="18" fill="url(#active)" stroke="#426e70"/>
-    <text x="668" y="293" fill="#8eeed7" font-size="17" font-weight="700" letter-spacing="2">AFTER SETUP</text>
-    <rect x="672" y="320" width="116" height="78" rx="8" fill="#102b32" stroke="#69e4ca" stroke-width="2"/>
-    <path d="M672 340 H788" stroke="#69e4ca" stroke-width="2"/>
-    <circle cx="683" cy="330" r="3" fill="#69e4ca"/>
-    <path d="M713 367 L725 379 L747 354" fill="none" stroke="#69e4ca" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M730 399 V414 M707 414 H753" stroke="#69e4ca" stroke-width="3" stroke-linecap="round"/>
-    <text x="813" y="347" fill="#e6f8f4" font-size="24" font-weight="600">Same user session.</text>
-    <text x="813" y="382" fill="#8eeed7" font-size="24" font-weight="600">Automation continues.</text>
-    <text x="813" y="414" fill="#c0d2d8" font-size="18">Mouse + keyboard + screenshots</text>
-
-    <circle cx="66" cy="493" r="18" fill="#22324c"/>
-    <text x="66" y="500" text-anchor="middle" fill="#f4f7fc" font-size="20" font-weight="700">1</text>
-    <text x="97" y="500" fill="#e3eaf5" font-size="23" font-weight="600">REMOTE HOST</text>
-    <text x="97" y="530" fill="#b2bfd3" font-size="20">Install disconnect handoff</text>
-    <circle cx="662" cy="493" r="18" fill="#22324c"/>
-    <text x="662" y="500" text-anchor="middle" fill="#f4f7fc" font-size="20" font-weight="700">2</text>
-    <text x="693" y="500" fill="#e3eaf5" font-size="23" font-weight="600">LOCAL CLIENT</text>
-    <text x="693" y="530" fill="#b2bfd3" font-size="20">Keep rendering when minimized</text>
-    <text x="48" y="574" fill="#9eacc2" font-size="17">Client support varies. Verify on your setup. Disconnect handoff leaves the desktop unlocked.</text>
+    <rect x="48" y="354" width="528" height="316" rx="20" fill="#201d2b" stroke="#694252"/>
+    <rect x="624" y="354" width="528" height="316" rx="20" fill="url(#after)" stroke="#3a776e"/>
+    <g font-size="16" font-weight="700" letter-spacing="2">
+      <text x="76" y="391" fill="#ffafba">WITHOUT SETUP</text>
+      <text x="652" y="391" fill="#79e7cd">WITH SETUP</text>
+    </g>
+    <use href="#agent" x="81" y="419" color="#ff9ca6"/>
+    <use href="#agent" x="657" y="419" color="#79e7cd"/>
+    <g font-size="29" font-weight="700">
+      <text x="169" y="436" fill="#fff0f2">Apps still running.</text>
+      <text x="169" y="473" fill="#ff9ca6">Agent gets stuck.</text>
+      <text x="745" y="436" fill="#eafbf5">Desktop stays usable.</text>
+      <text x="745" y="473" fill="#79e7cd">Agent keeps working.</text>
+    </g>
+    <path d="M594 484H606M600 478L606 484L600 490" fill="none" stroke="#b6c8de" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <g font-size="22">
+      <use href="#cross" x="89" y="527"/>
+      <use href="#cross" x="89" y="576"/>
+      <use href="#cross" x="89" y="625"/>
+      <text x="116" y="534" fill="#e6c6d0">Mouse clicks may fail</text>
+      <text x="116" y="583" fill="#e6c6d0">Typing may stop</text>
+      <text x="116" y="632" fill="#e6c6d0">Screenshots may fail</text>
+      <use href="#check" x="665" y="527"/>
+      <use href="#check" x="665" y="576"/>
+      <use href="#check" x="665" y="625"/>
+      <text x="692" y="534" fill="#d6eee6">Mouse input</text>
+      <text x="692" y="583" fill="#d6eee6">Keyboard input</text>
+      <text x="692" y="632" fill="#d6eee6">Screenshot capture</text>
+    </g>
+    <text x="48" y="709" fill="#edf3fc" font-size="22" font-weight="600">Two launchers. Remote host: disconnect handoff. Local PC: rendering setup.</text>
+    <text x="48" y="743" fill="#b6c8de" font-size="17">Verify your client. Local lock tested on one setup; lid/network loss requires Windows to detect a disconnect.</text>
+    <rect x="48" y="764" width="1104" height="36" rx="8" fill="#332b20"/>
+    <text x="64" y="788" fill="#ffd696" font-size="17" font-weight="600">Remote host must stay awake and unlocked. Handoff leaves the desktop accessible at the physical / VM console.</text>
   </g>
 </svg>

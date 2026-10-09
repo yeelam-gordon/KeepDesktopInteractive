@@ -30,7 +30,7 @@ sign-out, or shutdown.
 >
 > **Do not use:** a shared office PC others can walk up to, or a VM whose console is accessible to people you do not trust. Follow your organization's policies. This is **not automation behind a locked screen**.
 
-![KeepDesktopInteractive: remote desktop disconnects or minimizes can interrupt UI automation; configure the remote host and local client so the same user session keeps working.](assets/keep-desktop-interactive.png)
+![Before/after: closing or locking your notebook, losing the network, or minimizing RDP can leave remote apps running but the agent stuck. Host handoff and compatible client rendering help preserve mouse input, typing, and screenshots. Verify your setup; console handoff leaves the remote desktop unlocked.](assets/keep-desktop-interactive.png)
 
 ## Two computers. Two launchers.
 
