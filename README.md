@@ -1,5 +1,12 @@
 # KeepDesktopInteractive
 
+> [!WARNING]
+> **Disconnect handoff leaves your remote Windows desktop unlocked.** Anyone at its physical keyboard or with interactive VM-console access can use your session without signing in to Windows.
+> **Do not use on a shared PC others can walk up to.** For Hyper-V, trust everyone allowed to open VMConnect. A cloud Dev Box or pipeline test account is not automatically safe: console access and account permissions still matter.
+> This is **not automation behind a locked screen**. [Safety examples and requirements](docs/configuration.md).
+
+![Before/after: closing or locking your notebook, losing the network, or minimizing RDP can leave remote apps running but the agent stuck. Host handoff and compatible client rendering help preserve mouse input, typing, and screenshots. Verify your setup; console handoff leaves the remote desktop unlocked.](https://raw.githubusercontent.com/yeelam-gordon/KeepDesktopInteractive/1213eb0de83bb0db3f6bae6d1a8c98e682c2135d/assets/keep-desktop-interactive.png)
+
 **Your remote agent should not need you to babysit an RDP window.**
 
 You leave an AI agent or UI test working on a Windows VM or Dev Box. Then you
@@ -19,18 +26,6 @@ KeepDesktopInteractive helps keep that remote desktop usable when you step away:
 No stored passwords or autologon. The remote machine must stay awake and its
 desktop unlocked; this does not keep automation working through a remote lock,
 sign-out, or shutdown.
-
-> [!WARNING]
-> **After disconnect, this project's console handoff intentionally leaves your Windows desktop unlocked.**
-> Anyone with physical keyboard/mouse access or interactive VM-console access can use your Windows session without signing in to Windows.
->
-> **Lower-risk examples:** a cloud Dev Box/VM where untrusted people cannot reach a physical screen or open its console; or a dedicated pipeline test machine/account with the same access restrictions. A test account may still have access to credentials, test data, and other systems.
->
-> **Hyper-V:** people allowed to open VMConnect can use the unlocked desktop. Only enable this if you trust the host administrators and everyone granted VM-console access.
->
-> **Do not use:** a shared office PC others can walk up to, or a VM whose console is accessible to people you do not trust. Follow your organization's policies. This is **not automation behind a locked screen**.
-
-![Before/after: closing or locking your notebook, losing the network, or minimizing RDP can leave remote apps running but the agent stuck. Host handoff and compatible client rendering help preserve mouse input, typing, and screenshots. Verify your setup; console handoff leaves the remote desktop unlocked.](https://raw.githubusercontent.com/yeelam-gordon/KeepDesktopInteractive/1213eb0de83bb0db3f6bae6d1a8c98e682c2135d/assets/keep-desktop-interactive.png)
 
 ## Two computers. Two launchers.
 
