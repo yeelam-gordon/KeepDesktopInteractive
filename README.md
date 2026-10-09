@@ -5,7 +5,7 @@
 > **Do not use on a shared PC others can walk up to.** For Hyper-V, trust everyone allowed to open VMConnect. A cloud Dev Box or pipeline test account is not automatically safe: console access and account permissions still matter.
 > This is **not automation behind a locked screen**. [Safety examples and requirements](docs/configuration.md).
 
-![Before/after: closing or locking your notebook, losing the network, or minimizing RDP can leave remote apps running but the agent stuck. Host handoff and compatible client rendering help preserve mouse input, typing, and screenshots. Verify your setup; console handoff leaves the remote desktop unlocked.](https://raw.githubusercontent.com/yeelam-gordon/KeepDesktopInteractive/1213eb0de83bb0db3f6bae6d1a8c98e682c2135d/assets/keep-desktop-interactive.png)
+![Before/after: closing or locking your notebook, losing the network, or minimizing RDP can leave remote apps running but the agent stuck. Host handoff and compatible client rendering help preserve mouse input, typing, and screenshots. Verify your setup; console handoff leaves the remote desktop unlocked.](https://raw.githubusercontent.com/yeelam-gordon/KeepDesktopInteractive/e9d356007267dc2b7ce8faa7e2b0559600d0fc9d/assets/keep-desktop-interactive.png)
 
 For **AI agents and UI tests on Windows PCs or VMs accessed over RDP**.
 Each situation has different requirements:
