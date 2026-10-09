@@ -1,5 +1,25 @@
 # KeepDesktopInteractive
 
+**Your remote agent should not need you to babysit an RDP window.**
+
+You leave an AI agent or UI test working on a Windows VM or Dev Box. Then you
+close your notebook, lock your local screen, lose the network, or minimize the
+remote window. The remote apps may still be running, but **clicks, typing, and
+screenshots can stop working**. Your agent is running, yet its work is stuck.
+
+KeepDesktopInteractive helps keep that remote desktop usable when you step away:
+
+| When you... | What helps |
+| --- | --- |
+| **Close your notebook or lose the network** | Once Windows detects an RDP disconnect, the host task hands your existing session to the console. Closing the lid is covered only if it causes that disconnect; network-loss detection can take time. |
+| **Lock your local screen** | With client setup applied, real input and screenshots passed on our tested setup while the notebook stayed awake. Verify your own client. |
+| **Minimize the remote window** | Client-side rendering configuration helps keep automation usable; support varies by RDP client. |
+
+**Two launchers: one on the remote Windows PC/VM, one on your local Windows PC.**
+No stored passwords or autologon. The remote machine must stay awake and its
+desktop unlocked; this does not keep automation working through a remote lock,
+sign-out, or shutdown.
+
 > [!WARNING]
 > **After disconnect, this project's console handoff intentionally leaves your Windows desktop unlocked.**
 > Anyone with physical keyboard/mouse access or interactive VM-console access can use your Windows session without signing in to Windows.
@@ -11,15 +31,6 @@
 > **Do not use:** a shared office PC others can walk up to, or a VM whose console is accessible to people you do not trust. Follow your organization's policies. This is **not automation behind a locked screen**.
 
 ![KeepDesktopInteractive: remote desktop disconnects or minimizes can interrupt UI automation; configure the remote host and local client so the same user session keeps working.](assets/keep-desktop-interactive.png)
-
-**Close the remote desktop window, not your automation.**
-
-For **Windows PCs and VMs accessed over RDP**, including Windows App and
-Remote Desktop Connection.
-
-Disconnecting or minimizing a remote desktop can break mouse input, typing, and
-screenshots even while your apps keep running. This project addresses both:
-**console handoff on the host, minimized rendering on the client.**
 
 ## Two computers. Two launchers.
 
