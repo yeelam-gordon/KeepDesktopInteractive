@@ -60,7 +60,7 @@
       <text x="879" y="263">remote window</text>
     </g>
 
-    <text x="600" y="329" text-anchor="middle" fill="#b6c8de" font-size="21">Your remote Windows VM / Dev Box: same apps, different outcome.</text>
+    <text x="600" y="329" text-anchor="middle" fill="#b6c8de" font-size="21">BEFORE / AFTER ON THE REMOTE MACHINE</text>
 
     <rect x="48" y="354" width="528" height="316" rx="20" fill="#201d2b" stroke="#694252"/>
     <rect x="624" y="354" width="528" height="316" rx="20" fill="url(#after)" stroke="#3a776e"/>
@@ -91,9 +91,9 @@
       <text x="692" y="583" fill="#d6eee6">Keyboard input</text>
       <text x="692" y="632" fill="#d6eee6">Screenshot capture</text>
     </g>
-    <text x="48" y="709" fill="#edf3fc" font-size="22" font-weight="600">Two launchers. Remote host: disconnect handoff. Local PC: rendering setup.</text>
-    <text x="48" y="743" fill="#b6c8de" font-size="17">Verify your client. Local lock tested on one setup; lid/network loss requires Windows to detect a disconnect.</text>
+    <text x="48" y="709" fill="#b6c8de" font-size="20">Concept illustration, not a test screenshot.</text>
+    <text x="48" y="743" fill="#b6c8de" font-size="17">Client support varies. Lid/network loss requires Windows to detect an RDP disconnect.</text>
     <rect x="48" y="764" width="1104" height="36" rx="8" fill="#332b20"/>
-    <text x="64" y="788" fill="#ffd696" font-size="17" font-weight="600">Remote host must stay awake and unlocked. Handoff leaves the desktop accessible at the physical / VM console.</text>
+    <text x="64" y="788" fill="#ffd696" font-size="17" font-weight="600">Security: console handoff exposes your session to anyone with physical / interactive VM-console access.</text>
   </g>
 </svg>
