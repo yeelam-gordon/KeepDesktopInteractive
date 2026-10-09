@@ -30,7 +30,7 @@ sign-out, or shutdown.
 >
 > **Do not use:** a shared office PC others can walk up to, or a VM whose console is accessible to people you do not trust. Follow your organization's policies. This is **not automation behind a locked screen**.
 
-![Before/after: closing or locking your notebook, losing the network, or minimizing RDP can leave remote apps running but the agent stuck. Host handoff and compatible client rendering help preserve mouse input, typing, and screenshots. Verify your setup; console handoff leaves the remote desktop unlocked.](assets/keep-desktop-interactive.png?v=1213eb0)
+![Before/after: closing or locking your notebook, losing the network, or minimizing RDP can leave remote apps running but the agent stuck. Host handoff and compatible client rendering help preserve mouse input, typing, and screenshots. Verify your setup; console handoff leaves the remote desktop unlocked.](https://raw.githubusercontent.com/yeelam-gordon/KeepDesktopInteractive/1213eb0de83bb0db3f6bae6d1a8c98e682c2135d/assets/keep-desktop-interactive.png)
 
 ## Two computers. Two launchers.
 
