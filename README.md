@@ -50,6 +50,14 @@ and SYSTEM can modify them; your normal user can only read and execute them.**
 Do not install from a shared writable checkout. Updating installed code requires
 administrator approval.
 
+**Routine updates:** obtain a fresh trusted checkout in your private user folder,
+then rerun `wscript.exe .\start-desktop-session-setup.vbs` on the remote host
+from that folder and approve administrator elevation to update installed code.
+Editing or updating the checkout alone does not update the protected installation.
+Check [setup results](docs/configuration.md#quick-setup), then repeat both
+[disconnect and minimized proofs](#prove-it-works) and inspect fresh matching-mode
+results. An update is not proof of minimized-client compatibility.
+
 ## Prove it works
 
 **Reported test history:** the maintainer reports a fresh after-disconnect pass
