@@ -1,29 +1,28 @@
 # KeepDesktopInteractive - Keep Windows GUI automation running after RDP disconnects
 
-> [!WARNING]
-> **Disconnect handoff leaves your remote Windows desktop unlocked.** Anyone at its physical keyboard or with interactive VM-console access can use your session without signing in to Windows.
-> **Do not use on a shared PC others can walk up to.** For Hyper-V, trust everyone allowed to open VMConnect. A cloud Dev Box or pipeline test account is not automatically safe: console access and account permissions still matter.
-> This is **not automation behind a locked screen**. [Safety examples and requirements](docs/configuration.md).
+If an RDP disconnect breaks your computer-use agent or UI test's **clicks, typing or screenshots**, keep its existing Windows desktop usable instead of merely leaving its apps running. This utility preserves an **already logged-in, unlocked session**; it is an independent utility, not a native agent integration, and does not start or configure your agent.
 
-![Before/after: closing or locking your notebook, losing the network, or minimizing RDP can leave remote apps running but the agent stuck. Host handoff and compatible client rendering help preserve mouse input, typing, and screenshots. Verify your setup; console handoff leaves the remote desktop unlocked.](https://raw.githubusercontent.com/yeelam-gordon/KeepDesktopInteractive/e9d356007267dc2b7ce8faa7e2b0559600d0fc9d/assets/keep-desktop-interactive.png)
+> [!WARNING]
+> **Disconnect handoff leaves the remote desktop unlocked.** Anyone with physical or interactive VM-console access can use your session without signing in to Windows. **Do not use a shared walk-up PC or an untrusted console.** This is not locked-screen automation or a lock-policy bypass. [Access risks and deployment examples](docs/configuration.md).
+
+**Start:** [Set up both computers](#two-computers-two-launchers) → [Prove real input](#prove-it-works) · [Limits](#know-before-using) · [Undo](docs/configuration.md#undo)
+
+- **Keep existing GUI work usable after disconnect:** host handoff runs once Windows detects your RDP session disconnecting; network detection may take time.
+- **Test minimized-window input separately:** the local rendering setting helps compatible clients, not every client/version.
+- **Check actual clicks, typing and capture:** mode-specific private diagnostic results distinguish usable input from apps merely running.
+
+<details>
+<summary>Languages</summary>
 
 **Languages:** [English](README.md) · [简体中文](docs/i18n/README.zh-CN.md) · [繁體中文](docs/i18n/README.zh-TW.md) · [日本語](docs/i18n/README.ja.md) · [한국어](docs/i18n/README.ko.md) · [Español](docs/i18n/README.es.md) · [Português (Brasil)](docs/i18n/README.pt-BR.md) · [Français](docs/i18n/README.fr.md) · [Deutsch](docs/i18n/README.de.md) · [Italiano](docs/i18n/README.it.md) · [Русский](docs/i18n/README.ru.md) · [Türkçe](docs/i18n/README.tr.md) · [Tiếng Việt](docs/i18n/README.vi.md) · [Bahasa Indonesia](docs/i18n/README.id.md) · [हिन्दी](docs/i18n/README.hi.md) · [العربية](docs/i18n/README.ar.md)
 
-If your **Windows GUI automation stops after RDP disconnect**, preserve an existing
-unlocked session for **computer-use agents and UI tests on Windows PCs or VMs**.
-This is an independent Windows utility, not a native integration with Copilot CLI,
-Claude Code, Codex, Gemini CLI, Kimi, or Qwen CLI. It does not start or configure your agent.
-Each situation has different requirements:
-
-| When you... | What helps |
-| --- | --- |
-| **Close your notebook or lose the network** | Once Windows detects an RDP disconnect, the host task hands your existing session to the console. Closing the lid is covered only if it causes that disconnect; network-loss detection can take time. |
-| **Lock your local screen** | Maintainer-reported pass with client setup applied and the notebook awake on the tested client/host pair; verify with your own client. This is not the same as locking the remote desktop. |
-| **Minimize the remote window** | Client-side rendering configuration helps keep automation usable; support varies by RDP client. |
+</details>
 
 ## Two computers. Two launchers.
 
-Use a **fresh trusted clone** on both computers, inside your existing user's private folder.
+**Need:** a Windows host and local Windows client; an existing logged-in, unlocked host kept powered on and awake; policies permitting this use; host administrator approval; Git, Windows PowerShell 5.1 and VBScript. Reboot requires login/unlock and restarting your apps; no headless execution or autologon. [Complete requirements](docs/configuration.md#requirements-and-limitations).
+
+Use a **fresh trusted clone** in each current user's private folder. Never use a shared writable checkout; approve host administrator elevation.
 
 ```powershell
 git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
@@ -39,11 +38,42 @@ Set-Location "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
 
 | Where | Double-click | Then |
 | --- | --- | --- |
-| **Remote Windows PC or VM** | `start-desktop-session-setup.vbs` | Approve administrator setup |
-| **Your local Windows PC** running Windows App / RDP | `set-local-rdp-minimize-rendering.vbs` | Fully close and reopen the remote client |
+| **Remote Windows PC or VM** | `start-desktop-session-setup.vbs` | Approve administrator setup; check `Installed: true` / `Status: Ready` |
+| **Your local Windows PC** running Windows App / RDP | `set-local-rdp-minimize-rendering.vbs` | Check `Succeeded: true`; fully close/reopen the client and reconnect |
 
-No stored passwords, no autologon, no background agent server. Automation stays
-in your logged-in user session. Requires Windows PowerShell 5.1 and VBScript.
+[Where to check setup results](docs/configuration.md#quick-setup). Then verify real input below; no stored passwords or background agent server.
+
+## Prove it works
+
+**Reported test history:** the maintainer reports a fresh after-disconnect pass
+with the protected installation. The minimized-client pass was on the original
+Windows App / Windows host pair **before hardening and has not been rechecked
+after deployment**. These are reported results, not new tests performed for this
+README update; verify both modes on your own setup. [Evidence scope and limits](docs/configuration.md#requirements-and-limitations).
+
+**Disconnect:** disconnect for 30 seconds, then reconnect. The diagnostic runs automatically.
+
+**Minimize:** run this on the remote machine, then immediately minimize the client for 90 seconds (the probe waits 60 seconds before input/capture):
+
+```powershell
+wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
+```
+
+Check `%LOCALAPPDATA%\KeepDesktopInteractive\desktop-proof.json` for
+**`Passed: true`** and `Mode: AfterDisconnect` or `Mode: WhileClientMinimized`,
+matching the test you just ran. A minimized pass counts only if the client stayed
+minimized during real input and screenshot capture; the host cannot observe that state.
+Private logs and screenshots stay
+beside that result, outside the installed scripts and Git checkout. They can include
+other visible desktop content; do not publish them.
+
+## What the illustration means
+
+<img src="assets/keep-desktop-interactive.png" width="700" alt="Before/after: closing or locking your notebook, losing the network, or minimizing RDP can leave remote apps running but the agent stuck. Host handoff and compatible client rendering help preserve mouse input, typing, and screenshots. Verify your setup; console handoff leaves the remote desktop unlocked.">
+
+Concept artwork with English labels, not a live test or application screenshot: apps may keep running while clicks, typing and capture fail. The after-state is conditional on your own proof. Minimized support depends on client/version; the reported local-notebook-lock pass required client setup and an awake notebook. Closing the lid or losing the network must cause Windows to detect an RDP disconnect. The reported minimized pass predates hardening and has not been rechecked after deployment.
+
+## Updates and trust
 
 Installed scripts live in `%ProgramData%\KeepDesktopInteractive`: **Administrators
 and SYSTEM can modify them; your normal user can only read and execute them.**
@@ -58,30 +88,13 @@ Check [setup results](docs/configuration.md#quick-setup), then repeat both
 [disconnect and minimized proofs](#prove-it-works) and inspect fresh matching-mode
 results. An update is not proof of minimized-client compatibility.
 
-## Prove it works
-
-**Reported test history:** the maintainer reports a fresh after-disconnect pass
-with the protected installation. The minimized-client pass was on the original
-Windows App / Windows host pair **before hardening and has not been rechecked
-after deployment**. These are reported results, not new tests performed for this
-README update; verify both modes on your own setup. [Evidence scope and limits](docs/configuration.md#requirements-and-limitations).
-
-**Disconnect:** disconnect for 30 seconds, then reconnect. The diagnostic runs automatically.
-
-**Minimize:** run this on the remote machine, then minimize the client for 90 seconds:
-
-```powershell
-wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
-```
-
-Check `%LOCALAPPDATA%\KeepDesktopInteractive\desktop-proof.json` for
-**`Passed: true`** and `Mode: AfterDisconnect` or `Mode: WhileClientMinimized`,
-matching the test you just ran. A minimized pass counts only if the client stayed
-minimized during real input and screenshot capture; the host cannot observe that state.
-Private logs and screenshots stay
-beside that result, outside the installed scripts and Git checkout.
-
 ## Know before using
+
+| When you... | What helps |
+| --- | --- |
+| **Close your notebook or lose the network** | Once Windows detects an RDP disconnect, the host task hands your existing session to the console. Closing the lid is covered only if it causes that disconnect; network-loss detection can take time. |
+| **Lock your local screen** | Maintainer-reported pass with client setup applied and the notebook awake on the tested client/host pair; verify with your own client. This is not the same as locking the remote desktop. |
+| **Minimize the remote window** | Client-side rendering configuration helps keep automation usable; support varies by RDP client. |
 
 - **Reboot:** settings persist; log in and unlock once, then restart your apps and automation.
 - **Limits:** remote desktop locking, sleep, shutdown, and sign-out can still stop automation.

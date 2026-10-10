@@ -4,7 +4,7 @@
 > **Console handoff intentionally leaves the configured user's Windows desktop unlocked after remote disconnect.**
 > Anyone with physical keyboard/mouse access or interactive VM-console access can use that session without signing in to Windows.
 >
-> **Lower-risk examples:** a cloud Dev Box/VM with no physical or interactive console access for untrusted people; or a dedicated pipeline test machine/account with those same restrictions. A test account is not automatically safe: it may have credentials, test data, or access to other systems.
+> **Deployment context:** Windows App is the connection client; Microsoft Dev Box is the managed cloud workstation/service. The specific risk is another person's access to the unlocked console, not inherent insecurity of either product. A single-developer managed host with no untrusted interactive-console path is lower-risk than a shared physical PC. Do not assume Microsoft Dev Box exposes a console to others; assess actual access and account permissions, including credentials and test data. This utility does not bypass service sign-in, MFA, or organization policies.
 >
 > **Hyper-V:** trust the host administrators and everyone allowed to open VMConnect, because they can use the unlocked desktop.
 >

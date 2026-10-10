@@ -1,10 +1,25 @@
 # KeepDesktopInteractive — Automatisation de l’interface Windows après déconnexion RDP
 
+L’automatisation de l’interface Windows s’arrête après déconnexion RDP ? Préservez une session **déjà ouverte et déverrouillée** pour les clics, la saisie et les captures de vos agents computer-use ou tests UI existants. Les échecs lorsque la fenêtre est réduite constituent un cas distinct, nécessitant un client compatible et une vérification séparée. Aucun agent n’est intégré nativement ou démarré ; aucun mot de passe n’est stocké et aucune connexion automatique n’est activée.
+
+> **Le transfert laisse le bureau distant déverrouillé.** Toute personne pouvant utiliser la console physique ou interactive de la VM peut utiliser la session sans connexion Windows. Évitez un PC partagé accessible ou une console non fiable. Pas d’automatisation derrière un écran verrouillé ni de contournement des règles. [Configuration et risques d’accès](../configuration.md).
+
+[Configuration et risques d’accès](#setup) → [Vérifier les entrées réelles](#proof) · [Limites](#limits) · [Annuler](#undo)
+
+- Après détection de la déconnexion RDP par Windows, la session existante passe à la console pour aider à maintenir les entrées GUI.
+- Le réglage de rendu aide les clients compatibles en fenêtre réduite ; vérifiez ce cas séparément.
+- Vérifiez clics, saisie et captures réels avec des résultats privés du bon mode, pas seulement des applications ouvertes.
+
+<details>
+<summary>Languages</summary>
+
 [English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
 
-> **Attention : le transfert vers la console laisse le bureau Windows distant déverrouillé.** Toute personne ayant accès au clavier physique ou à la console interactive de la VM peut utiliser votre session sans se connecter à Windows. N’utilisez pas un PC partagé accessible à d’autres personnes. Vous devez faire confiance aux administrateurs Hyper-V et aux personnes pouvant ouvrir VMConnect. Un compte de test ou une VM cloud n’est pas automatiquement sûr. Respectez les règles de votre organisation : ce projet ne permet ni l’automatisation derrière un écran distant verrouillé ni le contournement des politiques de verrouillage.
+</details>
 
-L’automatisation de l’interface Windows s’arrête après déconnexion RDP ? Préservez une session **déjà ouverte et déverrouillée** pour les clics, la saisie et les captures de vos agents computer-use ou tests UI existants. Les échecs lorsque la fenêtre est réduite constituent un cas distinct, nécessitant un client compatible et une vérification séparée. Aucun agent n’est intégré nativement ou démarré ; aucun mot de passe n’est stocké et aucune connexion automatique n’est activée.
+<a id="setup"></a>
+
+Avant installation : hôte allumé, éveillé et déverrouillé, usage permis par les règles. Prérequis Windows, administrateur, Git, PowerShell 5.1 et VBScript ci-dessous.
 
 ## Deux ordinateurs, deux configurations
 
@@ -24,6 +39,8 @@ Fermez complètement le client distant, rouvrez-le puis reconnectez-vous. Vérif
 
 ## Première vérification
 
+<a id="proof"></a>
+
 **Déconnexion :** déconnectez RDP normalement, attendez 30 secondes, puis reconnectez-vous. Le diagnostic est automatique. **Réduction :** lancez la commande suivante sur l’hôte et réduisez immédiatement la fenêtre distante du client pendant 90 secondes. Restaurez-la ensuite. Le test attend 60 secondes avant les entrées réelles et la capture.
 ```powershell
 wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
@@ -37,11 +54,19 @@ Sur l’hôte, consultez le nouveau `%LOCALAPPDATA%\KeepDesktopInteractive\deskt
 ```
 Le succès en fenêtre réduite ne compte que si elle reste réduite pendant les entrées et la capture ; l’hôte ne peut pas observer cet état. Gardez les journaux et captures privés : ils peuvent inclure d’autres éléments visibles sur le bureau. [Détails](../configuration.md#verify-on-each-new-machine).
 
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Avant et apr&#232;s d&#233;connexion RDP ou r&#233;duction : les applications restent ouvertes, mais clics, saisie et captures peuvent &#233;chouer ; transfert vers la console et client compatible aident.">
+
+Illustration conceptuelle : à gauche, les applications tournent mais l’automatisation se bloque ; à droite, clics, saisie et captures attendus après configuration. Les libellés sont anglais : ce n’est ni une interface traduite ni un test en direct. La réduction dépend du client ; fermer le portable ou perdre le réseau exige la détection de la déconnexion RDP par Windows. La console reste déverrouillée ; vérifiez votre configuration. Le verrouillage local a réussi sur le seul couple rapporté par le mainteneur, portable éveillé et client configuré. Le test avec fenêtre réduite précédait le durcissement et n’a pas été répété après déploiement.
+
+<a id="limits"></a>
+
 ## Limites, échecs et annulation
 
 Le réglage est documenté pour Remote Desktop Connection classique ; sa prise en charge par Windows App dépend de la version. Un succès ne prouve pas une compatibilité universelle. Le couple initial a réussi le test avec la fenêtre du client réduite avant le durcissement, mais n’a pas été revérifié après déploiement. Après redémarrage, connectez-vous et déverrouillez une fois, puis relancez les applications et l’automatisation. Les bureaux sans interface ne sont pas couverts. Verrouillage distant, veille, arrêt et fermeture de session peuvent encore interrompre l’automatisation. [Toutes les limites](../configuration.md#requirements-and-limitations).
 
 Si `Passed: false`, lisez `Error`, `Stage` et les journaux. Si la preuve manque ou est ancienne, vérifiez l’installation et recommencez. Si le client ne gère pas la réduction, gardez la fenêtre visible ou utilisez la déconnexion vérifiée séparément. [Dépannage](../../README.md#if-the-proof-fails) · [Contrôles](../configuration.md#configuration-checks).
+
+<a id="undo"></a>
 
 Depuis les dossiers clonés respectifs, désinstallez sur l’hôte et restaurez sur le même client avec le même utilisateur :
 ```powershell
@@ -51,3 +76,10 @@ wscript.exe .\start-desktop-session-setup.vbs --uninstall
 wscript.exe .\set-local-rdp-minimize-rendering.vbs --restore
 ```
 Conservez `%LOCALAPPDATA%\KeepDesktopInteractive\local-rdp-minimize-backup.json` du client jusqu’à ce que la restauration ne soit plus nécessaire. Les opérations sont indépendantes et ne suppriment pas les preuves. [Annulation](../configuration.md#undo) · [Guide anglais de référence](../configuration.md) · [README anglais](../../README.md).
+
+<details>
+<summary>Windows App / Microsoft Dev Box / Hyper-V</summary>
+
+> **Attention : le transfert vers la console laisse le bureau Windows distant déverrouillé.** Toute personne ayant accès au clavier physique ou à la console interactive de la VM peut utiliser votre session sans se connecter à Windows. N’utilisez pas un PC partagé accessible à d’autres personnes. Vous devez faire confiance aux administrateurs Hyper-V et aux personnes pouvant ouvrir VMConnect. Windows App est le client de connexion ; Microsoft Dev Box est le poste cloud géré. Le risque vient de l’accès d’autrui à la console déverrouillée, pas d’une insécurité intrinsèque du produit. Un hôte géré pour un développeur, sans accès interactif à la console par des personnes non fiables, présente moins de risque qu’un PC partagé. Ne supposez pas que Microsoft Dev Box offre cet accès. Respectez les règles de votre organisation : ce projet ne permet ni l’automatisation derrière un écran distant verrouillé ni le contournement des politiques de verrouillage.
+
+</details>

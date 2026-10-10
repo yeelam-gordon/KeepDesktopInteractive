@@ -1,12 +1,29 @@
 # KeepDesktopInteractive — RDP 연결 해제 후에도 Windows GUI 자동화 유지
 
-[English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
-
-> **경고: 연결 해제 후 콘솔로 세션을 넘기면 원격 Windows 데스크톱이 잠금 해제 상태로 남습니다. 물리 키보드나 대화형 VM 콘솔에 접근할 수 있는 사람은 Windows에 로그인하지 않고도 세션을 사용할 수 있습니다. 다른 사람이 접근할 수 있는 공용 PC에서는 사용하지 마세요. Hyper-V 관리자와 VMConnect를 열 수 있는 모든 사람을 신뢰할 수 있어야 합니다. 테스트 계정이나 클라우드 VM이라고 자동으로 안전한 것은 아닙니다. 조직 정책을 따르세요. 잠긴 원격 화면 뒤에서 자동화하거나 잠금 정책을 우회하지 않습니다.**
-
 RDP 연결 해제 후 Windows GUI 자동화가 멈추나요? **이미 로그인되어 있고 잠금이 해제된** 세션을 유지해 기존 computer-use 에이전트나 UI 테스트의 클릭, 입력, 화면 캡처를 지원합니다. 창을 최소화했을 때 입력이 멈추는 문제는 별도로 호환 클라이언트와 검증이 필요합니다. 에이전트와의 기본 통합이나 에이전트 실행 기능, 암호 저장, 자동 로그인은 제공하지 않습니다.
 
-**두 컴퓨터:** 원격 호스트는 자동화를 실행하는 Windows PC/VM이고, 로컬 클라이언트는 RDP/Windows App을 실행하는 Windows PC입니다. Windows PowerShell 5.1, VBScript, 복제용 Git이 필요하며 호스트 설치에는 관리자 승인이 필요합니다. 양쪽에서 현재 사용자의 개인 폴더에 신뢰할 수 있는 새 복사본을 받으세요. 공동으로 쓰기 가능한 폴더는 피하세요.
+> **연결 해제 후 원격 데스크톱이 잠금 해제 상태로 남습니다.** 물리 또는 대화형 VM 콘솔을 조작할 수 있는 사람은 Windows에 로그인하지 않고 세션을 사용할 수 있습니다. 공용 PC나 신뢰할 수 없는 콘솔에서는 사용하지 마세요. 잠긴 화면에서 자동화하거나 정책을 우회하지 않습니다. [설정과 접근 위험](../configuration.md).
+
+[설정과 접근 위험](#setup) → [실제 입력 검증](#proof) · [제한](#limits) · [되돌리기](#undo)
+
+- Windows가 RDP 연결 해제를 감지하면 기존 세션을 콘솔로 넘겨 GUI 작업 유지를 돕습니다.
+- 호환 클라이언트의 렌더링 설정으로 최소화 입력을 돕습니다. 별도로 검증해야 합니다.
+- 모드가 일치하는 비공개 결과로 실제 클릭, 입력, 캡처를 확인하세요. 앱 실행만으로는 부족합니다.
+
+<details>
+<summary>Languages</summary>
+
+[English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
+
+</details>
+
+<a id="setup"></a>
+
+설치 전에 호스트 전원을 켜고 절전 없이 잠금 해제 상태를 유지하며 조직 정책의 허용 여부를 확인하세요. Windows, 관리자 승인, Git, PowerShell 5.1, VBScript 요건은 아래와 같습니다.
+
+## 두 컴퓨터
+
+원격 호스트는 자동화를 실행하는 Windows PC/VM이고, 로컬 클라이언트는 RDP/Windows App을 실행하는 Windows PC입니다. Windows PowerShell 5.1, VBScript, 복제용 Git이 필요하며 호스트 설치에는 관리자 승인이 필요합니다. 양쪽에서 현재 사용자의 개인 폴더에 신뢰할 수 있는 새 복사본을 받으세요. 공동으로 쓰기 가능한 폴더는 피하세요.
 
 ```powershell
 git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
@@ -25,7 +42,11 @@ wscript.exe .\set-local-rdp-minimize-rendering.vbs
 
 원격 클라이언트를 완전히 종료한 뒤 다시 열고 재연결하세요. [설치 결과](../configuration.md#quick-setup): 호스트는 `Installed: true`, `Status: Ready`, 클라이언트는 `Succeeded: true`여야 합니다.
 
-**첫 검증:** RDP를 정상적으로 연결 해제하고 30초 뒤 재연결하면 진단이 자동 실행됩니다. 최소화 검증은 별도입니다. 원격 호스트에서 아래 명령을 실행한 뒤 즉시 로컬의 원격 창을 최소화하고 90초 동안 유지한 다음 복원하세요. 검사는 실제 입력과 캡처 전에 60초를 기다립니다.
+<a id="proof"></a>
+
+## 첫 검증
+
+RDP를 정상적으로 연결 해제하고 30초 뒤 재연결하면 진단이 자동 실행됩니다. 최소화 검증은 별도입니다. 원격 호스트에서 아래 명령을 실행한 뒤 즉시 로컬의 원격 창을 최소화하고 90초 동안 유지한 다음 복원하세요. 검사는 실제 입력과 캡처 전에 60초를 기다립니다.
 
 ```powershell
 wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
@@ -43,11 +64,23 @@ wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
 
 입력과 화면 캡처 동안 창이 계속 최소화되어 있어야 최소화 검증이 유효합니다. 호스트는 클라이언트 상태를 관찰할 수 없습니다. 로그와 캡처에는 주변 데스크톱 내용이 포함될 수 있으므로 비공개로 보관하세요. [검증 설명](../configuration.md#verify-on-each-new-machine).
 
-**제한:** 설정은 기존 Remote Desktop Connection용으로 문서화되어 있으며 Windows App 지원은 버전에 따라 다릅니다. 유지 관리자는 원래 클라이언트/호스트 조합이 보안 강화 전에 최소화 검사를 통과했다고 보고했지만 배포 후에는 재검증하지 않았습니다. 모든 클라이언트의 지원을 보장하지 않습니다. 재부팅 후 한 번 로그인하고 잠금을 해제한 뒤 앱과 자동화를 다시 시작하세요. 대화형 그래픽 데스크톱 세션이 없는 헤드리스 환경은 지원하지 않습니다. 원격 잠금, 절전, 종료, 로그아웃은 자동화를 멈출 수 있습니다. [전체 제한](../configuration.md#requirements-and-limitations).
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="RDP 연결 해제와 최소화 전후: 앱은 실행 중이어도 클릭, 입력, 캡처가 멈출 수 있으며 콘솔 전환과 호환 클라이언트 설정이 작업 유지를 돕습니다.">
+
+개념 그림입니다. 왼쪽은 설정 없이 앱만 실행되고 자동화는 멈추는 상태, 오른쪽은 설정 후 기대하는 클릭, 입력, 화면 캡처입니다. 그림의 표기는 영어이며 한국어 앱 화면이나 실제 테스트 결과가 아닙니다. 최소화 지원은 클라이언트마다 다르고 노트북을 닫거나 네트워크가 끊기면 Windows가 RDP 연결 해제를 감지해야 합니다. 콘솔 전환 후에도 데스크톱은 잠금 해제 상태입니다. 로컬 잠금 통과는 클라이언트 설정이 적용되고 노트북이 깨어 있었던 조합에 대한 유지 관리자의 보고입니다. 최소화 검증은 보안 강화 전이며 배포 후 재검증되지 않았습니다.
+
+<a id="limits"></a>
+
+## 제한
+
+설정은 기존 Remote Desktop Connection용으로 문서화되어 있으며 Windows App 지원은 버전에 따라 다릅니다. 유지 관리자는 원래 클라이언트/호스트 조합이 보안 강화 전에 최소화 검사를 통과했다고 보고했지만 배포 후에는 재검증하지 않았습니다. 모든 클라이언트의 지원을 보장하지 않습니다. 재부팅 후 한 번 로그인하고 잠금을 해제한 뒤 앱과 자동화를 다시 시작하세요. 대화형 그래픽 데스크톱 세션이 없는 헤드리스 환경은 지원하지 않습니다. 원격 잠금, 절전, 종료, 로그아웃은 자동화를 멈출 수 있습니다. [전체 제한](../configuration.md#requirements-and-limitations).
 
 `Passed: false`이면 `Error`, `Stage`, 로그를 확인하세요. 결과가 없거나 오래되었으면 설치를 확인하고 다시 검사하세요. 최소화를 지원하지 않는 클라이언트에서는 창을 보이게 두거나 별도로 검증한 연결 해제 절차를 사용하세요. [문제 해결](../../README.md#if-the-proof-fails) · [구성 검사](../configuration.md#configuration-checks).
 
-**되돌리기:** 각각의 복제 폴더에서 실행하세요. 첫 번째 명령은 원격 호스트의 예약 작업을 제거하고 두 번째는 원래 로컬 컴퓨터의 동일 사용자 계정에서 클라이언트 설정을 복원합니다.
+<a id="undo"></a>
+
+## 되돌리기
+
+각각의 복제 폴더에서 실행하세요. 첫 번째 명령은 원격 호스트의 예약 작업을 제거하고 두 번째는 원래 로컬 컴퓨터의 동일 사용자 계정에서 클라이언트 설정을 복원합니다.
 
 ```powershell
 wscript.exe .\start-desktop-session-setup.vbs --uninstall
@@ -58,3 +91,10 @@ wscript.exe .\set-local-rdp-minimize-rendering.vbs --restore
 ```
 
 복원이 더 이상 필요하지 않을 때까지 클라이언트의 `%LOCALAPPDATA%\KeepDesktopInteractive\local-rdp-minimize-backup.json`을 보관하세요. 두 작업은 독립적이며 진단 증거를 삭제하지 않습니다. [되돌리기](../configuration.md#undo) · [영문 기준 가이드](../configuration.md) · [영문 README](../../README.md).
+
+<details>
+<summary>Windows App / Microsoft Dev Box / Hyper-V</summary>
+
+> **경고: 연결 해제 후 콘솔로 세션을 넘기면 원격 Windows 데스크톱이 잠금 해제 상태로 남습니다. 물리 키보드나 대화형 VM 콘솔에 접근할 수 있는 사람은 Windows에 로그인하지 않고도 세션을 사용할 수 있습니다. 다른 사람이 접근할 수 있는 공용 PC에서는 사용하지 마세요. Hyper-V 관리자와 VMConnect를 열 수 있는 모든 사람을 신뢰할 수 있어야 합니다. Windows App은 연결 클라이언트이고 Microsoft Dev Box는 관리형 클라우드 워크스테이션입니다. 위험은 제품 자체가 아니라 다른 사람이 잠금 해제된 콘솔을 조작할 수 있는지에 달려 있습니다. 신뢰하지 않는 사람의 대화형 콘솔 접근 경로가 없는 1인 개발자용 관리 호스트는 공용 PC보다 위험이 낮습니다. Microsoft Dev Box에 그런 경로가 있다고 가정하지 마세요. 조직 정책을 따르세요. 잠긴 원격 화면 뒤에서 자동화하거나 잠금 정책을 우회하지 않습니다.**
+
+</details>
