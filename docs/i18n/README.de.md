@@ -1,21 +1,45 @@
-# KeepDesktopInteractive — Windows-GUI-Automatisierung nach RDP-Trennung erhalten
+# KeepDesktopInteractive — Windows-GUI nach RDP-Trennung
 
-Windows-GUI-Automatisierung stoppt nach RDP-Trennung? Erhalten Sie eine **bereits angemeldete, entsperrte** Sitzung für Klicks, Texteingabe und Screenshots Ihrer vorhandenen computer-use-Agenten oder UI-Tests. Eingabefehler bei minimiertem Fenster sind ein eigener Fall und benötigen einen kompatiblen Client sowie einen separaten Nachweis. Keine native Agentenintegration oder Agentenstartfunktion, keine gespeicherten Passwörter und keine automatische Anmeldung.
-
-> **Die Übergabe lässt den entfernten Desktop entsperrt.** Wer die physische oder interaktive VM-Konsole bedienen kann, kann die Sitzung ohne Windows-Anmeldung nutzen. Nicht auf zugänglichen gemeinsamen PCs oder nicht vertrauenswürdigen Konsolen verwenden. Keine Automatisierung hinter einer Sperre oder Richtlinienumgehung. [Einrichtung und Zugriffsrisiken](../configuration.md).
-
-[Einrichtung und Zugriffsrisiken](#setup) → [Echte Eingabe prüfen](#proof) · [Grenzen](#limits) · [Rücknahme](#undo)
-
-- Nach erkannter RDP-Trennung übergibt Windows die vorhandene Sitzung an die Konsole, um GUI-Eingaben nutzbar zu halten.
-- Die Darstellungseinstellung hilft kompatiblen Clients beim Minimieren; separat prüfen.
-- Prüfen Sie echte Klicks, Eingaben und Screenshots mit privaten Ergebnissen im richtigen Modus, nicht nur laufende Apps.
+<a id="languages"></a>
 
 <details>
-<summary>Languages</summary>
+<summary>Languages / 语言 / 言語 / اللغات (16)</summary>
 
 [English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
 
 </details>
+
+Windows App als Client, Microsoft Dev Box als Host oder eine andere Windows-RDP-Umgebung: computer-use-Agenten klicken, tippen und erfassen Screenshots nach erkannter Trennung weiter; Sie müssen das verbundene Fenster nicht ständig beobachten (Minimieren nur mit geprüfter kompatibler Darstellung); nutzen Sie die angemeldete Sitzung ohne gespeicherte Passwörter oder automatische Anmeldung weiter.
+
+Konsole bleibt entsperrt; Richtlinien beachten. Windows Sandbox minimieren: unvalidiert.
+
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Vor und nach RDP-Trennung oder Minimierung: Anwendungen laufen weiter, aber Klicks, Eingaben und Screenshots k&#246;nnen ausfallen; Konsolen&#252;bergabe und kompatibler Client helfen.">
+
+- **Agenteneingaben nach Trennung erhalten:** Klicks, Eingaben und Screenshots im bestehenden Desktop bleiben nach erkannter RDP-Trennung nutzbar; die Netzwerkerkennung kann Zeit benötigen.
+- **Nicht ständig das verbundene Fenster betreuen:** Vom Remotefenster weggehen; minimierte Nutzung erfordert kompatible Clientdarstellung und einen gesonderten erfolgreichen Eingabetest Ihrer Umgebung.
+- **Angemeldete Arbeit weiterverwenden:** Bestehende Sitzung und offene Apps ohne Passwortspeicherung oder automatische Anmeldung behalten; nach einem Neustart meldet das Tool Sie nicht an.
+
+Konzept mit englischen Beschriftungen, kein Live-Test. Clientunterstützung und lokale Sperre bei wachem Notebook sind bedingt.
+
+> **Die Übergabe lässt den entfernten Desktop entsperrt.** Wer die physische oder interaktive VM-Konsole bedienen kann, kann die Sitzung ohne Windows-Anmeldung nutzen. Nicht auf zugänglichen gemeinsamen PCs oder nicht vertrauenswürdigen Konsolen verwenden. Keine Automatisierung hinter einer Sperre oder Richtlinienumgehung. [Einrichtung und Zugriffsrisiken](../configuration.md).
+
+Nur wenn Richtlinien die RDP/Konsolenübergabe erlauben; prüfen Sie Ihre Umgebung. Keine pauschale Dev-Box-Zertifizierung.
+
+[Einrichtung und Zugriffsrisiken](#setup) → [Echte Eingabe prüfen](#proof) · [Grenzen](#limits) · [Rücknahme](#undo) · Windows Sandbox minimieren: noch nicht validiert.
+
+**[Windows Sandbox](https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/windows-sandbox/) — minimiertes Fenster; NICHT VALIDIERTER Kandidat:** Wenn das Windows-Sandbox-Fenster auf dem Host minimiert ist und Gast sowie Apps weiterlaufen, funktionieren Klicks, Eingaben und Screenshots weiter? Bereitstellung und Eingabekontinuität sind nicht validiert; ob dieses Tool mit Clientdarstellung oder Gastübergabe funktioniert, ist unbekannt und separat zu testen, keine bereits bestätigte Lösung.
+
+## Windows App / RDP
+
+Installierte Diagnosen versuchen etwa 10 Sekunden nach jeder RDP-Trennung des eingerichteten Nutzers echte Eingaben/Aufnahmen, auch im Alltag, und können mit Agenten konkurrieren. Kein dokumentierter Starter-Schalter deaktiviert nur Diagnosen; Hostdeinstallation entfernt auch die Übergabe.
+
+Windows-App/RDP-Weg: Trennung nutzt Hostübergabe, Minimierung kompatible Clientdarstellung plus Hosteinrichtung. Behalten Sie die geprüfte Zwei-Rechner-Einrichtung und prüfen Sie jeden Modus. Keine Agentenintegration oder -startfunktion, Passwortspeicherung oder automatische Anmeldung. [→](../configuration.md#mode-choice)
+
+Der Maintainer meldet lokale Bildschirmsperre nur für das getestete Paar mit wachem Notebook und eingerichtetem Client, nicht entfernte Sperre; Deckel/Netzverlust erfordern erkannte Windows-Trennung.
+
+## Windows Sandbox — UNVALIDATED
+
+Sandbox ist ein vorgeschlagenes Experiment: stoppen, wenn keine genehmigte, funktionierende Installations-/Testmethode feststeht. Klicks, Eingaben und Aufnahme ohne sensible Daten bei sichtbarem Fenster erfassen; für protokolliertes Intervall minimieren, Gast/Apps aktiv halten, echte Eingabe/neue Aufnahme wiederholen, wiederherstellen und prüfen. Nicht validiert; bei Fehler Fenster sichtbar halten. RDP-Zwei-Rechner-, Trennungs- und Schließen/Öffnen-Schritte sind kein Sandbox-Verfahren. [→](../configuration.md#sandbox-minimized-window-experiment)
 
 <a id="setup"></a>
 
@@ -24,6 +48,14 @@ Vor Installation: Host eingeschaltet, wach und entsperrt; Richtlinien müssen di
 ## Zwei Rechner, getrennte Einrichtung
 
 Der **entfernte Host** ist der Windows-PC/die VM mit der Automatisierung. Der **lokale Client** ist der Windows-PC mit RDP/Windows App. Erforderlich sind Windows PowerShell 5.1, VBScript sowie Git zum Klonen; die Hostinstallation benötigt Administratorzustimmung. Auf beiden Rechnern eine neue, vertrauenswürdige Kopie im privaten Ordner des aktuellen Benutzers erstellen, nicht in einem gemeinsam beschreibbaren Ordner:
+<details>
+<summary>Windows App / Microsoft Dev Box / Hyper-V</summary>
+
+> **Warnung: Die Übergabe an die Konsole lässt den entfernten Windows-Desktop entsperrt.** Wer Zugriff auf die physische Tastatur oder die interaktive VM-Konsole hat, kann Ihre Sitzung ohne Windows-Anmeldung benutzen. Nicht auf gemeinsam genutzten PCs einsetzen, an die andere herantreten können. Hyper-V-Administratoren und alle Personen mit VMConnect-Zugriff müssen vertrauenswürdig sein. Windows App ist der Verbindungsclient; Microsoft Dev Box die verwaltete Cloudworkstation. Das Risiko ist fremder Zugriff auf die entsperrte Konsole, nicht eine grundsätzliche Unsicherheit des Produkts. Ein verwalteter Host für einen Entwickler ohne interaktiven Konsolenzugang für nicht vertrauenswürdige Personen ist risikoärmer als ein gemeinsam genutzter PC. Setzen Sie einen solchen Zugang bei Microsoft Dev Box nicht voraus. Beachten Sie die Richtlinien Ihrer Organisation: Dies ermöglicht weder Automatisierung hinter einem gesperrten entfernten Bildschirm noch das Umgehen von Sperrrichtlinien.
+
+</details>
+
+
 ```powershell
 git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
 Set-Location "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
@@ -41,6 +73,12 @@ Den Remoteclient vollständig schließen, neu öffnen und erneut verbinden. [Ein
 
 <a id="proof"></a>
 
+- Nach erkannter RDP-Trennung übergibt Windows die vorhandene Sitzung an die Konsole, um GUI-Eingaben nutzbar zu halten.
+- Die Darstellungseinstellung hilft kompatiblen Clients beim Minimieren; separat prüfen.
+- Prüfen Sie echte Klicks, Eingaben und Screenshots mit privaten Ergebnissen im richtigen Modus, nicht nur laufende Apps.
+
+Vor Test Startzeit notieren, andere UI-Automatisierung beenden, sensible Arbeit speichern und vertrauliche Fenster entfernen; Trennung startet Diagnose. Dateizeit nach Start und korrektes Passed/Mode verlangen; dann harmlose repräsentative Klick-/Eingabe-/Aufnahmeaufgabe bei resultierender Konsolenauflösung prüfen. Die Diagnose beweist nicht alle Apps. [→](../configuration.md#reported-compatibility-evidence)
+
 **Trennung:** RDP normal trennen, 30 Sekunden warten und erneut verbinden. Die Diagnose läuft automatisch. **Minimieren:** Folgendes auf dem Host ausführen und sofort das Remotefenster auf dem Client für 90 Sekunden minimieren. Danach wiederherstellen. Der Test wartet 60 Sekunden vor echter Eingabe und Bildschirmaufnahme.
 ```powershell
 wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
@@ -54,10 +92,6 @@ Auf dem Host das neue Ergebnis in `%LOCALAPPDATA%\KeepDesktopInteractive\desktop
 ```
 Der Minimierungsnachweis gilt nur, wenn das Fenster während Eingabe und Aufnahme minimiert blieb; der Host kann diesen Zustand nicht beobachten. Protokolle und Bilder vertraulich halten, da benachbarter Desktopinhalt sichtbar sein kann. [Details](../configuration.md#verify-on-each-new-machine).
 
-<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Vor und nach RDP-Trennung oder Minimierung: Anwendungen laufen weiter, aber Klicks, Eingaben und Screenshots k&#246;nnen ausfallen; Konsolen&#252;bergabe und kompatibler Client helfen.">
-
-Konzeptillustration: links laufen Anwendungen, während die Automatisierung stockt; rechts die nach Einrichtung erwarteten Klicks, Eingaben und Screenshots. Die Bildbeschriftung ist Englisch, keine übersetzte App-Oberfläche und kein Live-Test. Minimierung hängt vom Client ab; bei geschlossenem Notebook oder Netzverlust muss Windows eine RDP-Trennung erkennen. Die Konsole bleibt entsperrt; prüfen Sie Ihre Einrichtung. Die lokale Sperre bestand nur auf dem vom Maintainer berichteten Paar mit wachem Notebook und eingerichteten Client. Der Minimierungstest war vor der Härtung und wurde nach Bereitstellung nicht wiederholt.
-
 <a id="limits"></a>
 
 ## Grenzen, Fehler und Rücknahme
@@ -68,6 +102,8 @@ Bei `Passed: false` die Felder `Error`, `Stage` und Protokolle lesen. Fehlende o
 
 <a id="undo"></a>
 
+Taskentfernung/Clientwiederherstellung sperrt die aktuelle Konsole nicht automatisch. Speichern und Automatisierung beenden; Host manuell sperren und Anmeldepflicht prüfen oder bewusst abmelden, um Apps zu beenden. Sperren stoppt GUI-Automatisierung.
+
 Jeweils aus dem geklonten Ordner auf dem Host deinstallieren und auf demselben Client unter demselben Benutzer wiederherstellen:
 ```powershell
 wscript.exe .\start-desktop-session-setup.vbs --uninstall
@@ -77,9 +113,4 @@ wscript.exe .\set-local-rdp-minimize-rendering.vbs --restore
 ```
 Die Clientdatei `%LOCALAPPDATA%\KeepDesktopInteractive\local-rdp-minimize-backup.json` behalten, bis keine Wiederherstellung mehr nötig ist. Die Vorgänge sind unabhängig und löschen keine Diagnosebelege. [Rücknahme](../configuration.md#undo) · [Maßgeblicher englischer Leitfaden](../configuration.md) · [Englisches README](../../README.md).
 
-<details>
-<summary>Windows App / Microsoft Dev Box / Hyper-V</summary>
-
-> **Warnung: Die Übergabe an die Konsole lässt den entfernten Windows-Desktop entsperrt.** Wer Zugriff auf die physische Tastatur oder die interaktive VM-Konsole hat, kann Ihre Sitzung ohne Windows-Anmeldung benutzen. Nicht auf gemeinsam genutzten PCs einsetzen, an die andere herantreten können. Hyper-V-Administratoren und alle Personen mit VMConnect-Zugriff müssen vertrauenswürdig sein. Windows App ist der Verbindungsclient; Microsoft Dev Box die verwaltete Cloudworkstation. Das Risiko ist fremder Zugriff auf die entsperrte Konsole, nicht eine grundsätzliche Unsicherheit des Produkts. Ein verwalteter Host für einen Entwickler ohne interaktiven Konsolenzugang für nicht vertrauenswürdige Personen ist risikoärmer als ein gemeinsam genutzter PC. Setzen Sie einen solchen Zugang bei Microsoft Dev Box nicht voraus. Beachten Sie die Richtlinien Ihrer Organisation: Dies ermöglicht weder Automatisierung hinter einem gesperrten entfernten Bildschirm noch das Umgehen von Sperrrichtlinien.
-
-</details>
+Für Updates neues privates Ziel statt vorhandenem nicht leerem Ordner verwenden; alte Kopie und Sicherungen bis Einrichtung und Nachweise erfolgreich sind behalten. [→](../configuration.md#updating-the-first-prototype)

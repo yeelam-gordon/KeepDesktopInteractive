@@ -1,21 +1,45 @@
-# KeepDesktopInteractive — Automazione GUI Windows dopo la disconnessione RDP
+# KeepDesktopInteractive — GUI Windows dopo disconnessione RDP
 
-L’automazione GUI Windows si ferma dopo la disconnessione RDP? Mantieni una sessione **già aperta e sbloccata** per clic, digitazione e schermate dei tuoi agenti computer-use o test UI esistenti. La mancata risposta con la finestra ridotta a icona è un caso distinto: richiede un client compatibile e una verifica separata. Nessuna integrazione nativa o avvio degli agenti, nessuna password memorizzata e nessun accesso automatico.
-
-> **Il passaggio lascia il desktop remoto sbloccato.** Chi può usare la console fisica o interattiva della VM può usare la sessione senza accedere a Windows. Non usare PC condivisi accessibili o console non fidate. Non automatizza dietro uno schermo bloccato e non aggira le politiche. [Configurazione e rischi di accesso](../configuration.md).
-
-[Configurazione e rischi di accesso](#setup) → [Verificare l’input reale](#proof) · [Limiti](#limits) · [Annullamento](#undo)
-
-- Quando Windows rileva la disconnessione RDP, la sessione esistente passa alla console per aiutare a mantenere l’input GUI.
-- L’impostazione di rendering aiuta i client compatibili con finestra ridotta; verifica separatamente.
-- Controlla clic, digitazione e catture reali con risultati privati nella modalità corretta, non solo app aperte.
+<a id="languages"></a>
 
 <details>
-<summary>Languages</summary>
+<summary>Languages / 语言 / 言語 / اللغات (16)</summary>
 
 [English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
 
 </details>
+
+Windows App come client, Microsoft Dev Box come host o altro ambiente Windows RDP: mantieni clic, digitazione e catture dell’agente computer-use dopo il rilevamento della disconnessione; smetti di sorvegliare la finestra connessa (riduzione a icona solo con rendering compatibile verificato); riusa la sessione aperta senza password salvate o accesso automatico.
+
+Console sbloccata; rispetta le politiche. Windows Sandbox ridotto a icona: non validato.
+
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Prima e dopo disconnessione RDP o finestra ridotta: le app restano attive ma clic, digitazione e catture possono fallire; passaggio alla console e client compatibile aiutano.">
+
+- **Mantieni l’input dell’agente dopo la disconnessione:** conserva clic, digitazione e catture nel desktop esistente quando Windows rileva la disconnessione RDP; il rilevamento della perdita di rete può richiedere tempo.
+- **Non sorvegliare continuamente la finestra connessa:** allontanati dalla finestra remota; l’uso ridotto a icona richiede rendering compatibile e un test separato di input riuscito nel tuo ambiente.
+- **Riusa il lavoro già aperto:** conserva sessione e app senza salvare password o attivare l’accesso automatico; lo strumento non ti autentica dopo un riavvio.
+
+Concetto con etichette inglesi, non test dal vivo. Supporto del client e blocco locale con portatile attivo sono condizionati.
+
+> **Il passaggio lascia il desktop remoto sbloccato.** Chi può usare la console fisica o interattiva della VM può usare la sessione senza accedere a Windows. Non usare PC condivisi accessibili o console non fidate. Non automatizza dietro uno schermo bloccato e non aggira le politiche. [Configurazione e rischi di accesso](../configuration.md).
+
+Solo se le politiche consentono di configurare il passaggio RDP/console; verifica il tuo ambiente, senza certificazione universale Dev Box.
+
+[Configurazione e rischi di accesso](#setup) → [Verificare l’input reale](#proof) · [Limiti](#limits) · [Annullamento](#undo) · Windows Sandbox ridotto a icona: non ancora validato.
+
+**[Windows Sandbox](https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/windows-sandbox/) — finestra ridotta; candidato NON VALIDATO:** Quando la finestra di Windows Sandbox sull’host è ridotta a icona e guest e app continuano a funzionare, clic, digitazione e catture continuano? Distribuzione e continuità non validate: questo strumento potrebbe funzionare o meno con il rendering del client o il passaggio del guest; prova separatamente, non è una soluzione già verificata.
+
+## Windows App / RDP
+
+La diagnosi installata tenta clic, input e cattura circa 10 secondi dopo ogni disconnessione RDP dell’utente configurato, anche nell’uso normale, e può interferire con l’agente. Nessuna opzione documentata del lanciatore disattiva solo la diagnosi; disinstallare l’host rimuove anche il passaggio.
+
+Percorso Windows App/RDP: disconnessione = passaggio dell’host; finestra ridotta = rendering compatibile più configurazione dell’host. Mantieni i due computer della configurazione testata e verifica ogni modalità. Nessuna integrazione/avvio agenti, password salvate o accesso automatico. [→](../configuration.md#mode-choice)
+
+Il manutentore riferisce blocco locale riuscito solo sulla coppia testata con portatile attivo e client configurato, non blocco remoto; coperchio/rete richiedono rilevamento della disconnessione da Windows.
+
+## Windows Sandbox — UNVALIDATED
+
+Sandbox è un esperimento proposto: fermati se non stabilisci un metodo autorizzato di installazione/test. Registra clic, digitazione e cattura senza dati sensibili con finestra visibile; riduci per un intervallo registrato con guest/app attivi, ripeti input e nuova cattura, ripristina e controlla. Non validato; se fallisce mantieni la finestra visibile. I passi RDP a due computer, disconnessione e chiusura/riapertura non sono una procedura Sandbox. [→](../configuration.md#sandbox-minimized-window-experiment)
 
 <a id="setup"></a>
 
@@ -24,6 +48,14 @@ Prima di installare: host acceso, attivo e sbloccato, con uso consentito dalle p
 ## Due computer
 
 l’host remoto è il PC/VM Windows che esegue l’automazione; il client locale è il PC Windows con RDP/Windows App. Servono Windows PowerShell 5.1, VBScript e Git per clonare. L’installazione sull’host richiede l’approvazione di un amministratore. Su entrambi, ottieni una nuova copia attendibile nella cartella privata dell’utente attuale, mai in una cartella condivisa scrivibile.
+
+<details>
+<summary>Windows App / Microsoft Dev Box / Hyper-V</summary>
+
+> **Windows App è il client di connessione; Microsoft Dev Box è la workstation cloud gestita. Il rischio è l’accesso altrui alla console sbloccata, non un’insicurezza intrinseca del prodotto. Un host gestito per uno sviluppatore senza accesso interattivo alla console da parte di persone non fidate presenta meno rischi di un PC condiviso. Non presumere che Microsoft Dev Box offra tale accesso. Rispetta le regole della tua organizzazione: non è automazione dietro uno schermo remoto bloccato e non aggira le politiche di blocco.**
+
+</details>
+
 
 ```powershell
 git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
@@ -43,6 +75,12 @@ wscript.exe .\set-local-rdp-minimize-rendering.vbs
 Chiudi completamente il client remoto, riaprilo e riconnettiti. [Risultati dell’installazione](../configuration.md#quick-setup): sull’host `Installed: true` e `Status: Ready`; sul client `Succeeded: true`.
 
 <a id="proof"></a>
+
+- Quando Windows rileva la disconnessione RDP, la sessione esistente passa alla console per aiutare a mantenere l’input GUI.
+- L’impostazione di rendering aiuta i client compatibili con finestra ridotta; verifica separatamente.
+- Controlla clic, digitazione e catture reali con risultati privati nella modalità corretta, non solo app aperte.
+
+Prima del test registra l’inizio, ferma altre automazioni UI, salva il lavoro sensibile e allontana finestre riservate; disconnettere avvia la diagnosi. Richiedi file modificato dopo l’inizio e Passed/Mode corretti; poi prova clic/digitazione/cattura in app innocua alla risoluzione finale della console. La diagnosi non prova tutte le app. [→](../configuration.md#reported-compatibility-evidence)
 
 ## Prima verifica
 
@@ -64,10 +102,6 @@ Sull’host controlla il nuovo `%LOCALAPPDATA%\KeepDesktopInteractive\desktop-pr
 
 La prova con finestra ridotta vale solo se la finestra rimane ridotta durante input e acquisizione: l’host non può osservarne lo stato. Mantieni privati registri e immagini, che possono includere contenuti vicini del desktop. [Dettagli della verifica](../configuration.md#verify-on-each-new-machine).
 
-<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Prima e dopo disconnessione RDP o finestra ridotta: le app restano attive ma clic, digitazione e catture possono fallire; passaggio alla console e client compatibile aiutano.">
-
-Illustrazione concettuale: a sinistra le app funzionano ma l’automazione si blocca; a destra clic, digitazione e catture attesi dopo la configurazione. Le etichette sono inglesi: non è un’interfaccia tradotta né un test dal vivo. Il supporto alla finestra ridotta dipende dal client; chiudere il portatile o perdere la rete richiede che Windows rilevi la disconnessione RDP. La console resta sbloccata; verifica il tuo sistema. Il blocco locale è riuscito solo sulla coppia riferita dal manutentore, con portatile attivo e client configurato. Il test con finestra ridotta precedeva il rafforzamento della sicurezza e non è stato ripetuto dopo la distribuzione.
-
 <a id="limits"></a>
 
 ## Limiti
@@ -77,6 +111,8 @@ l’impostazione è documentata per Remote Desktop Connection classico; Windows 
 Con `Passed: false`, leggi `Error`, `Stage` e i registri. Se manca la prova o è vecchia, verifica l’installazione e ripetila. Se il client non supporta la finestra ridotta, lasciala visibile o usa la disconnessione verificata separatamente. [Risoluzione dei problemi](../../README.md#if-the-proof-fails) · [Controlli](../configuration.md#configuration-checks).
 
 <a id="undo"></a>
+
+Rimuovere attività/ripristinare il client non blocca automaticamente la console attuale. Salva e termina l’automazione; blocca manualmente l’host verificando l’accesso richiesto, oppure esci intenzionalmente dall’account per terminare le app. Bloccare ferma l’automazione GUI.
 
 ## Annullamento
 
@@ -92,9 +128,4 @@ wscript.exe .\set-local-rdp-minimize-rendering.vbs --restore
 
 Conserva `%LOCALAPPDATA%\KeepDesktopInteractive\local-rdp-minimize-backup.json` del client finché non serve più il ripristino. Le operazioni sono indipendenti e non eliminano le prove diagnostiche. [Annullamento](../configuration.md#undo) · [Guida canonica inglese](../configuration.md) · [README inglese](../../README.md).
 
-<details>
-<summary>Windows App / Microsoft Dev Box / Hyper-V</summary>
-
-> **Attenzione: il passaggio alla console lascia il desktop Windows remoto sbloccato. Chi ha accesso alla tastiera fisica o alla console interattiva della VM può usare la sessione senza accedere a Windows. Non usare un PC condiviso a cui altri possano avvicinarsi. Devi fidarti degli amministratori Hyper-V e di chiunque possa aprire VMConnect. Windows App è il client di connessione; Microsoft Dev Box è la workstation cloud gestita. Il rischio è l’accesso altrui alla console sbloccata, non un’insicurezza intrinseca del prodotto. Un host gestito per uno sviluppatore senza accesso interattivo alla console da parte di persone non fidate presenta meno rischi di un PC condiviso. Non presumere che Microsoft Dev Box offra tale accesso. Rispetta le regole della tua organizzazione: non è automazione dietro uno schermo remoto bloccato e non aggira le politiche di blocco.**
-
-</details>
+Aggiorna in una nuova destinazione privata, non in una cartella esistente non vuota; conserva copia precedente e backup, reinstalla e verifica. [→](../configuration.md#updating-the-first-prototype)

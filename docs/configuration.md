@@ -20,6 +20,29 @@ are not covered. Multi-user Remote Desktop Services deployments are not validate
 the project configures one automation user per host and will not displace another
 console user. Managed policies may prohibit the required unlocked desktop.
 
+## Mode choice
+
+Installed diagnostics attempt real clicks, typing and capture **10 seconds after every configured-user RDP disconnect**, including later normal use, and can contend with your GUI agent. Reserve the desktop for diagnostics; no dedicated supported diagnostic-only opt-out launcher flag is documented. Host uninstall removes handoff too. Overlapping triggers are ignored while a diagnostic is already running (`IgnoreNew`); this is not a once-only installation test.
+
+**Windows App/RDP route only:** disconnect uses host console handoff; minimization uses compatible local rendering plus the documented host setup. Keep the tested two-computer setup: host `start-desktop-session-setup.vbs` installs protected tasks/diagnostics; local `set-local-rdp-minimize-rendering.vbs` configures client rendering. Verify `AfterDisconnect` and `WhileClientMinimized` separately for the modes you rely on. No optional-client installation shortcut is asserted from untested static inspection.
+
+## Sandbox minimized-window experiment
+
+**PROPOSED, UNVALIDATED, not a verified installation route.** Establish an approved, workable guest/host deployment and test method first; if none is established, stop. Do not assume the shipped probe or local RDP registry setting works with Sandbox. Windows App/RDP two-computer setup, disconnect tests and client close/reopen recovery below are not Sandbox instructions.
+
+Record a non-sensitive visible-window baseline of intended clicks, typed text and fresh capture. Minimize the host's Sandbox window for a recorded interval while confirming the guest/apps keep running; perform the same real input and new capture during that interval. Restore the window and inspect new evidence and app state. Record actual host/guest builds, renderer, method and interval; continuing processes alone are not success. Keep the window visible if input/capture fails. Undo only changes actually applied through a verified method; do not close the guest to preserve ongoing work. This plan has not been run.
+
+## Reported compatibility evidence
+
+Maintainer-reported history, not current environment certification. Unknown metadata is not inferred from current HEAD. Installation Ready is not an input-compatibility result; Windows App brand evidence is not universal Microsoft Dev Box validation.
+
+| Scenario | Reported result / deployed protection / date | Client version / host build / tested revision |
+| --- | --- | --- |
+| AfterDisconnect | Fresh protected-installation pass reported; date unknown | All unknown / not retained |
+| WhileClientMinimized, original Windows App/Windows host | Pass before hardening; **not rechecked after deployment**; date unknown | All unknown / not retained |
+| Local notebook screen locked, notebook awake, client configured | Tested-pair pass reported 2026-10-08; protection state unknown; JSON mode not retained | All unknown / not retained |
+| Windows Sandbox host window minimized, guest/apps alive | **UNVALIDATED**; deployment/input/capture method unknown | All unknown; no tested revision |
+
 ## Quick setup
 
 Create a fresh clone from this trusted GitHub repository on both computers.
@@ -86,6 +109,10 @@ state are changed, with the shared-checkout diagnostic disabled first.
 Rerun setup to recover. Do not assume a failed update preserved the previous installation.
 
 ## Verify on each new machine
+
+**Before any live probe:** record test start time; no other UI automation may use this desktop. Save sensitive work and move confidential windows out of the capture area. Disconnect triggers an automatic input/capture diagnostic.
+
+Confirm the proof file was **updated after this test started** using its file modified time, then require `Passed: true` and the matching `Mode`; an old successful file is not this run. No invented JSON timestamp field is needed. After success, perform one harmless representative app click/type/capture task at the **resulting console resolution**; the generic probe does not prove every app or coordinate locator.
 
 **Disconnect:** disconnect normally, wait 30 seconds, then reconnect.
 The automatic diagnostic should report `Passed: true` and `Mode: AfterDisconnect`
@@ -172,6 +199,8 @@ script file. Reinstall after changing that script.
 
 ## Undo
 
+Removing host tasks and restoring client registry values **does not automatically lock the current unlocked console**. After saving work and finishing automation, manually lock the host and verify console sign-in is required, or sign out intentionally to end applications. Lock/sign-out can stop GUI automation; sign-out ends user apps.
+
 Remove remote scheduled tasks from the remote machine:
 
 ```powershell
@@ -216,6 +245,8 @@ for writing and checks installed task permissions. Run live disconnect/minimize
 checks separately when no other UI automation is using the desktop.
 
 ## Updating the first prototype
+
+For updates, use a **new private destination**, not a repeat clone into an existing nonempty folder. Keep old checkout and backups until protected installation and fresh relied-on-mode proofs pass.
 
 Do not run setup from the old shared checkout. Clone the updated repository into
 your private profile, then run setup there with administrator approval. Runtime
