@@ -56,7 +56,7 @@ git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCA
 | Where | Run | What it does |
 | --- | --- | --- |
 | Remote Windows PC or VM, logged in as the automation user | Double-click `start-desktop-session-setup.vbs` and approve administrator elevation | Install persistent disconnect-handoff and diagnostic tasks for that user |
-| Local PC running Windows App or Remote Desktop Connection | Double-click `set-local-rdp-minimize-rendering.vbs` | Set the current user's minimized-rendering registry value in the 32-bit and 64-bit registry views |
+| Local PC running Windows App or Remote Desktop Connection | Double-click `set-local-rdp-minimize-rendering.vbs` | Set the current user's minimized-rendering value in the 32-bit registry view and, on 64-bit Windows, the 64-bit view |
 
 Fully close and reopen the remote client after client setup, then reconnect.
 A client PC reboot is usually unnecessary.
@@ -300,6 +300,6 @@ workarounds.
 
 [MIT](../LICENSE). You may use, modify, and redistribute the code under that license.
 
-The README illustration is original project artwork, not a test screenshot.
-Its editable source is `assets\keep-desktop-interactive.svg`; the PNG is rendered
-from that source. Both are covered by the project license.
+The README PNG is AI-generated concept artwork, not a test screenshot.
+`assets\keep-desktop-interactive.svg` preserves an earlier illustration; it is
+not the editable source of the current PNG. Both are covered by the project license.
