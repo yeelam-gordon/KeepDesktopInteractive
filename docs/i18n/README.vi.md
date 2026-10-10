@@ -1,4 +1,4 @@
-# KeepDesktopInteractive — Windows GUI sau ngắt RDP
+# KeepDesktopInteractive — Duy trì thao tác GUI sau ngắt RDP
 
 <a id="languages"></a>
 
@@ -16,8 +16,8 @@ Console vẫn mở khóa; tuân thủ chính sách. Thu nhỏ Windows Sandbox: c
 <img src="../../assets/keep-desktop-interactive.png" width="700" alt="Trước v&#224; sau khi ngắt RDP hoặc thu nhỏ: ứng dụng vẫn chạy nhưng nhấp chuột, g&#245; v&#224; chụp m&#224;n h&#236;nh c&#243; thể dừng; chuyển sang console v&#224; m&#225;y kh&#225;ch tương th&#237;ch gi&#250;p duy tr&#236; thao t&#225;c.">
 
 - **Giữ thao tác tác nhân sau ngắt kết nối:** duy trì nhấp, nhập và chụp màn hình trên desktop hiện có khi Windows phát hiện RDP ngắt kết nối; phát hiện mất mạng có thể mất thời gian.
-- **Không phải canh cửa sổ kết nối:** rời cửa sổ từ xa; thu nhỏ cần kết xuất máy khách tương thích và phép thử thao tác riêng thành công trên môi trường của bạn.
-- **Dùng lại công việc đã đăng nhập:** giữ phiên và ứng dụng đang mở mà không lưu mật khẩu hay bật tự đăng nhập; công cụ không đăng nhập thay bạn sau khởi động lại.
+- **Không phải canh cửa sổ kết nối:** rời cửa sổ từ xa; thu nhỏ cần kết xuất máy khách tương thích và phép thử thao tác riêng thành công trên môi trường của bạn. Máy khách phải tiếp tục vẽ màn hình từ xa khi cửa sổ thu nhỏ; kiểm tra riêng nhấp chuột, nhập liệu và chụp màn hình.
+- **Dùng lại phiên đã đăng nhập:** giữ phiên và ứng dụng đang mở mà không lưu mật khẩu hay bật tự đăng nhập; công cụ không đăng nhập thay bạn sau khởi động lại.
 
 Hình khái niệm, nhãn tiếng Anh, không phải thử nghiệm trực tiếp. Hỗ trợ máy khách và khóa cục bộ khi laptop không ngủ đều có điều kiện.
 
@@ -31,7 +31,7 @@ Chỉ áp dụng khi chính sách cho phép thiết lập chuyển phiên RDP/b�
 
 ## Windows App / RDP
 
-Chẩn đoán đã cài thử nhấp/nhập/chụp khoảng 10 giây sau mỗi lần ngắt RDP của người dùng đã cấu hình, kể cả sử dụng thường ngày, nên có thể tranh chấp với tác nhân. Không có tùy chọn trình chạy được ghi tài liệu để chỉ tắt chẩn đoán; gỡ máy chủ cũng bỏ chuyển phiên.
+Công cụ chẩn đoán đã cài đặt thử nhấp chuột, nhập liệu và chụp màn hình khoảng 10 giây sau mỗi lần ngắt RDP của người dùng đã cấu hình, kể cả sử dụng thường ngày, nên có thể tranh chấp với tác nhân. Không có tùy chọn trình chạy được ghi tài liệu để chỉ tắt chẩn đoán; gỡ máy chủ cũng bỏ chuyển phiên.
 
 Lộ trình Windows App/RDP: ngắt kết nối dùng chuyển phiên máy chủ; thu nhỏ dùng kết xuất tương thích và thiết lập máy chủ. Giữ thiết lập hai máy đã thử, kiểm tra từng chế độ. Không tích hợp/khởi chạy tác nhân, lưu mật khẩu hay đăng nhập tự động. [→](../configuration.md#mode-choice)
 
@@ -47,7 +47,7 @@ Trước khi cài: máy chủ bật, không ngủ và đã mở khóa; chính s�
 
 ## Hai máy tính
 
-máy chủ từ xa là PC/máy ảo Windows chạy tự động hóa; máy khách cục bộ là PC Windows chạy RDP/Windows App. Cần Windows PowerShell 5.1, VBScript và Git để sao chép kho mã. Cài đặt trên máy chủ cần quản trị viên chấp thuận. Trên cả hai máy, lấy bản sao mới từ nguồn tin cậy vào thư mục riêng của người dùng hiện tại, không dùng thư mục chia sẻ cho phép ghi.
+Máy chủ từ xa là PC/máy ảo Windows chạy tự động hóa; máy khách cục bộ là PC Windows chạy RDP/Windows App. Cần Windows PowerShell 5.1, VBScript và Git để sao chép kho mã. Cài đặt trên máy chủ cần quản trị viên chấp thuận. Trên cả hai máy, lấy bản sao mới từ nguồn tin cậy vào thư mục riêng của người dùng hiện tại, không dùng thư mục chia sẻ cho phép ghi.
 
 <details>
 <summary>Windows App / Microsoft Dev Box / Hyper-V</summary>
@@ -80,11 +80,11 @@ wscript.exe .\set-local-rdp-minimize-rendering.vbs
 - Thiết lập kết xuất hỗ trợ máy khách tương thích khi thu nhỏ; cần kiểm tra riêng.
 - Kiểm tra nhấp chuột, gõ và chụp thực tế bằng kết quả riêng tư đúng chế độ, không chỉ nhìn ứng dụng còn chạy.
 
-Trước thử ghi thời điểm bắt đầu, dừng tự động hóa UI khác, lưu việc nhạy cảm và dời cửa sổ bí mật; ngắt kết nối kích hoạt chẩn đoán. Tệp phải sửa sau thời điểm bắt đầu, Passed/Mode đúng; rồi thử thao tác vô hại trong ứng dụng đại diện ở độ phân giải console sau chuyển phiên. Chẩn đoán không chứng minh mọi ứng dụng. [→](../configuration.md#reported-compatibility-evidence)
+Trước khi thử nghiệm, hãy ghi thời điểm bắt đầu, dừng tự động hóa UI khác, lưu việc nhạy cảm và dời cửa sổ bí mật; ngắt kết nối kích hoạt chẩn đoán. Thời gian sửa đổi tệp phải sau thời điểm bắt đầu thử nghiệm, với Passed/Mode phù hợp; sau đó thử nhấp chuột, nhập liệu và chụp màn hình an toàn trong một ứng dụng đại diện của bạn ở độ phân giải console sau chuyển phiên. Kết quả chẩn đoán không chứng minh rằng mọi ứng dụng đều hoạt động đúng. [→](../configuration.md#reported-compatibility-evidence)
 
 ## Kiểm chứng lần đầu
 
-ngắt RDP bình thường, đợi 30 giây rồi kết nối lại; chẩn đoán chạy tự động. Để kiểm tra thu nhỏ riêng biệt, chạy lệnh bên dưới trên máy chủ từ xa, lập tức thu nhỏ cửa sổ từ xa trên máy khách trong 90 giây rồi mở lại. Phép thử đợi 60 giây trước khi thực hiện nhập liệu thật và chụp màn hình.
+Ngắt RDP bình thường, đợi 30 giây rồi kết nối lại; chẩn đoán chạy tự động. Để kiểm tra thu nhỏ riêng biệt, chạy lệnh bên dưới trên máy chủ từ xa, lập tức thu nhỏ cửa sổ từ xa trên máy khách trong 90 giây rồi mở lại. Phép thử đợi 60 giây trước khi thực hiện nhập liệu thật và chụp màn hình.
 
 ```powershell
 wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
@@ -106,7 +106,7 @@ Phép thử thu nhỏ chỉ hợp lệ nếu cửa sổ luôn được thu nhỏ
 
 ## Giới hạn
 
-thiết lập được tài liệu hóa cho Remote Desktop Connection cổ điển; hỗ trợ Windows App tùy phiên bản. Người bảo trì báo cáo cặp máy khách/máy chủ ban đầu đã đạt phép thử thu nhỏ trước khi tăng cường bảo mật, nhưng chưa được kiểm tra lại sau triển khai. Không có nghĩa là mọi máy khách đều được hỗ trợ. Sau khi khởi động lại, đăng nhập và mở khóa một lần, rồi khởi chạy ứng dụng và tự động hóa. Không hỗ trợ môi trường headless không có phiên làm việc đồ họa tương tác. Khóa máy từ xa, ngủ, tắt máy và đăng xuất vẫn có thể ngắt tự động hóa. [Đầy đủ giới hạn](../configuration.md#requirements-and-limitations).
+Thiết lập được tài liệu hóa cho Remote Desktop Connection cổ điển; hỗ trợ Windows App tùy phiên bản. Người bảo trì báo cáo cặp máy khách/máy chủ ban đầu đã đạt phép thử thu nhỏ trước khi tăng cường bảo mật, nhưng chưa được kiểm tra lại sau triển khai. Không có nghĩa là mọi máy khách đều được hỗ trợ. Sau khi khởi động lại, đăng nhập và mở khóa một lần, rồi khởi chạy ứng dụng và tự động hóa. Không hỗ trợ môi trường headless không có phiên làm việc đồ họa tương tác. Khóa máy từ xa, ngủ, tắt máy và đăng xuất vẫn có thể ngắt tự động hóa. [Đầy đủ giới hạn](../configuration.md#requirements-and-limitations).
 
 Nếu `Passed: false`, đọc `Error`, `Stage` và nhật ký. Nếu thiếu hoặc cũ, kiểm tra cài đặt và thử lại. Khi máy khách không hỗ trợ thu nhỏ, giữ cửa sổ hiển thị hoặc dùng quy trình ngắt kết nối đã kiểm chứng riêng. [Khắc phục sự cố](../../README.md#if-the-proof-fails) · [Kiểm tra cấu hình](../configuration.md#configuration-checks).
 
@@ -116,7 +116,7 @@ Xóa tác vụ/khôi phục máy khách không tự khóa console hiện tại. 
 
 ## Hoàn tác
 
-chạy từ các thư mục sao chép tương ứng. Lệnh đầu xóa tác vụ theo lịch trên máy chủ từ xa; lệnh thứ hai khôi phục thiết lập máy khách trên cùng PC cục bộ với cùng người dùng.
+Chạy từ các thư mục sao chép tương ứng. Lệnh đầu xóa tác vụ theo lịch trên máy chủ từ xa; lệnh thứ hai khôi phục thiết lập máy khách trên cùng PC cục bộ với cùng người dùng.
 
 ```powershell
 wscript.exe .\start-desktop-session-setup.vbs --uninstall

@@ -1,4 +1,4 @@
-# KeepDesktopInteractive — GUI Windows après déconnexion RDP
+# KeepDesktopInteractive — Gardez les interactions après déconnexion RDP
 
 <a id="languages"></a>
 
@@ -15,11 +15,11 @@ Console déverrouillée ; respectez les règles. Réduction de Windows Sandbox :
 
 <img src="../../assets/keep-desktop-interactive.png" width="700" alt="Avant et apr&#232;s d&#233;connexion RDP ou r&#233;duction : les applications restent ouvertes, mais clics, saisie et captures peuvent &#233;chouer ; transfert vers la console et client compatible aident.">
 
-- **Préservez les entrées de l’agent après déconnexion :** gardez clics, saisie et captures dans le bureau existant après détection de la déconnexion RDP par Windows ; détecter la perte du réseau peut prendre du temps.
-- **Ne surveillez plus constamment la fenêtre connectée :** éloignez-vous de la fenêtre distante ; la réduction exige un rendu compatible et un test d’entrée distinct réussi dans votre environnement.
+- **Préservez les entrées de l’agent après déconnexion :** gardez clics, saisie et captures sur le bureau existant après détection de la déconnexion RDP par Windows ; détecter la perte du réseau peut prendre du temps.
+- **Ne surveillez plus constamment la fenêtre connectée :** éloignez-vous de la fenêtre distante ; la réduction exige un rendu compatible et un test d’entrée distinct réussi dans votre environnement. Le client doit continuer à afficher le bureau distant lorsque sa fenêtre est réduite ; vérifiez séparément clics, saisie et captures.
 - **Réutilisez le travail déjà ouvert :** gardez session et applications sans enregistrer de mot de passe ni activer la connexion automatique ; l’outil ne vous connecte pas après redémarrage.
 
-Concept aux libellés anglais, pas un test en direct. Compatibilité du client et verrouillage local avec portable éveillé restent conditionnels.
+Concept aux libellés anglais, pas un test en direct. Compatibilité du client et verrouillage local avec ordinateur portable non en veille restent conditionnels.
 
 > **Le transfert laisse le bureau distant déverrouillé.** Toute personne pouvant utiliser la console physique ou interactive de la VM peut utiliser la session sans connexion Windows. Évitez un PC partagé accessible ou une console non fiable. Pas d’automatisation derrière un écran verrouillé ni de contournement des règles. [Configuration et risques d’accès](../configuration.md).
 
@@ -35,15 +35,15 @@ Le diagnostic installé tente clics, saisie et capture environ 10 secondes aprè
 
 Route Windows App/RDP : déconnexion = transfert de l’hôte ; réduction = rendu compatible plus configuration de l’hôte. Conservez la configuration testée à deux ordinateurs et vérifiez chaque mode. Aucun agent intégré/démarré, mot de passe enregistré ou connexion automatique. [→](../configuration.md#mode-choice)
 
-Le mainteneur rapporte le verrouillage local réussi uniquement sur le couple testé, portable éveillé et client configuré, pas un verrouillage distant ; fermeture du capot/perte réseau exigent la détection de déconnexion par Windows.
+Le mainteneur rapporte que les entrées ont continué à fonctionner avec l’écran local verrouillé uniquement sur le couple testé, ordinateur portable non en veille et client configuré ; le bureau distant n’était pas verrouillé. Fermer le capot ou perdre le réseau exige que Windows détecte la déconnexion.
 
 ## Windows Sandbox — UNVALIDATED
 
-Sandbox est une expérience proposée : arrêtez si aucun déploiement/test autorisé et réalisable n’est établi. Relevez clics, saisie et capture sans données sensibles en fenêtre visible ; réduisez durant un intervalle enregistré avec invité/apps actifs, répétez entrées et capture neuve, puis restaurez et inspectez. Non validé ; en cas d’échec, gardez la fenêtre visible. Les procédures RDP à deux ordinateurs, de déconnexion et fermeture/réouverture ne constituent pas une procédure Sandbox. [→](../configuration.md#sandbox-minimized-window-experiment)
+Sandbox est une expérience proposée : arrêtez si aucun déploiement/test autorisé et réalisable n’est établi. Relevez clics, saisie et capture sans données sensibles en fenêtre visible ; réduisez durant un intervalle enregistré avec invité/apps actifs, répétez entrées et nouvelle capture, puis restaurez et inspectez. Non validé ; en cas d’échec, gardez la fenêtre visible. Les procédures RDP à deux ordinateurs, de déconnexion et fermeture/réouverture ne constituent pas une procédure Sandbox. [→](../configuration.md#sandbox-minimized-window-experiment)
 
 <a id="setup"></a>
 
-Avant installation : hôte allumé, éveillé et déverrouillé, usage permis par les règles. Prérequis Windows, administrateur, Git, PowerShell 5.1 et VBScript ci-dessous.
+Avant installation : hôte allumé, non en veille et déverrouillé, usage permis par les règles. Prérequis Windows, administrateur, Git, PowerShell 5.1 et VBScript ci-dessous.
 
 ## Deux ordinateurs, deux configurations
 

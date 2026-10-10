@@ -1,4 +1,4 @@
-# KeepDesktopInteractive — GUI Windows setelah RDP terputus
+# KeepDesktopInteractive — Pertahankan input GUI setelah RDP terputus
 
 <a id="languages"></a>
 
@@ -9,17 +9,17 @@
 
 </details>
 
-Windows App sebagai klien, Microsoft Dev Box sebagai host, atau lingkungan Windows RDP lain: pertahankan klik, pengetikan, dan tangkapan layar agen computer-use setelah koneksi terputus terdeteksi; berhenti mengawasi jendela terhubung (minimisasi perlu rendering kompatibel terverifikasi); gunakan kembali sesi login tanpa menyimpan sandi atau login otomatis.
+Windows App sebagai klien, Microsoft Dev Box sebagai host, atau lingkungan Windows RDP lain: pertahankan klik, pengetikan, dan tangkapan layar agen computer-use setelah koneksi terputus terdeteksi; berhenti mengawasi jendela koneksi (minimisasi perlu rendering kompatibel terverifikasi); gunakan kembali sesi login tanpa menyimpan sandi atau login otomatis.
 
 Konsol tetap tidak terkunci; patuhi kebijakan. Minimisasi Windows Sandbox: belum divalidasi.
 
 <img src="../../assets/keep-desktop-interactive.png" width="700" alt="Sebelum dan sesudah RDP terputus atau jendela diminimalkan: aplikasi berjalan tetapi klik, pengetikan dan tangkapan layar dapat berhenti; pengalihan konsol dan klien kompatibel membantu.">
 
 - **Pertahankan input agen setelah koneksi terputus:** jaga klik, pengetikan, dan tangkapan layar desktop yang ada setelah Windows mendeteksi RDP terputus; deteksi kehilangan jaringan bisa memerlukan waktu.
-- **Berhenti mengawasi jendela terhubung:** menjauhlah dari jendela jarak jauh; minimisasi membutuhkan rendering kompatibel dan uji input terpisah yang berhasil di lingkungan Anda.
-- **Gunakan kembali pekerjaan yang sudah login:** pertahankan sesi dan aplikasi terbuka tanpa menyimpan sandi atau mengaktifkan login otomatis; alat ini tidak melakukan login setelah reboot.
+- **Berhenti mengawasi jendela koneksi:** menjauhlah dari jendela jarak jauh; minimisasi membutuhkan rendering kompatibel dan uji input terpisah yang berhasil di lingkungan Anda. Klien harus tetap menggambar desktop jarak jauh saat jendela diminimalkan; verifikasi klik, pengetikan, dan tangkapan layar secara terpisah.
+- **Gunakan kembali sesi yang sudah login:** pertahankan sesi dan aplikasi terbuka tanpa menyimpan sandi atau mengaktifkan login otomatis; alat ini tidak melakukan login setelah reboot.
 
-Konsep berlabel Inggris, bukan uji langsung. Dukungan klien dan penguncian lokal dengan laptop tetap aktif memiliki syarat.
+Konsep berlabel Inggris, bukan uji langsung. Dukungan klien dan penguncian lokal dengan laptop tidak dalam mode tidur memiliki syarat.
 
 > **Pengalihan membuat desktop jarak jauh tetap tidak terkunci.** Siapa pun yang dapat mengoperasikan konsol fisik atau interaktif VM dapat memakai sesi tanpa masuk ke Windows. Jangan gunakan PC bersama yang mudah diakses atau konsol yang tidak tepercaya. Bukan otomatisasi di balik layar terkunci atau bypass kebijakan. [Penyiapan dan risiko akses](../configuration.md).
 
@@ -35,7 +35,7 @@ Diagnosis terpasang mencoba klik/ketik/tangkapan sekitar 10 detik setelah setiap
 
 Jalur Windows App/RDP: putus koneksi memakai pengalihan host; minimisasi memakai rendering kompatibel dan penyiapan host. Pertahankan penyiapan dua komputer yang diuji dan verifikasi tiap mode. Tanpa integrasi/peluncuran agen, sandi tersimpan, atau login otomatis. [→](../configuration.md#mode-choice)
 
-Pemelihara melaporkan kunci layar lokal berhasil hanya pada pasangan uji dengan laptop tetap aktif dan klien dikonfigurasi, bukan kunci jarak jauh; tutup laptop/jaringan memerlukan deteksi putus koneksi oleh Windows.
+Pemelihara melaporkan kunci layar lokal berhasil hanya pada pasangan uji dengan laptop tidak dalam mode tidur dan klien dikonfigurasi, bukan kunci jarak jauh; tutup laptop/jaringan memerlukan deteksi putus koneksi oleh Windows.
 
 ## Windows Sandbox — UNVALIDATED
 
@@ -47,7 +47,7 @@ Sebelum memasang: host menyala, tidak tidur, dan tidak terkunci; kebijakan mengi
 
 ## Dua komputer
 
-host jarak jauh adalah PC/VM Windows yang menjalankan otomatisasi; klien lokal adalah PC Windows dengan RDP/Windows App. Diperlukan Windows PowerShell 5.1, VBScript, dan Git untuk kloning. Instalasi host memerlukan persetujuan administrator. Pada keduanya, ambil salinan baru yang tepercaya ke folder pribadi pengguna saat ini, bukan folder bersama yang dapat ditulis orang lain.
+Host jarak jauh adalah PC/VM Windows yang menjalankan otomatisasi; klien lokal adalah PC Windows dengan RDP/Windows App. Diperlukan Windows PowerShell 5.1, VBScript, dan Git untuk kloning. Instalasi host memerlukan persetujuan administrator. Pada keduanya, ambil salinan baru yang tepercaya ke folder pribadi pengguna saat ini, bukan folder bersama yang dapat ditulis orang lain.
 
 <details>
 <summary>Windows App / Microsoft Dev Box / Hyper-V</summary>
@@ -80,11 +80,11 @@ Tutup sepenuhnya aplikasi klien jarak jauh, buka lagi, lalu sambungkan kembali. 
 - Pengaturan rendering membantu klien yang kompatibel saat diminimalkan; uji secara terpisah.
 - Periksa klik, pengetikan, dan tangkapan nyata melalui hasil privat dengan mode yang sesuai, bukan hanya aplikasi yang berjalan.
 
-Sebelum uji catat waktu mulai, hentikan otomatisasi UI lain, simpan pekerjaan sensitif dan singkirkan jendela rahasia; putus koneksi memicu diagnosis. File harus diperbarui setelah mulai dengan Passed/Mode sesuai; lalu uji klik/ketik/tangkapan aman pada aplikasi representatif di resolusi konsol hasil pengalihan. Diagnosis bukan bukti semua aplikasi. [→](../configuration.md#reported-compatibility-evidence)
+Sebelum pengujian, catat waktu mulai, hentikan otomatisasi UI lain, simpan pekerjaan sensitif dan singkirkan jendela rahasia; putus koneksi memicu diagnosis. File harus diperbarui setelah mulai dengan Passed/Mode sesuai; lalu uji klik/ketik/tangkapan aman pada aplikasi representatif di resolusi konsol hasil pengalihan. Diagnosis bukan bukti semua aplikasi. [→](../configuration.md#reported-compatibility-evidence)
 
 ## Verifikasi pertama
 
-putuskan RDP seperti biasa, tunggu 30 detik lalu sambungkan kembali; diagnostik berjalan otomatis. Untuk uji minimisasi terpisah, jalankan perintah berikut di host jarak jauh, segera minimalkan jendela jarak jauh di klien selama 90 detik, lalu pulihkan. Pengujian menunggu 60 detik sebelum input nyata dan tangkapan layar.
+Putuskan RDP seperti biasa, tunggu 30 detik lalu sambungkan kembali; diagnostik berjalan otomatis. Untuk uji minimisasi terpisah, jalankan perintah berikut di host jarak jauh, segera minimalkan jendela jarak jauh di klien selama 90 detik, lalu pulihkan. Pengujian menunggu 60 detik sebelum input nyata dan tangkapan layar.
 
 ```powershell
 wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
@@ -106,7 +106,7 @@ Uji minimisasi hanya sah jika jendela tetap diminimalkan selama input dan pengam
 
 ## Batasan
 
-pengaturan didokumentasikan untuk Remote Desktop Connection klasik; dukungan Windows App tergantung versinya. Pengelola melaporkan bahwa pasangan klien/host awal lulus uji minimisasi sebelum penguatan keamanan, tetapi belum diuji ulang setelah penerapan. Ini bukan dukungan untuk semua klien. Setelah mulai ulang, masuk dan buka kunci sekali, lalu jalankan lagi aplikasi dan otomatisasi. Desktop tanpa antarmuka tidak tercakup. Penguncian jarak jauh, mode tidur, mematikan komputer, dan keluar dari akun masih dapat menghentikan otomatisasi. [Semua batasan](../configuration.md#requirements-and-limitations).
+Pengaturan didokumentasikan untuk Remote Desktop Connection klasik; dukungan Windows App tergantung versinya. Pengelola melaporkan bahwa pasangan klien/host awal lulus uji minimisasi sebelum penguatan keamanan, tetapi belum diuji ulang setelah penerapan. Ini bukan dukungan untuk semua klien. Setelah mulai ulang, masuk dan buka kunci sekali, lalu jalankan lagi aplikasi dan otomatisasi. Desktop tanpa antarmuka tidak tercakup. Penguncian jarak jauh, mode tidur, mematikan komputer, dan keluar dari akun masih dapat menghentikan otomatisasi. [Semua batasan](../configuration.md#requirements-and-limitations).
 
 Jika `Passed: false`, baca `Error`, `Stage`, dan log. Jika bukti hilang atau lama, periksa instalasi dan ulangi pengujian. Jika klien tidak mendukung minimisasi, biarkan jendela terlihat atau gunakan alur pemutusan yang diverifikasi secara terpisah. [Pemecahan masalah](../../README.md#if-the-proof-fails) · [Pemeriksaan konfigurasi](../configuration.md#configuration-checks).
 
@@ -116,7 +116,7 @@ Menghapus tugas/memulihkan klien tidak otomatis mengunci konsol saat ini. Simpan
 
 ## Batalkan pengaturan
 
-jalankan dari folder kloning masing-masing. Perintah pertama menghapus tugas terjadwal di host jarak jauh; yang kedua memulihkan pengaturan klien pada PC lokal dan pengguna yang sama.
+Jalankan dari folder kloning masing-masing. Perintah pertama menghapus tugas terjadwal di host jarak jauh; yang kedua memulihkan pengaturan klien pada PC lokal dan pengguna yang sama.
 
 ```powershell
 wscript.exe .\start-desktop-session-setup.vbs --uninstall

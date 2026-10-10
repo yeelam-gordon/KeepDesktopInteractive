@@ -1,4 +1,4 @@
-# KeepDesktopInteractive — RDP kesilince Windows GUI
+# KeepDesktopInteractive — RDP kesilince GUI girdisini sürdürün
 
 <a id="languages"></a>
 
@@ -16,10 +16,10 @@ Konsol kilitsiz kalır; ilkelere uyun. Windows Sandbox küçültme: doğrulanmad
 <img src="../../assets/keep-desktop-interactive.png" width="700" alt="RDP kesilmesi veya k&#252;&#231;&#252;ltme &#246;ncesi ve sonrası: uygulamalar &#231;alışırken tıklama, yazma ve ekran yakalama durabilir; konsola aktarım ve uyumlu istemci yardımcı olur.">
 
 - **Kesintiden sonra ajan girdisini koruyun:** Windows RDP kesintisini algıladığında mevcut masaüstünde tıklama, yazma ve ekran görüntülerini sürdürün; ağ kaybının algılanması zaman alabilir.
-- **Bağlı pencereyi sürekli izlemeyi bırakın:** uzak pencereden ayrılın; küçültme uyumlu istemci görüntülemesi ve kendi ortamınızda ayrı bir başarılı girdi testi gerektirir.
-- **Oturumu açık işi yeniden kullanın:** mevcut oturumu ve açık uygulamaları parola saklamadan veya otomatik giriş açmadan koruyun; araç yeniden başlatmadan sonra oturum açmaz.
+- **Bağlı pencereyi sürekli izlemeyi bırakın:** uzak pencereden ayrılın; küçültme uyumlu istemci görüntülemesi ve kendi ortamınızda ayrı bir başarılı girdi testi gerektirir. Pencere küçültüldüğünde istemci uzak masaüstünün görüntüsünü oluşturmaya devam etmelidir; tıklama, yazma ve ekran görüntülerini ayrıca doğrulayın.
+- **Zaten giriş yapılmış oturumu yeniden kullanın:** mevcut oturumu ve açık uygulamaları parola saklamadan veya otomatik giriş açmadan koruyun; araç yeniden başlatmadan sonra oturum açmaz.
 
-İngilizce etiketli kavramsal görseldir, canlı test değildir. İstemci desteği ve uyanık dizüstünde yerel kilit koşullara bağlıdır.
+İngilizce etiketli kavramsal görseldir, canlı test değildir. İstemci desteği ve uyku modunda olmayan dizüstünde yerel kilit koşullara bağlıdır.
 
 > **Aktarım uzak masaüstünü kilitsiz bırakır.** Fiziksel veya etkileşimli VM konsolunu kullanabilen biri Windows’ta oturum açmadan oturumu kullanabilir. Başkalarının erişebildiği ortak bilgisayarda veya güvenilmeyen konsolda kullanmayın. Kilitli ekranda otomasyon ya da ilke atlatma sağlamaz. [Kurulum ve erişim riskleri](../configuration.md).
 
@@ -27,15 +27,15 @@ Yalnızca ilkeler RDP/konsol aktarımının yapılandırılmasına izin veriyors
 
 [Kurulum ve erişim riskleri](#setup) → [Gerçek girdiyi doğrula](#proof) · [Sınırlar](#limits) · [Geri alma](#undo) · Windows Sandbox penceresini küçültme: henüz doğrulanmadı.
 
-**[Windows Sandbox](https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/windows-sandbox/) — küçültülmüş pencere; DOĞRULANMAMIŞ aday:** Ana makinedeki Windows Sandbox penceresi küçültüldüğünde konuk ve uygulamalar çalışmaya devam ederken tıklama, yazma ve ekran görüntüsü de sürdürülebilir mi? Kurulum ve girdi sürekliliği doğrulanmadı; bu araç Sandbox istemci işlemesi veya konuk aktarımıyla çalışabilir de çalışmayabilir de, ayrı test gerekir ve doğrulanmış bir çözüm değildir.
+**[Windows Sandbox](https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/windows-sandbox/) — küçültülmüş pencere; DOĞRULANMAMIŞ aday:** Ana makinedeki Windows Sandbox penceresi küçültüldüğünde konuk ve uygulamalar çalışmaya devam ederken tıklama, yazma ve ekran görüntüsü de sürdürülebilir mi? Kurulum ve girdi sürekliliği doğrulanmadı; bu araç Sandbox istemcisinin görüntü oluşturması veya konuk aktarımıyla çalışabilir de çalışmayabilir de, ayrı test gerekir ve doğrulanmış bir çözüm değildir.
 
 ## Windows App / RDP
 
 Kurulu tanılama, günlük kullanım dahil yapılandırılmış kullanıcının her RDP kesilmesinden yaklaşık 10 saniye sonra tıklama/yazma/yakalamayı dener ve ajanla çakışabilir. Yalnız tanılamayı kapatan belgelenmiş başlatıcı seçeneği yoktur; ana makineyi kaldırmak aktarımı da kaldırır.
 
-Windows App/RDP yolu: bağlantı kesilmesi ana makine aktarımını, küçültme uyumlu istemci işlemesini ve ana makine kurulumunu kullanır. Test edilmiş iki bilgisayar kurulumunu koruyup her modu doğrulayın. Ajan entegrasyonu/başlatma, parola kaydı veya otomatik giriş yoktur. [→](../configuration.md#mode-choice)
+Windows App/RDP yolu: bağlantı kesilmesi ana makine aktarımını, küçültme uyumlu istemcinin görüntü oluşturmasını ve ana makine kurulumunu kullanır. Test edilmiş iki bilgisayar kurulumunu koruyup her modu doğrulayın. Ajan entegrasyonu/başlatma, parola kaydı veya otomatik giriş yoktur. [→](../configuration.md#mode-choice)
 
-Bakımcı yerel ekran kilidinin yalnız uyanık dizüstü ve ayarlı istemciden oluşan test çiftinde geçtiğini bildirdi; uzak kilit değildir. Kapak/ağ kaybında Windows kesilmeyi algılamalıdır.
+Bakımcı, yerel ekran kilitliyken girdinin yalnızca test edilen eşleşmede çalıştığını bildirdi; dizüstü uyku modunda değildi ve istemci yapılandırılmıştı. Uzak masaüstü kilitli değildi. Kapak kapatıldığında veya ağ bağlantısı kaybolduğunda aktarımın gerçekleşmesi için Windows bağlantının kesildiğini algılamalıdır.
 
 ## Windows Sandbox — UNVALIDATED
 
@@ -43,11 +43,11 @@ Sandbox önerilen deneydir: onaylı, çalışır kurulum/test yöntemi belirlene
 
 <a id="setup"></a>
 
-Kurulumdan önce ana makine açık, uyanık ve kilitsiz olmalı; ilkeler bu kullanıma izin vermelidir. Windows, yönetici onayı, Git, PowerShell 5.1 ve VBScript gereksinimleri aşağıdadır.
+Kurulumdan önce ana makine açık, uyku modunda değil ve kilitsiz olmalı; ilkeler bu kullanıma izin vermelidir. Windows, yönetici onayı, Git, PowerShell 5.1 ve VBScript gereksinimleri aşağıdadır.
 
 ## İki bilgisayar
 
-uzak ana makine, otomasyonu çalıştıran Windows PC/VM’dir; yerel istemci, RDP/Windows App çalıştıran Windows PC’dir. Windows PowerShell 5.1, VBScript ve klonlama için Git gerekir. Ana makinede kurulum yönetici onayı ister. Her iki bilgisayarda geçerli kullanıcının özel klasörüne yeni ve güvenilir bir kopya alın; ortak yazılabilir klasör kullanmayın.
+Uzak ana makine, otomasyonu çalıştıran Windows PC/VM’dir; yerel istemci, RDP/Windows App çalıştıran Windows PC’dir. Windows PowerShell 5.1, VBScript ve klonlama için Git gerekir. Ana makinede kurulum yönetici onayı ister. Her iki bilgisayarda geçerli kullanıcının özel klasörüne yeni ve güvenilir bir kopya alın; ortak yazılabilir klasör kullanmayın.
 
 <details>
 <summary>Windows App / Microsoft Dev Box / Hyper-V</summary>
@@ -77,7 +77,7 @@ Uzak istemciyi tamamen kapatıp yeniden açın ve tekrar bağlanın. [Kurulum so
 <a id="proof"></a>
 
 - Windows RDP bağlantısının kesildiğini algıladığında mevcut oturum konsola aktarılır; GUI girdisini sürdürmeye yardımcı olur.
-- İşleme ayarı uyumlu istemcilerde küçültülmüş pencereye yardımcı olur; ayrıca test edin.
+- Görüntü oluşturma ayarı uyumlu istemcilerde küçültülmüş pencereye yardımcı olur; ayrıca test edin.
 - Yalnızca açık uygulamalara değil, doğru moddaki özel sonuçlarla gerçek tıklama, yazma ve görüntü yakalamaya bakın.
 
 Test öncesi başlangıç zamanını kaydedin, diğer UI otomasyonunu durdurun, hassas işleri kaydedip gizli pencereleri kaldırın; bağlantı kesilmesi tanılamayı başlatır. Dosya değişimi başlangıçtan sonra olmalı, Passed/Mode eşleşmeli; ardından oluşan konsol çözünürlüğünde zararsız örnek uygulamada tıklama/yazma/yakalama test edin. Tanılama tüm uygulamaları kanıtlamaz. [→](../configuration.md#reported-compatibility-evidence)
@@ -106,7 +106,7 @@ Küçültme testi yalnızca giriş ve ekran yakalama sırasında pencere küçü
 
 ## Sınırlar
 
-ayar klasik Remote Desktop Connection için belgelenmiştir; Windows App desteği sürüme bağlıdır. Bakım sorumlusunun bildirdiğine göre özgün istemci/ana makine çifti güvenlik sıkılaştırmasından önce küçültme testini geçmiştir, ancak dağıtımdan sonra tekrar doğrulanmamıştır. Bu, tüm istemcilerin desteklendiği anlamına gelmez. Yeniden başlatmadan sonra bir kez oturum açıp kilidi kaldırın, ardından uygulamaları ve otomasyonu başlatın. Grafik arayüzü olmayan masaüstleri kapsam dışıdır. Uzak kilit, uyku, kapanma ve oturum kapatma otomasyonu durdurabilir. [Tüm sınırlar](../configuration.md#requirements-and-limitations).
+Ayar klasik Remote Desktop Connection için belgelenmiştir; Windows App desteği sürüme bağlıdır. Bakım sorumlusunun bildirdiğine göre özgün istemci/ana makine çifti güvenlik sıkılaştırmasından önce küçültme testini geçmiştir, ancak dağıtımdan sonra tekrar doğrulanmamıştır. Bu, tüm istemcilerin desteklendiği anlamına gelmez. Yeniden başlatmadan sonra bir kez oturum açıp kilidi kaldırın, ardından uygulamaları ve otomasyonu başlatın. Grafik arayüzü olmayan masaüstleri kapsam dışıdır. Uzak kilit, uyku, kapanma ve oturum kapatma otomasyonu durdurabilir. [Tüm sınırlar](../configuration.md#requirements-and-limitations).
 
 `Passed: false` ise `Error`, `Stage` ve günlükleri okuyun. Kanıt yoksa veya eskiyse kurulumu kontrol edip testi tekrarlayın. Küçültmeyi desteklemeyen istemcilerde pencereyi görünür bırakın ya da ayrı doğrulanan bağlantı kesme akışını kullanın. [Sorun giderme](../../README.md#if-the-proof-fails) · [Yapılandırma kontrolleri](../configuration.md#configuration-checks).
 
@@ -116,7 +116,7 @@ Görev kaldırma/istemciyi geri yükleme mevcut konsolu otomatik kilitlemez. Kay
 
 ## Geri alma
 
-ilgili klon klasörlerinden çalıştırın. İlk komut uzak ana makinedeki zamanlanmış görevleri kaldırır; ikinci komut aynı yerel PC’de aynı kullanıcıyla istemci ayarlarını geri yükler.
+İlgili klon klasörlerinden çalıştırın. İlk komut uzak ana makinedeki zamanlanmış görevleri kaldırır; ikinci komut aynı yerel PC’de aynı kullanıcıyla istemci ayarlarını geri yükler.
 
 ```powershell
 wscript.exe .\start-desktop-session-setup.vbs --uninstall

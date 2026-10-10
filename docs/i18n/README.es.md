@@ -1,4 +1,4 @@
-# KeepDesktopInteractive — GUI Windows tras desconectar RDP
+# KeepDesktopInteractive — Mantén los clics al desconectar RDP
 
 <a id="languages"></a>
 
@@ -16,10 +16,10 @@ La consola queda desbloqueada; respeta las políticas. Minimización de Windows 
 <img src="../../assets/keep-desktop-interactive.png" width="700" alt="Antes y despu&#233;s de desconectar RDP o minimizar: las aplicaciones siguen abiertas, pero pueden fallar los clics, la escritura y las capturas; el traspaso a la consola y un cliente compatible ayudan.">
 
 - **Mantén la entrada del agente tras desconectar:** conserva clics, escritura y capturas en el escritorio existente cuando Windows detecta la desconexión RDP; detectar la pérdida de red puede tardar.
-- **Deja de vigilar la ventana conectada:** puedes apartarte de la ventana remota; minimizar exige renderizado compatible y una prueba independiente de entrada satisfactoria en tu entorno.
+- **Deja de vigilar la ventana conectada:** puedes apartarte de la ventana remota; minimizar exige renderizado compatible y una prueba independiente de entrada satisfactoria en tu entorno. El cliente debe seguir dibujando el escritorio remoto con la ventana minimizada; verifica clics, escritura y capturas por separado.
 - **Reutiliza el trabajo ya iniciado:** conserva la sesión y las aplicaciones abiertas sin guardar contraseñas ni activar el inicio automático; no inicia sesión por ti tras reiniciar.
 
-Concepto con etiquetas inglesas, no prueba en vivo. Compatibilidad del cliente y bloqueo local con portátil despierto son condicionales.
+Concepto con etiquetas inglesas, no prueba en vivo. Compatibilidad del cliente y bloqueo local con portátil sin suspensión son condicionales.
 
 > **El traspaso deja el escritorio remoto desbloqueado.** Quien pueda operar la consola física o interactiva de la VM puede usar la sesión sin iniciar sesión en Windows. No uses un PC compartido accesible ni una consola no fiable. No automatiza una pantalla bloqueada ni elude políticas. [Configuración y riesgos de acceso](../configuration.md).
 
@@ -31,11 +31,11 @@ Solo donde las políticas permitan configurar el traspaso RDP/consola; verifica 
 
 ## Windows App / RDP
 
-El diagnóstico instalado intenta clics, escritura y captura unos 10 segundos después de cada desconexión RDP del usuario configurado, también en uso normal, y puede interferir con el agente. No hay opción documentada del lanzador para desactivar solo diagnóstico; desinstalar el host quita también el traspaso.
+El diagnóstico instalado intenta clics, escritura y captura unos 10 segundos después de cada desconexión RDP del usuario configurado, también en uso normal, y puede interferir con el agente. No hay opción documentada del lanzador para desactivar solo el diagnóstico; desinstalar el host quita también el traspaso.
 
 Ruta Windows App/RDP: desconexión = traspaso del host; minimización = renderizado compatible más configuración del host. Conserva la configuración probada de dos equipos y verifica cada modo. Sin integración o arranque de agentes, contraseñas guardadas ni inicio automático. [→](../configuration.md#mode-choice)
 
-El mantenedor solo comunica bloqueo local exitoso en el par probado, portátil despierto y cliente configurado, no bloqueo remoto; tapa/red requieren detección de desconexión por Windows.
+El mantenedor informó que la entrada funcionó con la pantalla local bloqueada solo en el par probado, con el portátil sin suspensión y el cliente configurado; no se bloqueó el escritorio remoto. Cerrar la tapa o perder la red requiere que Windows detecte la desconexión.
 
 ## Windows Sandbox — UNVALIDATED
 
@@ -43,7 +43,7 @@ Sandbox es un experimento propuesto: si no puedes establecer un método autoriza
 
 <a id="setup"></a>
 
-Antes de instalar: host encendido, despierto y desbloqueado, con permiso según las políticas. Requisitos de Windows, administrador, Git, PowerShell 5.1 y VBScript abajo.
+Antes de instalar: host encendido, sin suspensión y desbloqueado, con permiso según las políticas. Requisitos de Windows, administrador, Git, PowerShell 5.1 y VBScript abajo.
 
 ## Dos equipos, dos configuraciones
 

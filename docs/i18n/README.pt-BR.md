@@ -1,4 +1,4 @@
-# KeepDesktopInteractive — GUI Windows após desconectar RDP
+# KeepDesktopInteractive — Mantenha a entrada GUI após desconectar RDP
 
 <a id="languages"></a>
 
@@ -16,10 +16,10 @@ Console desbloqueado; respeite as políticas. Minimização do Windows Sandbox: 
 <img src="../../assets/keep-desktop-interactive.png" width="700" alt="Antes e depois de desconectar o RDP ou minimizar: os aplicativos continuam abertos, mas cliques, digita&#231;&#227;o e capturas podem parar; transfer&#234;ncia para o console e cliente compat&#237;vel ajudam.">
 
 - **Mantenha a entrada do agente após desconectar:** preserve cliques, digitação e capturas no desktop existente quando o Windows detectar a desconexão RDP; detectar a perda da rede pode levar tempo.
-- **Pare de vigiar a janela conectada:** afaste-se da janela remota; minimizar exige renderização compatível e um teste separado de entrada bem-sucedido no seu ambiente.
+- **Pare de vigiar a janela conectada:** afaste-se da janela remota; minimizar exige renderização compatível e um teste separado de entrada bem-sucedido no seu ambiente. O cliente precisa continuar desenhando o desktop remoto com a janela minimizada; verifique cliques, digitação e capturas separadamente.
 - **Reutilize o trabalho já iniciado:** mantenha sessão e aplicativos abertos sem salvar senhas ou ativar logon automático; a ferramenta não faz login por você após reiniciar.
 
-Conceito com rótulos em inglês, não teste ao vivo. Suporte do cliente e bloqueio local com notebook acordado têm condições.
+Conceito com rótulos em inglês, não teste ao vivo. Suporte do cliente e bloqueio local com notebook fora do modo de suspensão têm condições.
 
 > **A transferência deixa a área de trabalho remota desbloqueada.** Quem puder operar o console físico ou interativo da VM pode usar a sessão sem entrar no Windows. Não use PC compartilhado acessível ou console não confiável. Não automatiza uma tela bloqueada nem contorna políticas. [Configuração e riscos de acesso](../configuration.md).
 
@@ -35,7 +35,7 @@ O diagnóstico instalado tenta cliques, digitação e captura cerca de 10 segund
 
 Rota Windows App/RDP: desconexão usa transferência do host; minimização usa renderização compatível e configuração do host. Mantenha a configuração testada de dois computadores e valide cada modo. Sem integração ou início de agentes, senhas salvas ou logon automático. [→](../configuration.md#mode-choice)
 
-O mantenedor relata bloqueio local bem-sucedido apenas no par testado, notebook acordado e cliente configurado, não bloqueio remoto; tampa/rede exigem detecção da desconexão pelo Windows.
+O mantenedor relata que a entrada continuou funcionando com a tela local bloqueada apenas no par testado, com o notebook fora do modo de suspensão e o cliente configurado; o desktop remoto não foi bloqueado. Fechar a tampa ou perder a rede exige que o Windows detecte a desconexão.
 
 ## Windows Sandbox — UNVALIDATED
 
@@ -43,7 +43,7 @@ Sandbox é um experimento proposto: pare se não estabelecer um método aprovado
 
 <a id="setup"></a>
 
-Antes de instalar: host ligado, acordado e desbloqueado, com uso permitido pelas políticas. Requisitos de Windows, administrador, Git, PowerShell 5.1 e VBScript abaixo.
+Antes de instalar: host ligado, fora do modo de suspensão e desbloqueado, com uso permitido pelas políticas. Requisitos de Windows, administrador, Git, PowerShell 5.1 e VBScript abaixo.
 
 ## Dois computadores, configurações separadas
 

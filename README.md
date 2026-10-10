@@ -1,4 +1,4 @@
-# KeepDesktopInteractive — Windows GUI after disconnect
+# KeepDesktopInteractive — Keep Windows GUI input working after disconnect
 
 <a id="languages"></a>
 
@@ -9,15 +9,15 @@
 
 </details>
 
-Windows App client, Microsoft Dev Box host, or Windows RDP? Keep your computer-use agent or UI test clicking, typing and taking screenshots after a detected disconnect; stop watching the connected client (minimize only with verified compatible rendering); reuse your signed-in session without stored passwords or autologon.
+Use Windows App (client) with Microsoft Dev Box (host), or Windows RDP, to keep computer-use agent or UI-test clicks, typing and screenshots working after detected disconnect. Step away (minimize only after your client passes its input test) and reuse your signed-in session without stored passwords or autologon.
 
 Unlocked console; follow policy. Windows Sandbox minimization: unvalidated.
 
 <img src="assets/keep-desktop-interactive.png" width="700" alt="Before/after: closing or locking your notebook, losing the network, or minimizing RDP can leave remote apps running but the agent stuck. Host handoff and compatible client rendering help preserve mouse input, typing, and screenshots. Verify your setup; console handoff leaves the remote desktop unlocked.">
 
 - **Keep agent input working after disconnect:** preserve clicks, typing and screenshots in the existing desktop once Windows detects the RDP disconnect; network detection may take time.
-- **Stop babysitting the connected client:** step away from the remote window; minimized use requires compatible client rendering and a separate successful input test on your setup.
-- **Reuse work already signed in:** keep the existing user session and open apps, without storing passwords or enabling autologon; this does not log you in after reboot.
+- **Stop babysitting the connected client:** step away from the remote window; minimized use requires compatible client rendering and a separate successful input test on your setup. The client must keep drawing the remote desktop while minimized; prove clicks, typing and capture separately.
+- **Reuse your signed-in session:** keep the existing user session and open apps, without storing passwords or enabling autologon; this does not log you in after reboot.
 
 Concept artwork; English labels, not live proof. Client support and awake-notebook local lock are conditional.
 

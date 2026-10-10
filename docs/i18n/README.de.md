@@ -1,4 +1,4 @@
-# KeepDesktopInteractive — Windows-GUI nach RDP-Trennung
+# KeepDesktopInteractive — GUI-Eingaben nach RDP-Trennung erhalten
 
 <a id="languages"></a>
 
@@ -15,11 +15,11 @@ Konsole bleibt entsperrt; Richtlinien beachten. Windows Sandbox minimieren: unva
 
 <img src="../../assets/keep-desktop-interactive.png" width="700" alt="Vor und nach RDP-Trennung oder Minimierung: Anwendungen laufen weiter, aber Klicks, Eingaben und Screenshots k&#246;nnen ausfallen; Konsolen&#252;bergabe und kompatibler Client helfen.">
 
-- **Agenteneingaben nach Trennung erhalten:** Klicks, Eingaben und Screenshots im bestehenden Desktop bleiben nach erkannter RDP-Trennung nutzbar; die Netzwerkerkennung kann Zeit benötigen.
-- **Nicht ständig das verbundene Fenster betreuen:** Vom Remotefenster weggehen; minimierte Nutzung erfordert kompatible Clientdarstellung und einen gesonderten erfolgreichen Eingabetest Ihrer Umgebung.
-- **Angemeldete Arbeit weiterverwenden:** Bestehende Sitzung und offene Apps ohne Passwortspeicherung oder automatische Anmeldung behalten; nach einem Neustart meldet das Tool Sie nicht an.
+- **Agenteneingaben nach Trennung erhalten:** Klicks, Eingaben und Screenshots auf dem bestehenden Desktop bleiben nach erkannter RDP-Trennung nutzbar; die Netzwerkerkennung kann Zeit benötigen.
+- **Nicht ständig das verbundene Fenster betreuen:** Vom Remotefenster weggehen; minimierte Nutzung erfordert kompatible Clientdarstellung und einen gesonderten erfolgreichen Eingabetest Ihrer Umgebung. Der Client muss den Remotedesktop auch bei minimiertem Fenster weiter darstellen; prüfen Sie Klicks, Eingaben und Screenshots separat.
+- **Angemeldete Sitzung weiterverwenden:** Bestehende Sitzung und offene Apps ohne Passwortspeicherung oder automatische Anmeldung behalten; nach einem Neustart meldet das Tool Sie nicht an.
 
-Konzept mit englischen Beschriftungen, kein Live-Test. Clientunterstützung und lokale Sperre bei wachem Notebook sind bedingt.
+Konzept mit englischen Beschriftungen, kein Live-Test. Clientunterstützung und lokale Sperre mit Notebook außerhalb des Energiesparmodus sind bedingt.
 
 > **Die Übergabe lässt den entfernten Desktop entsperrt.** Wer die physische oder interaktive VM-Konsole bedienen kann, kann die Sitzung ohne Windows-Anmeldung nutzen. Nicht auf zugänglichen gemeinsamen PCs oder nicht vertrauenswürdigen Konsolen verwenden. Keine Automatisierung hinter einer Sperre oder Richtlinienumgehung. [Einrichtung und Zugriffsrisiken](../configuration.md).
 
@@ -35,7 +35,7 @@ Installierte Diagnosen versuchen etwa 10 Sekunden nach jeder RDP-Trennung des ei
 
 Windows-App/RDP-Weg: Trennung nutzt Hostübergabe, Minimierung kompatible Clientdarstellung plus Hosteinrichtung. Behalten Sie die geprüfte Zwei-Rechner-Einrichtung und prüfen Sie jeden Modus. Keine Agentenintegration oder -startfunktion, Passwortspeicherung oder automatische Anmeldung. [→](../configuration.md#mode-choice)
 
-Der Maintainer meldet lokale Bildschirmsperre nur für das getestete Paar mit wachem Notebook und eingerichtetem Client, nicht entfernte Sperre; Deckel/Netzverlust erfordern erkannte Windows-Trennung.
+Der Maintainer berichtet, dass Eingaben bei gesperrtem lokalem Bildschirm nur mit dem getesteten Paar funktionierten: Das Notebook war nicht im Energiesparmodus und der Client war eingerichtet. Der entfernte Desktop war nicht gesperrt. Beim Schließen des Deckels oder bei Netzverlust greift die Übergabe erst, wenn Windows eine Trennung erkennt.
 
 ## Windows Sandbox — UNVALIDATED
 
@@ -43,7 +43,7 @@ Sandbox ist ein vorgeschlagenes Experiment: stoppen, wenn keine genehmigte, funk
 
 <a id="setup"></a>
 
-Vor Installation: Host eingeschaltet, wach und entsperrt; Richtlinien müssen dies erlauben. Windows, Administratorzustimmung, Git, PowerShell 5.1 und VBScript sind unten aufgeführt.
+Vor der Installation: Host eingeschaltet, nicht im Energiesparmodus und entsperrt; Richtlinien müssen dies erlauben. Windows, Administratorzustimmung, Git, PowerShell 5.1 und VBScript sind unten aufgeführt.
 
 ## Zwei Rechner, getrennte Einrichtung
 
@@ -77,7 +77,7 @@ Den Remoteclient vollständig schließen, neu öffnen und erneut verbinden. [Ein
 - Die Darstellungseinstellung hilft kompatiblen Clients beim Minimieren; separat prüfen.
 - Prüfen Sie echte Klicks, Eingaben und Screenshots mit privaten Ergebnissen im richtigen Modus, nicht nur laufende Apps.
 
-Vor Test Startzeit notieren, andere UI-Automatisierung beenden, sensible Arbeit speichern und vertrauliche Fenster entfernen; Trennung startet Diagnose. Dateizeit nach Start und korrektes Passed/Mode verlangen; dann harmlose repräsentative Klick-/Eingabe-/Aufnahmeaufgabe bei resultierender Konsolenauflösung prüfen. Die Diagnose beweist nicht alle Apps. [→](../configuration.md#reported-compatibility-evidence)
+Vor dem Test die Startzeit notieren, andere UI-Automatisierung beenden, sensible Arbeit speichern und vertrauliche Fenster entfernen; Trennung startet Diagnose. Dateizeit nach Start und korrektes Passed/Mode verlangen; dann harmlose repräsentative Klick-/Eingabe-/Aufnahmeaufgabe bei resultierender Konsolenauflösung prüfen. Die Diagnose beweist nicht alle Apps. [→](../configuration.md#reported-compatibility-evidence)
 
 **Trennung:** RDP normal trennen, 30 Sekunden warten und erneut verbinden. Die Diagnose läuft automatisch. **Minimieren:** Folgendes auf dem Host ausführen und sofort das Remotefenster auf dem Client für 90 Sekunden minimieren. Danach wiederherstellen. Der Test wartet 60 Sekunden vor echter Eingabe und Bildschirmaufnahme.
 ```powershell
