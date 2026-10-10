@@ -1,8 +1,8 @@
 # KeepDesktopInteractive — RDP 断开后继续 Windows 界面自动化
 
-[English](../../README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md)
+[English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
 
-> **警告：断开后的控制台移交会让远程 Windows 桌面保持未锁定。** 能接触实体键盘或交互式 VM 控制台的人，无需登录 Windows 就能使用你的会话。不要用于他人可接触的共享电脑；Hyper-V 管理员和能打开 VMConnect 的人必须可信。测试账号或云端 VM 并不自动安全。遵守组织策略；不能在锁定的远程桌面后执行自动化，也不能绕过锁屏策略。
+> **警告：断开后的控制台移交会让远程 Windows 桌面保持未锁定。** 能接触实体键盘或交互式 VM 控制台的人，无需登录 Windows 就能使用你的会话。不要用于他人可接触的共享电脑；Hyper-V 管理员和能打开 VMConnect 的人必须可信。测试账号或云端 VM 并不自动安全。遵守组织策略；本工具无法在已锁定的远程桌面上执行自动化，也不能绕过锁屏策略。
 
 RDP 断开后自动化停止？本工具保留**已经登录且未锁定**的 Windows 会话，供现有 computer-use 智能体或 UI 测试继续点击、输入和截图。远程桌面最小化后无法点击输入是另一个问题，需要兼容的客户端及单独验证。不提供智能体原生集成，不启动智能体，不保存密码或启用自动登录。
 

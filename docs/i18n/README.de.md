@@ -1,6 +1,6 @@
 # KeepDesktopInteractive — Windows-GUI-Automatisierung nach RDP-Trennung erhalten
 
-[English](../../README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md)
+[English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
 
 > **Warnung: Die Übergabe an die Konsole lässt den entfernten Windows-Desktop entsperrt.** Wer Zugriff auf die physische Tastatur oder die interaktive VM-Konsole hat, kann Ihre Sitzung ohne Windows-Anmeldung benutzen. Nicht auf gemeinsam genutzten PCs einsetzen, an die andere herantreten können. Hyper-V-Administratoren und alle Personen mit VMConnect-Zugriff müssen vertrauenswürdig sein. Ein Testkonto oder eine Cloud-VM ist nicht automatisch sicher. Beachten Sie die Richtlinien Ihrer Organisation: Dies ermöglicht weder Automatisierung hinter einem gesperrten entfernten Bildschirm noch das Umgehen von Sperrrichtlinien.
 
@@ -13,7 +13,7 @@ Der **entfernte Host** ist der Windows-PC/die VM mit der Automatisierung. Der **
 git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
 Set-Location "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
 ```
-Auf jedem Rechner den geklonten Ordner öffnen und die Befehle darin ausführen: den ersten auf dem Host (Erhöhung bestätigen), den zweiten auf dem lokalen Client.
+Auf jedem Rechner den geklonten Ordner öffnen und die Befehle darin ausführen: den ersten auf dem Host (Anforderung zur Rechteerhöhung bestätigen), den zweiten auf dem lokalen Client.
 ```powershell
 wscript.exe .\start-desktop-session-setup.vbs
 ```

@@ -1,6 +1,6 @@
 # KeepDesktopInteractive — Automatisation de l’interface Windows après déconnexion RDP
 
-[English](../../README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md)
+[English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
 
 > **Attention : le transfert vers la console laisse le bureau Windows distant déverrouillé.** Toute personne ayant accès au clavier physique ou à la console interactive de la VM peut utiliser votre session sans se connecter à Windows. N’utilisez pas un PC partagé accessible à d’autres personnes. Vous devez faire confiance aux administrateurs Hyper-V et aux personnes pouvant ouvrir VMConnect. Un compte de test ou une VM cloud n’est pas automatiquement sûr. Respectez les règles de votre organisation : ce projet ne permet ni l’automatisation derrière un écran distant verrouillé ni le contournement des politiques de verrouillage.
 
@@ -35,11 +35,11 @@ Sur l’hôte, consultez le nouveau `%LOCALAPPDATA%\KeepDesktopInteractive\deskt
 ```json
 { "Passed": true, "Mode": "WhileClientMinimized" }
 ```
-Le succès en fenêtre réduite ne compte que si elle reste réduite pendant les entrées et la capture ; l’hôte ne peut pas observer cet état. Gardez les journaux et captures privés : ils peuvent inclure du contenu voisin du bureau. [Détails](../configuration.md#verify-on-each-new-machine).
+Le succès en fenêtre réduite ne compte que si elle reste réduite pendant les entrées et la capture ; l’hôte ne peut pas observer cet état. Gardez les journaux et captures privés : ils peuvent inclure d’autres éléments visibles sur le bureau. [Détails](../configuration.md#verify-on-each-new-machine).
 
 ## Limites, échecs et annulation
 
-Le réglage est documenté pour Remote Desktop Connection classique ; sa prise en charge par Windows App dépend de la version. Un succès ne prouve pas une compatibilité universelle. Le couple initial a réussi le test réduit avant le durcissement, mais n’a pas été revérifié après déploiement. Après redémarrage, connectez-vous et déverrouillez une fois, puis relancez les applications et l’automatisation. Les bureaux sans interface ne sont pas couverts. Verrouillage distant, veille, arrêt et fermeture de session peuvent encore interrompre l’automatisation. [Toutes les limites](../configuration.md#requirements-and-limitations).
+Le réglage est documenté pour Remote Desktop Connection classique ; sa prise en charge par Windows App dépend de la version. Un succès ne prouve pas une compatibilité universelle. Le couple initial a réussi le test avec la fenêtre du client réduite avant le durcissement, mais n’a pas été revérifié après déploiement. Après redémarrage, connectez-vous et déverrouillez une fois, puis relancez les applications et l’automatisation. Les bureaux sans interface ne sont pas couverts. Verrouillage distant, veille, arrêt et fermeture de session peuvent encore interrompre l’automatisation. [Toutes les limites](../configuration.md#requirements-and-limitations).
 
 Si `Passed: false`, lisez `Error`, `Stage` et les journaux. Si la preuve manque ou est ancienne, vérifiez l’installation et recommencez. Si le client ne gère pas la réduction, gardez la fenêtre visible ou utilisez la déconnexion vérifiée séparément. [Dépannage](../../README.md#if-the-proof-fails) · [Contrôles](../configuration.md#configuration-checks).
 

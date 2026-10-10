@@ -1,6 +1,6 @@
 # KeepDesktopInteractive — Automatización GUI de Windows tras desconectar RDP
 
-[English](../../README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md)
+[English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
 
 > **Advertencia: el traspaso a la consola deja el escritorio remoto de Windows desbloqueado.** Quien tenga acceso al teclado físico o a la consola interactiva de la VM puede usar tu sesión sin iniciar sesión en Windows. No lo uses en un PC compartido al que otros puedan acercarse. Debes confiar en los administradores de Hyper-V y en quienes puedan abrir VMConnect. Una cuenta de pruebas o una VM en la nube no es automáticamente segura. Respeta las políticas de tu organización: esto no permite automatizar detrás de una pantalla remota bloqueada ni eludir políticas de bloqueo.
 
@@ -35,7 +35,7 @@ Consulta el resultado nuevo en `%LOCALAPPDATA%\KeepDesktopInteractive\desktop-pr
 ```json
 { "Passed": true, "Mode": "WhileClientMinimized" }
 ```
-El éxito minimizado solo cuenta si mantuviste la ventana minimizada durante la entrada y captura; el host no observa ese estado. Mantén privados los registros y capturas, que pueden incluir contenido cercano del escritorio. [Detalles](../configuration.md#verify-on-each-new-machine).
+El éxito minimizado solo cuenta si mantuviste la ventana minimizada durante la entrada y captura; el host no observa ese estado. Mantén privados los registros y capturas, que pueden incluir otras zonas visibles del escritorio. [Detalles](../configuration.md#verify-on-each-new-machine).
 
 ## Límites, fallos y reversión
 

@@ -1,6 +1,6 @@
 # KeepDesktopInteractive — RDP 切断後の Windows GUI 自動化を維持
 
-[English](../../README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md)
+[English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
 
 > **警告：切断後にコンソールへ引き継ぐと、リモート Windows デスクトップはロックされない状態になります。** 物理キーボードや対話型 VM コンソールにアクセスできる人は、Windows にサインインせずにセッションを操作できます。他人が近づける共有 PC では使用しないでください。Hyper-V 管理者と VMConnect を開ける人を信頼できることが必要です。テストアカウントやクラウド VM も自動的に安全にはなりません。組織のポリシーを守ってください。ロックされたリモート画面での自動化やロックポリシーの回避はできません。
 
@@ -39,7 +39,7 @@ wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
 
 ## 制限、失敗、元に戻す方法
 
-設定は従来の Remote Desktop Connection 向けに文書化されています。Windows App の対応はバージョン次第です。元の組み合わせでは強化前に最小化テストが成功しましたが、導入後は再検証されていません。再起動後は一度ログインしてロックを解除し、アプリと自動化を再起動してください。ヘッドレス環境は対象外です。リモートのロック、スリープ、シャットダウン、サインアウトは処理を止める可能性があります。[制限](../configuration.md#requirements-and-limitations)。
+設定は従来の Remote Desktop Connection 向けに文書化されています。Windows App の対応はバージョン次第です。元の組み合わせではセキュリティ強化前に最小化テストが成功しましたが、導入後は再検証されていません。再起動後は一度ログインしてロックを解除し、アプリと自動化を再起動してください。ヘッドレス環境は対象外です。リモートのロック、スリープ、シャットダウン、サインアウトは処理を止める可能性があります。[制限](../configuration.md#requirements-and-limitations)。
 
 `Passed: false` なら `Error`、`Stage`、ログを確認します。結果がない・古い場合は設定結果を確認して再テストします。最小化非対応なら表示したままにするか、別途検証した切断手順を使います。[問題の切り分け](../../README.md#if-the-proof-fails) · [構成チェック](../configuration.md#configuration-checks)。
 
