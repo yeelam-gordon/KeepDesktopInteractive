@@ -3,129 +3,67 @@
 <a id="languages"></a>
 
 <details>
-<summary>Languages / 语言 / 言語 / اللغات (16)</summary>
+<summary>Languages (16)</summary>
 
 [English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Русский](README.ru.md) · [Türkçe](README.tr.md) · [Tiếng Việt](README.vi.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [العربية](README.ar.md)
 
 </details>
 
-Windows App là máy khách, Microsoft Dev Box là máy chủ hoặc môi trường Windows RDP khác: giữ nhấp, nhập và chụp màn hình của tác nhân computer-use sau khi phát hiện ngắt kết nối; không phải canh cửa sổ kết nối (thu nhỏ cần kết xuất tương thích đã kiểm chứng); dùng lại phiên đã đăng nhập, không lưu mật khẩu hay tự đăng nhập.
+Cho tác nhân và kiểm thử UI trên desktop Windows hiện có: Windows App là máy khách; Microsoft Dev Box hoặc máy Windows khác có RDP có thể là máy chủ.
 
-Console vẫn mở khóa; tuân thủ chính sách. Thu nhỏ Windows Sandbox: chưa kiểm chứng.
+<img src="../../assets/keep-desktop-interactive.png" width="320" alt="Hình khái niệm: duy trì nhấp chuột và nhập sau ngắt kết nối; không phải canh cửa sổ từ xa khi thu nhỏ với máy khách tương thích đã kiểm thử; dùng lại desktop đã đăng nhập mà không lưu mật khẩu. Chuyển sang console để desktop ở trạng thái mở khóa.">
 
-<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Trước v&#224; sau khi ngắt RDP hoặc thu nhỏ: ứng dụng vẫn chạy nhưng nhấp chuột, g&#245; v&#224; chụp m&#224;n h&#236;nh c&#243; thể dừng; chuyển sang console v&#224; m&#225;y kh&#225;ch tương th&#237;ch gi&#250;p duy tr&#236; thao t&#225;c.">
+Hình khái niệm, nhãn tiếng Anh, không phải bằng chứng.
 
-- **Giữ thao tác tác nhân sau ngắt kết nối:** duy trì nhấp, nhập và chụp màn hình trên desktop hiện có khi Windows phát hiện RDP ngắt kết nối; phát hiện mất mạng có thể mất thời gian.
-- **Không phải canh cửa sổ kết nối:** rời cửa sổ từ xa; thu nhỏ cần kết xuất máy khách tương thích và phép thử thao tác riêng thành công trên môi trường của bạn. Máy khách phải tiếp tục vẽ màn hình từ xa khi cửa sổ thu nhỏ; kiểm tra riêng nhấp chuột, nhập liệu và chụp màn hình.
-- **Dùng lại phiên đã đăng nhập:** giữ phiên và ứng dụng đang mở mà không lưu mật khẩu hay bật tự đăng nhập; công cụ không đăng nhập thay bạn sau khởi động lại.
-
-Hình khái niệm, nhãn tiếng Anh, không phải thử nghiệm trực tiếp. Hỗ trợ máy khách và khóa cục bộ khi laptop không ngủ đều có điều kiện.
+- **Duy trì nhấp, nhập và chụp màn hình.**
+- **Không phải canh kết nối.**
+- **Dùng lại desktop đã đăng nhập và các ứng dụng đang mở, không lưu mật khẩu.**
 
 > **Chuyển phiên để màn hình từ xa ở trạng thái mở khóa.** Ai có thể thao tác bảng điều khiển vật lý hoặc tương tác của VM có thể dùng phiên mà không đăng nhập Windows. Không dùng máy chung dễ tiếp cận hoặc bảng điều khiển không đáng tin. Không tự động hóa trên màn hình bị khóa hay vượt chính sách. [Thiết lập và rủi ro truy cập](../configuration.md).
 
-Chỉ áp dụng khi chính sách cho phép thiết lập chuyển phiên RDP/bảng điều khiển; tự kiểm chứng, không chứng nhận mọi cấu hình Dev Box.
+Cả hai máy cần Windows. Máy chủ đã đăng nhập, mở khóa, không ngủ và được chính sách cho phép. Cần quản trị viên máy chủ chấp thuận, Git, Windows PowerShell 5.1 và VBScript.
 
-[Thiết lập và rủi ro truy cập](#setup) → [Kiểm tra thao tác thực tế](#proof) · [Giới hạn](#limits) · [Hoàn tác](#undo) · Thu nhỏ Windows Sandbox: chưa được kiểm chứng.
-
-**[Windows Sandbox](https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/windows-sandbox/) — cửa sổ thu nhỏ; ứng viên CHƯA KIỂM CHỨNG:** Khi cửa sổ Windows Sandbox trên máy chủ được thu nhỏ nhưng hệ điều hành khách và ứng dụng vẫn chạy, nhấp chuột, nhập và chụp màn hình có tiếp tục không? Triển khai và duy trì thao tác chưa được kiểm chứng; công cụ có thể hoạt động hoặc không với kết xuất máy khách hay chuyển phiên khách, cần thử riêng và chưa phải giải pháp đã xác minh.
-
-## Windows App / RDP
-
-Công cụ chẩn đoán đã cài đặt thử nhấp chuột, nhập liệu và chụp màn hình khoảng 10 giây sau mỗi lần ngắt RDP của người dùng đã cấu hình, kể cả sử dụng thường ngày, nên có thể tranh chấp với tác nhân. Không có tùy chọn trình chạy được ghi tài liệu để chỉ tắt chẩn đoán; gỡ máy chủ cũng bỏ chuyển phiên.
-
-Lộ trình Windows App/RDP: ngắt kết nối dùng chuyển phiên máy chủ; thu nhỏ dùng kết xuất tương thích và thiết lập máy chủ. Giữ thiết lập hai máy đã thử, kiểm tra từng chế độ. Không tích hợp/khởi chạy tác nhân, lưu mật khẩu hay đăng nhập tự động. [→](../configuration.md#mode-choice)
-
-Người bảo trì chỉ báo khóa màn hình cục bộ thành công trên cặp đã thử với laptop không ngủ và máy khách đã thiết lập, không phải khóa từ xa; đóng nắp/mất mạng cần Windows phát hiện ngắt kết nối.
-
-## Windows Sandbox — UNVALIDATED
-
-Sandbox là thử nghiệm đề xuất: dừng nếu chưa xác lập cách triển khai/kiểm tra được phép và khả thi. Ghi thao tác nhấp/nhập/chụp không nhạy cảm khi cửa sổ hiện; thu nhỏ trong khoảng thời gian ghi lại, giữ khách và ứng dụng chạy, lặp thao tác và ảnh mới, khôi phục để xem. Chưa kiểm chứng; nếu lỗi, giữ cửa sổ hiển thị. Các bước RDP hai máy, ngắt kết nối và đóng/mở lại không phải quy trình Sandbox. [→](../configuration.md#sandbox-minimized-window-experiment)
+Công cụ chẩn đoán đã cài đặt thử nhấp chuột, nhập liệu và chụp màn hình khoảng 10 giây sau mỗi lần ngắt RDP của người dùng đã cấu hình, kể cả sử dụng thường ngày, nên có thể tranh chấp với tác nhân.
 
 <a id="setup"></a>
 
-Trước khi cài: máy chủ bật, không ngủ và đã mở khóa; chính sách phải cho phép. Yêu cầu Windows, quyền quản trị, Git, PowerShell 5.1 và VBScript ở dưới.
+## Thiết lập cả hai máy
 
-## Hai máy tính
-
-Máy chủ từ xa là PC/máy ảo Windows chạy tự động hóa; máy khách cục bộ là PC Windows chạy RDP/Windows App. Cần Windows PowerShell 5.1, VBScript và Git để sao chép kho mã. Cài đặt trên máy chủ cần quản trị viên chấp thuận. Trên cả hai máy, lấy bản sao mới từ nguồn tin cậy vào thư mục riêng của người dùng hiện tại, không dùng thư mục chia sẻ cho phép ghi.
-
-<details>
-<summary>Windows App / Microsoft Dev Box / Hyper-V</summary>
-
-> **Windows App là máy khách kết nối; Microsoft Dev Box là máy trạm đám mây được quản lý. Rủi ro là người khác truy cập console không khóa, không phải bản thân sản phẩm thiếu an toàn. Máy chủ được quản lý cho một nhà phát triển, không có đường truy cập console tương tác cho người không tin cậy, ít rủi ro hơn PC dùng chung. Không mặc định Microsoft Dev Box cung cấp đường truy cập đó. Tuân thủ chính sách tổ chức: công cụ không chạy tự động hóa sau màn hình từ xa đã khóa và không vượt qua chính sách khóa.**
-
-</details>
-
+Trên cả hai máy, lấy bản sao mới đáng tin cậy vào thư mục riêng của người dùng hiện tại, không dùng thư mục chia sẻ có thể ghi. Mở `%LOCALAPPDATA%\KeepDesktopInteractiveSource` trong File Explorer và nhấp đúp trình chạy tương ứng.
 
 ```powershell
 git clone https://github.com/yeelam-gordon/KeepDesktopInteractive.git "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
-Set-Location "$env:LOCALAPPDATA\KeepDesktopInteractiveSource"
 ```
 
-Mở thư mục vừa sao chép trên từng máy và chạy lệnh từ đó. Lệnh đầu chạy trên máy chủ từ xa, chấp thuận nâng quyền quản trị; lệnh thứ hai chạy trên máy khách cục bộ.
+| Máy chủ từ xa / Máy khách cục bộ | |
+| --- | --- |
+| Máy chủ từ xa | `start-desktop-session-setup.vbs` — chấp thuận nâng quyền |
+| Máy khách cục bộ | `set-local-rdp-minimize-rendering.vbs` — đóng hoàn toàn Windows App/RDP, mở lại rồi kết nối |
 
-```powershell
-wscript.exe .\start-desktop-session-setup.vbs
-```
-
-```powershell
-wscript.exe .\set-local-rdp-minimize-rendering.vbs
-```
-
-Đóng hoàn toàn ứng dụng máy khách từ xa, mở lại rồi kết nối lại. [Kết quả cài đặt](../configuration.md#quick-setup): máy chủ có `Installed: true`, `Status: Ready`; máy khách có `Succeeded: true`.
+[Kết quả cài đặt](../configuration.md#quick-setup): Máy chủ từ xa `%LOCALAPPDATA%\KeepDesktopInteractive\elevation-result.json` → `%ProgramData%\KeepDesktopInteractive\setup-result.json`: `Installed: true`, `Status: Ready`; Máy khách cục bộ `%LOCALAPPDATA%\KeepDesktopInteractive\local-rdp-minimize-result.json`: `Succeeded: true`.
 
 <a id="proof"></a>
 
-- Khi Windows phát hiện RDP ngắt kết nối, phiên hiện có được chuyển sang bảng điều khiển để hỗ trợ duy trì thao tác GUI.
-- Thiết lập kết xuất hỗ trợ máy khách tương thích khi thu nhỏ; cần kiểm tra riêng.
-- Kiểm tra nhấp chuột, gõ và chụp thực tế bằng kết quả riêng tư đúng chế độ, không chỉ nhìn ứng dụng còn chạy.
+## Kiểm tra thao tác thật
 
-Trước khi thử nghiệm, hãy ghi thời điểm bắt đầu, dừng tự động hóa UI khác, lưu việc nhạy cảm và dời cửa sổ bí mật; ngắt kết nối kích hoạt chẩn đoán. Thời gian sửa đổi tệp phải sau thời điểm bắt đầu thử nghiệm, với Passed/Mode phù hợp; sau đó thử nhấp chuột, nhập liệu và chụp màn hình an toàn trong một ứng dụng đại diện của bạn ở độ phân giải console sau chuyển phiên. Kết quả chẩn đoán không chứng minh rằng mọi ứng dụng đều hoạt động đúng. [→](../configuration.md#reported-compatibility-evidence)
+Trước khi thử nghiệm, hãy ghi thời điểm bắt đầu, dừng tự động hóa UI khác, lưu việc nhạy cảm và ẩn các cửa sổ chứa thông tin bí mật; ngắt kết nối kích hoạt chẩn đoán. Thời gian sửa đổi tệp phải sau thời điểm bắt đầu thử nghiệm, với Passed/Mode phù hợp; sau đó thử nhấp chuột, nhập liệu và chụp màn hình an toàn trong một ứng dụng đại diện của bạn ở độ phân giải console sau chuyển phiên. Kết quả chẩn đoán không chứng minh rằng mọi ứng dụng đều hoạt động đúng.
 
-## Kiểm chứng lần đầu
+Ngắt 30 giây rồi kết nối lại. Trên máy chủ, kiểm tra `%LOCALAPPDATA%\KeepDesktopInteractive\desktop-proof.json` mới cập nhật cho lần thử này: `Passed: true`, `Mode: AfterDisconnect`.
 
-Ngắt RDP bình thường, đợi 30 giây rồi kết nối lại; chẩn đoán chạy tự động. Để kiểm tra thu nhỏ riêng biệt, chạy lệnh bên dưới trên máy chủ từ xa, lập tức thu nhỏ cửa sổ từ xa trên máy khách trong 90 giây rồi mở lại. Phép thử đợi 60 giây trước khi thực hiện nhập liệu thật và chụp màn hình.
-
-```powershell
-wscript.exe .\test-interactive-desktop-automation.vbs --minimized-test
-```
-
-Trên máy chủ, xem bản mới của `%LOCALAPPDATA%\KeepDesktopInteractive\desktop-proof.json`. Đây là ví dụ các trường mong đợi cho từng phép thử, không phải kết quả đo trong lần cập nhật này:
-
-```json
-{ "Passed": true, "Mode": "AfterDisconnect" }
-```
-
-```json
-{ "Passed": true, "Mode": "WhileClientMinimized" }
-```
-
-Phép thử thu nhỏ chỉ hợp lệ nếu cửa sổ luôn được thu nhỏ trong lúc nhập liệu và chụp ảnh; máy chủ không quan sát được trạng thái máy khách. Giữ nhật ký và ảnh riêng tư vì chúng có thể chứa nội dung gần cửa sổ thử nghiệm. [Chi tiết kiểm chứng](../configuration.md#verify-on-each-new-machine).
+Thu nhỏ có điều kiện: làm riêng [thử nghiệm 90 giây / chờ 60 giây](../configuration.md#verify-on-each-new-machine) cho `WhileClientMinimized`. Nếu thất bại, giữ cửa sổ hiển thị.
 
 <a id="limits"></a>
 
-## Giới hạn
+- Sau khởi động lại, tự đăng nhập, mở khóa và chạy ứng dụng; không tự đăng nhập. Khóa từ xa, ngủ và đăng xuất có thể dừng thao tác.
+- Tương thích tùy máy khách và phiên bản, không chứng nhận mọi Dev Box: [bằng chứng](../configuration.md#reported-compatibility-evidence).
+- Windows Sandbox thu nhỏ trong khi khách vẫn chạy: **CHƯA KIỂM CHỨNG**; [thử nghiệm](../configuration.md#sandbox-minimized-window-experiment), không phải bước RDP.
 
-Thiết lập được tài liệu hóa cho Remote Desktop Connection cổ điển; hỗ trợ Windows App tùy phiên bản. Người bảo trì báo cáo cặp máy khách/máy chủ ban đầu đã đạt phép thử thu nhỏ trước khi tăng cường bảo mật, nhưng chưa được kiểm tra lại sau triển khai. Không có nghĩa là mọi máy khách đều được hỗ trợ. Sau khi khởi động lại, đăng nhập và mở khóa một lần, rồi khởi chạy ứng dụng và tự động hóa. Không hỗ trợ môi trường headless không có phiên làm việc đồ họa tương tác. Khóa máy từ xa, ngủ, tắt máy và đăng xuất vẫn có thể ngắt tự động hóa. [Đầy đủ giới hạn](../configuration.md#requirements-and-limitations).
+## Sự cố và hoàn tác
 
-Nếu `Passed: false`, đọc `Error`, `Stage` và nhật ký. Nếu thiếu hoặc cũ, kiểm tra cài đặt và thử lại. Khi máy khách không hỗ trợ thu nhỏ, giữ cửa sổ hiển thị hoặc dùng quy trình ngắt kết nối đã kiểm chứng riêng. [Khắc phục sự cố](../../README.md#if-the-proof-fails) · [Kiểm tra cấu hình](../configuration.md#configuration-checks).
+Kết quả lỗi, thiếu hoặc cũ? Xem `Error`, `Stage`, kiểm tra cài đặt rồi thử lại. [Khắc phục sự cố](../configuration.md#proof-and-setup-troubleshooting) · [Kiểm tra cấu hình](../configuration.md#configuration-checks)
 
 <a id="undo"></a>
 
-Xóa tác vụ/khôi phục máy khách không tự khóa console hiện tại. Lưu và kết thúc tự động hóa; khóa máy chủ thủ công và xác nhận phải đăng nhập, hoặc chủ ý đăng xuất để kết thúc ứng dụng. Khóa sẽ dừng tự động hóa GUI.
+Xóa tác vụ máy chủ và khôi phục registry máy khách không khóa console. Lưu và kết thúc tự động hóa; khóa máy chủ rồi xác nhận cần đăng nhập, hoặc chủ ý đăng xuất để kết thúc ứng dụng.
 
-## Hoàn tác
-
-Chạy từ các thư mục sao chép tương ứng. Lệnh đầu xóa tác vụ theo lịch trên máy chủ từ xa; lệnh thứ hai khôi phục thiết lập máy khách trên cùng PC cục bộ với cùng người dùng.
-
-```powershell
-wscript.exe .\start-desktop-session-setup.vbs --uninstall
-```
-
-```powershell
-wscript.exe .\set-local-rdp-minimize-rendering.vbs --restore
-```
-
-Giữ `%LOCALAPPDATA%\KeepDesktopInteractive\local-rdp-minimize-backup.json` của máy khách cho đến khi không cần khôi phục nữa. Hai thao tác độc lập và không xóa bằng chứng chẩn đoán. [Hoàn tác](../configuration.md#undo) · [Hướng dẫn chuẩn tiếng Anh](../configuration.md) · [README tiếng Anh](../../README.md).
-
-Cập nhật vào thư mục riêng mới, không sao chép lại vào thư mục hiện có không rỗng; giữ bản cũ và sao lưu tới khi thiết lập/kiểm tra thành công. [→](../configuration.md#updating-the-first-prototype)
+[Hoàn tác](../configuration.md#undo) · [Hướng dẫn chuẩn tiếng Anh](../configuration.md) · [README tiếng Anh](../../README.md) · [Cập nhật](../configuration.md#updating-the-first-prototype)

@@ -218,6 +218,17 @@ until restoration is no longer needed.
 Neither operation deletes diagnostic evidence. Host removal does not change
 client settings, and client restoration does not remove host tasks.
 
+## Proof and setup troubleshooting
+
+Before a live retest, reserve a quiet desktop with no other UI automation, save work and hide confidential windows. Keep diagnostic screenshots private. Do not bypass trust, lock or organization policies.
+
+| Symptom / likely cause | Next action |
+| --- | --- |
+| Proof missing, stale or wrong `Mode`: no fresh matching diagnostic | Confirm the configured user and [setup results](#quick-setup). Record a new start time and use the [matching disconnect or minimized test](#verify-on-each-new-machine); require later file modification, `Passed: true` and the correct `Mode`. If still missing, inspect the private `Diagnostics` results and run [configuration checks](#configuration-checks), not an old successful proof. |
+| Host result missing, `Installed` not true or `Status` not `Ready`: setup failed or was interrupted | Inspect the host elevation result (`Error` or nonzero `ExitCode`) and setup result `Error`/`CleanupErrors`. Resolve the reported prerequisite, permission or trust failure; rerun `start-desktop-session-setup.vbs` from the trusted private checkout with administrator approval. Require `Installed: true` / `Status: Ready` before testing. Do not manually enable guarded tasks or assume a failed update kept the previous installation. |
+| Client setup succeeded but the client was not fully restarted | Fully close Windows App/Remote Desktop Connection, reopen it and reconnect; then run the separate minimized test on the host. Reboot is usually unnecessary. This is Windows App/RDP advice, not Sandbox instructions. |
+| Fresh `WhileClientMinimized` fails after restart: client/version or desktop conditions are incompatible | Keep the client visible. Check proof `Error`/`Stage`, awake/unlocked host and the recorded minimized interval. Verify [the exact client/host pair](#reported-compatibility-evidence) separately; do not assume the registry setting or a successful disconnect proof establishes minimized support. |
+
 ## Configuration checks
 
 Static syntax check, including compilation of embedded C# declarations. It does not
@@ -300,6 +311,6 @@ workarounds.
 
 [MIT](../LICENSE). You may use, modify, and redistribute the code under that license.
 
-The README PNG is AI-generated concept artwork, not a test screenshot.
-`assets\keep-desktop-interactive.svg` preserves an earlier illustration; it is
-not the editable source of the current PNG. Both are covered by the project license.
+The README PNG is a simple concept illustration, not a test screenshot.
+Its editable source is `assets\keep-desktop-interactive.svg`; the PNG is rendered
+from that source. Both are covered by the project license.
