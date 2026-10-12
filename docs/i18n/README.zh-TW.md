@@ -11,7 +11,7 @@
 
 保留既有 Windows 桌面的代理程式與 UI 測試操作能力：Windows App 是用戶端，Microsoft Dev Box 可作主機，也適用於其他 Windows RDP 主機。
 
-<img src="../../assets/keep-desktop-interactive.png" width="320" alt="概念圖：中斷後繼續點擊與輸入；最小化時，使用經測試的相容用戶端便不必一直盯著遠端視窗；重用已登入的桌面，不儲存密碼。主控台移交後桌面仍未鎖定。">
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="概念圖：關閉 RDP 用戶端視窗、保持連線並最小化，或中斷連線。應用程式持續運算；設定前機器人因輸入受阻而不開心，設定後傳送 Hello 並露出笑臉。須為可信且已解鎖的主機；主控台保持解鎖，需驗證用戶端行為。">
 
 概念圖，英文標籤，非實測。
 

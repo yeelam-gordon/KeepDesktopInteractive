@@ -11,7 +11,7 @@
 
 为已有的 Windows 桌面保留智能体和 UI 测试的操作能力：Windows App 是客户端，Microsoft Dev Box 可作主机，也适用于其他 Windows RDP 主机。
 
-<img src="../../assets/keep-desktop-interactive.png" width="320" alt="概念图：断开后继续点击和输入；最小化时，使用经测试的兼容客户端就不必一直盯着远程窗口；复用已登录的桌面，不保存密码。控制台移交后桌面仍未锁定。">
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="概念图：关闭 RDP 客户端窗口、保持连接并最小化，或断开连接。应用持续计算；配置前机器人因输入受阻而不开心，配置后发送 Hello 并露出笑脸。须为可信且已解锁的主机；控制台保持解锁，需验证客户端行为。">
 
 概念图，英文标签，非实测。
 

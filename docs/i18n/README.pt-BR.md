@@ -11,7 +11,7 @@
 
 Para agentes e testes de UI em um desktop Windows existente: Windows App é o cliente; Microsoft Dev Box pode ser o host, assim como outro computador Windows com RDP.
 
-<img src="../../assets/keep-desktop-interactive.png" width="320" alt="Ilustração conceitual: mantenha cliques e digitação após desconectar; pare de vigiar a janela remota ao minimizá-la com um cliente compatível testado; reutilize o desktop em que você já iniciou sessão sem salvar senhas. A transferência para o console o deixa desbloqueado.">
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Conceito: fechar o cliente RDP, minimizá-lo conectado ou desconectar. Os apps continuam computando; antes o bot tem entrada bloqueada e depois envia Hello e sorri. Host confiável já desbloqueado; o console fica desbloqueado. Verifique o comportamento do cliente.">
 
 Ilustração conceitual com rótulos em inglês, não uma prova.
 

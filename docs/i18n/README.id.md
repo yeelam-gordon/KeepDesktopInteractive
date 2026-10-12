@@ -11,7 +11,7 @@
 
 Untuk agen dan pengujian UI pada desktop Windows yang sudah ada: Windows App adalah klien; Microsoft Dev Box atau komputer Windows lain dengan RDP dapat menjadi host.
 
-<img src="../../assets/keep-desktop-interactive.png" width="320" alt="Ilustrasi konsep: pertahankan klik dan ketik setelah koneksi terputus; tak perlu mengawasi jendela jarak jauh saat diminimalkan dengan klien kompatibel yang telah diuji; gunakan kembali desktop yang sudah login tanpa menyimpan sandi. Pengalihan konsol membiarkannya tidak terkunci.">
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Konsep: tutup klien RDP, minimalkan sambil tetap tersambung, atau putuskan koneksi. Aplikasi tetap menghitung; input bot terblokir sebelum pengaturan, lalu bot mengirim Hello dan tersenyum. Host tepercaya sudah terbuka; konsol tetap tidak terkunci. Verifikasi perilaku klien.">
 
 Ilustrasi konsep berlabel Inggris, bukan bukti uji.
 

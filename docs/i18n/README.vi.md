@@ -11,7 +11,7 @@
 
 Cho tác nhân và kiểm thử UI trên desktop Windows hiện có: Windows App là máy khách; Microsoft Dev Box hoặc máy Windows khác có RDP có thể là máy chủ.
 
-<img src="../../assets/keep-desktop-interactive.png" width="320" alt="Hình khái niệm: duy trì nhấp chuột và nhập sau ngắt kết nối; không phải canh cửa sổ từ xa khi thu nhỏ với máy khách tương thích đã kiểm thử; dùng lại desktop đã đăng nhập mà không lưu mật khẩu. Chuyển sang console để desktop ở trạng thái mở khóa.">
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Minh họa: đóng cửa sổ RDP, thu nhỏ khi vẫn kết nối, hoặc ngắt kết nối. Ứng dụng vẫn tính toán; trước đó bot bị chặn nhập liệu, sau đó gửi Hello và mỉm cười. Host đáng tin cậy đã mở khóa; console vẫn mở khóa. Hãy xác minh hành vi client.">
 
 Hình khái niệm, nhãn tiếng Anh, không phải bằng chứng.
 

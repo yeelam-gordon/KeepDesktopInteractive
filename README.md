@@ -11,7 +11,7 @@
 
 For computer-use agents and UI tests that need clicks, typing and screenshots after you disconnect. Windows App is the client; Microsoft Dev Box or another Windows RDP machine is the already signed-in host.
 
-<img src="assets/keep-desktop-interactive.png" width="320" alt="Concept illustration: keep clicks and typing working after disconnect; stop watching the remote window when minimized with a tested compatible client; reuse your signed-in desktop without stored passwords. Console handoff leaves it unlocked.">
+<img src="assets/keep-desktop-interactive.png" width="700" alt="Concept: close the RDP client window, minimize it while connected, or disconnect. The same apps keep computing; an unhappy bot has blocked input before setup and a happy bot sends Hello afterward. Trusted already-unlocked host; console stays unlocked; verify client-dependent behavior.">
 
 Concept illustration; English labels, not proof.
 

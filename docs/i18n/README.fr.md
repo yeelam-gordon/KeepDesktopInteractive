@@ -11,7 +11,7 @@
 
 Pour agents et tests UI sur un bureau Windows existant : Windows App est le client ; Microsoft Dev Box peut être l’hôte, comme un autre ordinateur Windows avec RDP.
 
-<img src="../../assets/keep-desktop-interactive.png" width="320" alt="Illustration conceptuelle : gardez clics et saisie après déconnexion ; ne surveillez plus la fenêtre distante lors de sa réduction avec un client compatible testé ; réutilisez le bureau où votre session est déjà ouverte, sans mot de passe enregistré. Le transfert vers la console le laisse déverrouillé.">
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Concept : fermer le client RDP, le réduire tout en restant connecté ou se déconnecter. Les apps continuent de calculer ; le bot contrarié ne peut pas saisir avant, puis envoie Hello et sourit. Hôte fiable déjà déverrouillé ; console laissée déverrouillée. Vérifiez le comportement du client.">
 
 Illustration conceptuelle, libellés anglais, pas une preuve.
 

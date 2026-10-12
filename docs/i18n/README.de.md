@@ -11,7 +11,7 @@
 
 Für Agenten und UI-Tests auf einem bestehenden Windows-Desktop: Windows App ist der Client; Microsoft Dev Box kann der Host sein, ebenso ein anderer Windows-Rechner mit RDP.
 
-<img src="../../assets/keep-desktop-interactive.png" width="320" alt="Konzeptbild: Klicks und Eingaben nach der Trennung erhalten; das Remote-Fenster beim Minimieren mit einem getesteten kompatiblen Client nicht ständig beobachten; den bereits angemeldeten Desktop ohne gespeicherte Passwörter weiterverwenden. Die Konsolenübergabe lässt ihn entsperrt.">
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Konzept: RDP-Client schließen, verbunden minimieren oder trennen. Apps rechnen weiter; vorher ist die Eingabe des unzufriedenen Bots blockiert, danach sendet er Hello und lächelt. Vertrauenswürdiger bereits entsperrter Host; Konsole bleibt entsperrt. Clientverhalten prüfen.">
 
 Konzeptbild mit englischen Beschriftungen, kein Testnachweis.
 

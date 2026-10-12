@@ -11,7 +11,7 @@
 
 Mevcut Windows masaüstünde ajanlar ve UI testleri için: Windows App istemcidir; Microsoft Dev Box veya RDP kullanan başka bir Windows bilgisayar ana makine olabilir.
 
-<img src="../../assets/keep-desktop-interactive.png" width="320" alt="Kavramsal görsel: bağlantı kesilince tıklama ve yazmayı sürdürün; küçültürken test edilmiş uyumlu istemciyle uzak pencereyi sürekli izlemeyin; zaten oturum açtığınız masaüstünü parola saklamadan yeniden kullanın. Konsola aktarım masaüstünü kilitsiz bırakır.">
+<img src="../../assets/keep-desktop-interactive.png" width="700" alt="Kavram: RDP istemcisini kapatın, bağlıyken küçültün veya bağlantıyı kesin. Uygulamalar hesaplamaya devam eder; önce botun girişi engellenir, sonra Hello gönderip gülümser. Güvenilir, zaten kilidi açık host gerekir; konsol açık kalır. İstemci davranışını doğrulayın.">
 
 İngilizce etiketli kavramsal görsel, test kanıtı değildir.
 
